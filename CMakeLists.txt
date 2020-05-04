@@ -3,4 +3,6 @@ project(Proj)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Proj main.cpp src/Graph.h)
+include_directories(src)
+
+add_executable(Proj main.cpp src/Graph/Graph.h)

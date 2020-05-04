@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "src/Graph.h"
+#include "Graph/Graph.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
