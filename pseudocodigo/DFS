@@ -1,0 +1,12 @@
+DFS(G, V):              // G - Grafo, V - Vértice de origem
+    found <- {}         // Tabela de dispersão de nós encontrados
+    visitNode(G, V)
+    return found
+
+visitNode(G, V):
+    found.insert(V)
+    for w in Adj(V)
+        if w not in found
+            visitNode(G, w)
+
+

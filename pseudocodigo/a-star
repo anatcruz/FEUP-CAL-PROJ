@@ -1,0 +1,29 @@
+function A-star(Graph, src, dest):
+    dist[src] <- h(src, dest)       // h(v, f) is the heuristic function estimating
+                                    // the distance between a node, v, and the goal, f
+    create Vertex priority queue Q
+
+    for each Vertex v in Graph:
+        if v != src:
+            dist[v] <- INFINITY
+        prev[v] <- UNDEFINED
+        Q.add_with_priority(v, dist[v])
+
+    while not_empty(Q):
+        v <- Q.pop()
+
+        if equals(v, dest):
+            return v
+        
+        for each Vertex w in adj(v):
+            // g(v, w) is the actual cost of travelling from node v to w
+            f = dist[v] - h(v, dest) + g(v, w) + h(w, dest)
+            if dist[w] > f:
+                dist[w] <- f
+                prev[w] <- v
+                Q.decrease_priority(w, f)
+
+    return null
+
+
+

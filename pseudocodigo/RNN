@@ -1,0 +1,16 @@
+// Vi - vértice origem, Vf - vértice destino,
+// POIs - lista de vértices a visitar
+// ord - ordem de visita, inicialmente vazia
+// n - número de vértices a considerar para escolha aleatória
+function RNN-Search(Vi, Vf, POIs, ord <- {}, n):
+    ord.insert(Vi)
+
+    if equals(Vi, Vf):
+        return ord
+    
+    next_set <- find_n_nearest(Vi, POIs, n) // Função que devolve os n nós mais próximos
+    next <- next_set.random()     // Função que devolve um elemento qualquer do conjunto
+    POIs.remove(next)
+
+    RNN-Search(next, Vf, POIs, ord, n)
+

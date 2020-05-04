@@ -1,0 +1,14 @@
+// Vi - vértice origem, Vf - vértice destino,
+// POIs - lista de vértices a visitar
+// ord - ordem de visita, inicialmente vazia
+function NN-Search(Vi, Vf, POIs, ord <- {}):
+    ord.insert(Vi)
+
+    if equals(Vi, Vf):
+        return ord
+    
+    next <- find_nearest(Vi, POIs) // Função que devolve o nó mais próximo
+    POIs.remove(next)
+
+    NN-Search(next, Vf, POIs, ord)
+
