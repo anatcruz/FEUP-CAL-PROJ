@@ -13,6 +13,7 @@ template<class T> class Graph;
 //==============================
 template<class T>
 class Vertex {
+    int id;
     T info;
     vector<Edge<T> *> outgoing;
     vector<Edge<T> *> incoming;
@@ -23,7 +24,9 @@ class Vertex {
     bool visited;
     Edge<T> *path;
 public:
+    int getId() const;
     T getInfo() const;
+    vector<Edge<T> *> getAdj() const;
     friend class Graph<T>;
 };
 
@@ -37,6 +40,15 @@ Edge<T>* Vertex<T>::addEdge(Vertex<T> *dest, double cost) {
     dest->incoming.push_back(edge);
     return edge;
 }
+
+template<class T>
+int Vertex<T>::getId() const { return id; }
+
+template<class T>
+T Vertex<T>::getInfo() const { return info; }
+
+template<class T>
+vector<Edge<T> *> Vertex<T>::getAdj() const { return outgoing; }
 
 //==============================
 //  Edge
@@ -109,6 +121,7 @@ Vertex<T>* Graph<T>::addVertex(const T &in) {
         return v;
     }
     v = new Vertex<T>(in);
+    v->id = vertexSet.size();
     vertexSet.push_back(v);
     return v;
 }
