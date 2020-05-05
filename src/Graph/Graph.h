@@ -5,6 +5,8 @@
 
 using namespace std;
 
+typedef pair<double, double> coordinates;
+
 template<class T> class Edge;
 template<class T> class Graph;
 
@@ -95,10 +97,12 @@ class Graph {
     vector<Vertex<T> *> vertexSet;
 
     Vertex<T>* findVertex(const T &info) const;
+    Vertex<T>* findVertex(const int &id) const;
 public:
     vector<Vertex<T> *> getVertexSet() const;
     Vertex<T> *addVertex(const T &in);
     Edge<T> *addEdge(const T &sourc, const T &dest, double cost);
+    Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
 };
 
 template<class T>
@@ -135,5 +139,22 @@ Edge<T>* Graph<T>::addEdge(const T &sourc, const T &dest, double cost) {
         return s->addEdge(d, cost);
     }
 }
+
+template<class T>
+Edge<T> *Graph<T>::addEdge(const int id_src, const int id_dest, double cost) {
+    Vertex<T>* s = findVertex(id_src);
+    Vertex<T>* d = findVertex(id_dest);
+    if (s == nullptr || d == nullptr) { return nullptr; }
+    else {
+        return s->addEdge(d, cost);
+    }
+}
+
+template<class T>
+Vertex<T> *Graph<T>::findVertex(const int &id) const {
+    if (id < 0 || id >= vertexSet.size()) { return nullptr; }
+    else { return vertexSet.at(id); }
+}
+
 
 #endif //PROJ_GRAPH_H

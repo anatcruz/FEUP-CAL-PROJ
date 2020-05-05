@@ -9,15 +9,15 @@ using namespace std;
 
 class UI {
 private:
-    Graph<int> graph;
+    Graph<coordinates> graph;
     GraphViewer *gv;
 
     int gv_width;
     int gv_height;
 public:
-    UI(Graph<int> &graph, int width, int height);
+    UI(Graph<coordinates> &graph, int width, int height);
 
-    void setGraph(Graph<int> &graph);
+    void setGraph(Graph<coordinates> &graph);
     void showGraph();
 };
 
