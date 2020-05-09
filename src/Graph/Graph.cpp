@@ -164,7 +164,7 @@ vector<int> Graph<T>::dfs(const int id_src) const {
 /******Dijkstra******/
 
 template<class T>
-void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
+vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
     for (Vertex<T> *vert: vertexSet) {
         vert->dist = INT_MAX;
         vert->path = NULL;
@@ -177,17 +177,16 @@ void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
 
     while (!Q.empty()){
         v = Q.extractMin();
-        std::cout << v->getId();
 
         if (v == dest){
             break;
         }
 
-        for (Edge<T> *w: v->outgoing){
+        for (Edge<T> *w : v->getAdj()){
             if (w->dest->getDist() > v->dist +  w->getCost()){
                 double d = w->dest->getDist();
                 w->dest->dist = v->dist +  w->getCost();
-                w->dest = v;
+                w->dest->path = v;
                 if (d == INT_MAX){
                     Q.insert(w->dest);
                 }
@@ -197,6 +196,17 @@ void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
             }
         }
     }
+
+    vector<int> path;
+    path.push_back(dest->id);
+    Vertex<T>* vertex = dest;
+
+    while (vertex->path != NULL) {
+        vertex = vertex->path;
+        path.emplace(path.begin(), vertex->id);
+    }
+
+    return path;
 }
 
 template class Vertex<coordinates>;

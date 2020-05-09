@@ -28,7 +28,7 @@ class Vertex {
     Vertex(T info);
 
     bool visited;
-    Edge<T> *path = NULL;
+    Vertex<T>* path = NULL;
     double dist = 0;
 public:
     int queueIndex = 0; // For MPQ
@@ -90,7 +90,7 @@ public:
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;
 
-    void dijkstraShortestPath(const int id_src, const int id_dest);
+    vector<int> dijkstraShortestPath(const int id_src, const int id_dest);
 };
 
 #endif //PROJ_GRAPH_H
