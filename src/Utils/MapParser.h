@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "../Graph/Graph.h"
+#include "Utils.h"
 
 using namespace std;
 

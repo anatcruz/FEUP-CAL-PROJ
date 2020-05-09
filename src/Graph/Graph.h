@@ -78,7 +78,6 @@ class Graph {
     vector<Vertex<T> *> vertexSet;
 
     Vertex<T>* findVertex(const T &info) const;
-    Vertex<T>* findVertex(const int &id) const;
 
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
@@ -86,6 +85,8 @@ public:
     Vertex<T> *addVertex(const T &in);
     Edge<T> *addEdge(const T &sourc, const T &dest, double cost);
     Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
+
+    Vertex<T>* findVertex(const int &id) const;
 
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;

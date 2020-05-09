@@ -44,8 +44,9 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
         s = stoi(entry);
         getline(ss, entry, ')');
         d = stoi(entry);
-        graph.addEdge(s, d, 1);
-        graph.addEdge(d, s, 1);
+        double cost = euclidianDistance(graph.findVertex(s)->getInfo(), graph.findVertex(d)->getInfo());
+        graph.addEdge(s, d, cost);
+        graph.addEdge(d, s, cost);
     }
 
     edges.close();

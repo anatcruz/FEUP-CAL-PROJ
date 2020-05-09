@@ -16,6 +16,8 @@ int main() {
 
     UI ui = UI(graph, 400, 400);
     ui.showGraph();
-    getchar();
+
+    cout << "Ree" << endl;
+
     return 0;
 }

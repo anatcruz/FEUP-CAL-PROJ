@@ -22,4 +22,6 @@ void UI::showGraph() {
             id++;
         }
     }
+    char c = getchar();
+    cout << "popo" << endl;
 }
