@@ -16,6 +16,6 @@ int main() {
 
     UI ui = UI(graph, 400, 400);
     ui.showGraph();
-
+    getchar();
     return 0;
 }
