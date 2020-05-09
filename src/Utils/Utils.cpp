@@ -29,3 +29,7 @@ void getOption(int &dest, const string &message) {
         }
     }
 }
+
+double euclidianDistance(pair<double, double> point1, pair<double, double> point2){
+    return (sqrt( (point1.first - point2.first)^2  )
+}
