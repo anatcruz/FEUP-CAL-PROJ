@@ -282,6 +282,8 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
     return path;
 }
 
+/******NNS******/
+
 template<class T>
 int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
     int min = INT_MAX;
@@ -303,6 +305,18 @@ int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
     }
 
     return min;
+}
+
+template<class T>
+vector<int> Graph<T>::nearestNeighborsSearch(const int id_src, const int id_dest, vector<int> POIs, vector<int> ord){
+    ord.push_back(id_src);
+
+    if (id_src == id_dest) { return ord; }
+
+    int next = find_nearest(id_src, POIs);
+    POIs = removeIdFromVector(POIs, next);
+
+    return nearestNeighborsSearch(next, id_dest, POIs, ord);
 }
 
 

@@ -98,6 +98,7 @@ public:
     vector<int> astarShortestPath(const int id_src, const int id_dest, function<double(pair<double, double>, pair<double, double>)> h);
 
     int find_nearest(const int id_src, vector<int> POIs);
+    vector<int> nearestNeighborsSearch(const int id_src, const int id_dest, vector<int> POIs, vector<int> ord);
 };
 
 #endif //PROJ_GRAPH_H

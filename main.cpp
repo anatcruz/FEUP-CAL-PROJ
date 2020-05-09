@@ -15,6 +15,8 @@ int main() {
     vector<int> astar = graph.astarShortestPath(0, 42, euclidianDistance);
     vector<int> POIs = {16, 24, 10, 22};
     int nearest = graph.find_nearest(6, POIs);
+    //vector<int> nns = graph.nearestNeighborsSearch(0, 10, POIs, {}); //NOT WORKING /!\
+
     int i=0;
 
     UI ui = UI(graph, 400, 400);
