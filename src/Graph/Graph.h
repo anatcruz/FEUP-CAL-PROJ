@@ -5,6 +5,7 @@
 #include <climits>
 #include <functional>
 #include "MutablePriorityQueue.h"
+#include "Utils/Utils.h"
 
 using namespace std;
 
@@ -95,6 +96,8 @@ public:
 
     vector<int> dijkstraShortestPath(const int id_src, const int id_dest);
     vector<int> astarShortestPath(const int id_src, const int id_dest, function<double(pair<double, double>, pair<double, double>)> h);
+
+    int find_nearest(const int id_src, vector<int> POIs);
 };
 
 #endif //PROJ_GRAPH_H

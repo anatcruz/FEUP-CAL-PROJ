@@ -226,6 +226,8 @@ vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) 
     return path;
 }
 
+/******A-Star******/
+
 template<class T>
 vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, function<double (pair<double, double>, pair<double, double>)> h) {
     for (Vertex<T> *vert: vertexSet) {
@@ -279,6 +281,30 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
 
     return path;
 }
+
+template<class T>
+int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
+    int min = INT_MAX;
+    int dist = INT_MAX;
+    Vertex<T> *src = findVertex(id_src);
+
+    for(int i: POIs){
+        int i_dist = 0;
+        vector<int> path = astarShortestPath(id_src, i, euclidianDistance);
+        for (int j=0; j<path.size()-1; j++){
+            Vertex<T> *v = findVertex(path.at(j));
+            i_dist += v->getCostTo(path.at(j+1));
+        }
+
+        if(i_dist < dist){
+            min = i;
+            dist = i_dist;
+        }
+    }
+
+    return min;
+}
+
 
 template class Vertex<coordinates>;
 template class Edge<coordinates>;
