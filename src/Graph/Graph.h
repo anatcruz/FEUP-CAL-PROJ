@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <climits>
+#include <functional>
 #include "MutablePriorityQueue.h"
 
 using namespace std;
@@ -92,6 +93,7 @@ public:
     vector<int> dfs(const int id_src) const;
 
     vector<int> dijkstraShortestPath(const int id_src, const int id_dest);
+    vector<int> astarShortestPath(const int id_src, const int id_dest, function<double(pair<double, double>, pair<double, double>)> h);
 };
 
 #endif //PROJ_GRAPH_H

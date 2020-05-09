@@ -175,7 +175,10 @@ vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) 
     MutablePriorityQueue<Vertex<T>> Q;
     Q.insert(src);
 
+    int iter = 0;
+
     while (!Q.empty()){
+        iter++;
         v = Q.extractMin();
 
         if (v == dest){
@@ -196,6 +199,60 @@ vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) 
             }
         }
     }
+
+    cout << iter << endl;
+
+    vector<int> path;
+    path.push_back(dest->id);
+    Vertex<T>* vertex = dest;
+
+    while (vertex->path != NULL) {
+        vertex = vertex->path;
+        path.emplace(path.begin(), vertex->id);
+    }
+
+    return path;
+}
+
+template<class T>
+vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, function<double (pair<double, double>, pair<double, double>)> h) {
+    for (Vertex<T> *vert: vertexSet) {
+        vert->dist = INT_MAX;
+        vert->path = NULL;
+    }
+
+    Vertex<T> *src = findVertex(id_src), *dest = findVertex(id_dest), *v;
+    src->dist = h(src->getInfo(), dest->getInfo());
+    MutablePriorityQueue<Vertex<T>> Q;
+    Q.insert(src);
+
+    int iter = 0;
+
+    while (!Q.empty()){
+        iter++;
+        v = Q.extractMin();
+
+        if (v == dest){
+            break;
+        }
+
+        for (Edge<T> *w : v->getAdj()){
+            double f = v->dist - h(v->getInfo(), dest->getInfo()) +  w->getCost() + h(w->dest->getInfo(), dest->getInfo());
+            if (w->dest->getDist() > f){
+                double d = w->dest->getDist();
+                w->dest->dist = f;
+                w->dest->path = v;
+                if (d == INT_MAX){
+                    Q.insert(w->dest);
+                }
+                else {
+                    Q.decreaseKey(w->dest);
+                }
+            }
+        }
+    }
+
+    cout << iter << endl;
 
     vector<int> path;
     path.push_back(dest->id);
