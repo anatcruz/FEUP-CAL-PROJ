@@ -22,6 +22,8 @@ class Vertex {
     vector<Edge<T> *> outgoing;
     vector<Edge<T> *> incoming;
 
+
+
     Edge<T>* addEdge(Vertex<T> *dest, double cost);
     Vertex(T info);
 
@@ -29,10 +31,21 @@ class Vertex {
     Edge<T> *path = NULL;
     double dist = 0;
 public:
+    int queueIndex = 0; // For MPQ
+
     int getId() const;
     T getInfo() const;
     double getDist() const;
     vector<Edge<T> *> getAdj() const;
+
+    bool operator<(const Vertex &rhs) const;
+
+    bool operator>(const Vertex &rhs) const;
+
+    bool operator<=(const Vertex &rhs) const;
+
+    bool operator>=(const Vertex &rhs) const;
+
     friend class Graph<T>;
 };
 
@@ -77,7 +90,7 @@ public:
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;
 
-    //void dijkstraShortestPath(const int id_src, const int id_dest);
+    void dijkstraShortestPath(const int id_src, const int id_dest);
 };
 
 #endif //PROJ_GRAPH_H

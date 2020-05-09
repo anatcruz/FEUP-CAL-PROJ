@@ -27,6 +27,26 @@ vector<Edge<T> *> Vertex<T>::getAdj() const { return outgoing; }
 template<class T>
 double Vertex<T>::getDist() const { return dist; }
 
+template<class T>
+bool Vertex<T>::operator<(const Vertex &rhs) const {
+    return this->dist < rhs.dist;
+}
+
+template<class T>
+bool Vertex<T>::operator>(const Vertex &rhs) const {
+    return rhs < *this;
+}
+
+template<class T>
+bool Vertex<T>::operator<=(const Vertex &rhs) const {
+    return !(rhs < *this);
+}
+
+template<class T>
+bool Vertex<T>::operator>=(const Vertex &rhs) const {
+    return !(*this < rhs);
+}
+
 
 //==============================
 //  Edge
@@ -142,7 +162,7 @@ vector<int> Graph<T>::dfs(const int id_src) const {
 }
 
 /******Dijkstra******/
-/*
+
 template<class T>
 void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
     for (Vertex<T> *vert: vertexSet) {
@@ -177,7 +197,7 @@ void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
             }
         }
     }
-}*/
+}
 
 template class Vertex<coordinates>;
 template class Edge<coordinates>;
