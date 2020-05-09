@@ -19,6 +19,7 @@ public:
 
     void setGraph(Graph<coordinates> &graph);
     void showGraph();
+    void showPath(vector<int> path);
 };
 
 

@@ -25,6 +25,16 @@ template<class T>
 vector<Edge<T> *> Vertex<T>::getAdj() const { return outgoing; }
 
 template<class T>
+double Vertex<T>::getCostTo(int dest_id) const {
+    for (auto e : outgoing) {
+        if (e->dest->getId() == dest_id) {
+            return e->getCost();
+        }
+    }
+    return -1;
+}
+
+template<class T>
 double Vertex<T>::getDist() const { return dist; }
 
 template<class T>
@@ -211,6 +221,8 @@ vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) 
         path.emplace(path.begin(), vertex->id);
     }
 
+    cout << "Size: " << path.size() << endl;
+
     return path;
 }
 
@@ -262,6 +274,8 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
         vertex = vertex->path;
         path.emplace(path.begin(), vertex->id);
     }
+
+    cout << "Size: " << path.size() << endl;
 
     return path;
 }

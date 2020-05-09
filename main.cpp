@@ -11,14 +11,14 @@ int main() {
     Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt");
 
     vector<int> dfs = graph.dfs(9);
-    vector<int> dij = graph.dijkstraShortestPath(0, 12);
-    vector<int> astar = graph.astarShortestPath(0, 12, euclidianDistance);
+    vector<int> dij = graph.dijkstraShortestPath(0, 42);
+    vector<int> astar = graph.astarShortestPath(0, 42, euclidianDistance);
     int i=0;
 
     UI ui = UI(graph, 400, 400);
-    ui.showGraph();
+    ui.showPath(astar);
 
-    cout << "Ree" << endl;
+    char c = getchar();
 
     return 0;
 }

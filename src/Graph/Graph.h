@@ -38,6 +38,7 @@ public:
     T getInfo() const;
     double getDist() const;
     vector<Edge<T> *> getAdj() const;
+    double getCostTo(int dest_id) const;
 
     bool operator<(const Vertex &rhs) const;
 
