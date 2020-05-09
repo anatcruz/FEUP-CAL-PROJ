@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Graph.h"
 
 //==============================
@@ -22,6 +23,9 @@ T Vertex<T>::getInfo() const { return info; }
 
 template<class T>
 vector<Edge<T> *> Vertex<T>::getAdj() const { return outgoing; }
+
+template<class T>
+double Vertex<T>::getDist() const { return dist; }
 
 
 //==============================
@@ -100,6 +104,12 @@ Vertex<T> *Graph<T>::findVertex(const int &id) const {
     else { return vertexSet.at(id); }
 }
 
+//==============================
+//  Algorithms
+//==============================
+
+/******DFS******/
+
 template<class T>
 vector<int> Graph<T>::dfs() const {
     vector<int> result;
@@ -130,6 +140,44 @@ vector<int> Graph<T>::dfs(const int id_src) const {
     dfsVisit(this->findVertex(id_src), result);
     return result;
 }
+
+/******Dijkstra******/
+/*
+template<class T>
+void Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
+    for (Vertex<T> *vert: vertexSet) {
+        vert->dist = INT_MAX;
+        vert->path = NULL;
+    }
+
+    Vertex<T> *src = findVertex(id_src), *dest = findVertex(id_dest), *v;
+    src->dist=0;
+    MutablePriorityQueue<Vertex<T>> Q;
+    Q.insert(src);
+
+    while (!Q.empty()){
+        v = Q.extractMin();
+        std::cout << v->getId();
+
+        if (v == dest){
+            break;
+        }
+
+        for (Edge<T> *w: v->outgoing){
+            if (w->dest->getDist() > v->dist +  w->getCost()){
+                double d = w->dest->getDist();
+                w->dest->dist = v->dist +  w->getCost();
+                w->dest = v;
+                if (d == INT_MAX){
+                    Q.insert(w->dest);
+                }
+                else {
+                    Q.decreaseKey(w->dest);
+                }
+            }
+        }
+    }
+}*/
 
 template class Vertex<coordinates>;
 template class Edge<coordinates>;
