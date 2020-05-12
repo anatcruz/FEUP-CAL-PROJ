@@ -285,12 +285,12 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
 /******NNS******/
 
 template<class T>
-int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
+int Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
     int min = INT_MAX;
-    int dist = INT_MAX;
+    double dist = INT_MAX;
 
     for (int i : POIs) {
-        int i_dist = 0;
+        double i_dist = 0;
         vector<int> path = astarShortestPath(id_src, i, euclidianDistance);
         // TODO melhorar return da função path
         for (int j = 0; j < path.size() - 1; j++){
@@ -305,6 +305,49 @@ int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
     }
 
     return min;
+}
+
+template<class T>
+vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n) {
+    vector<pair<int, double>> nearest;
+    pair<int, double> max = make_pair(-1, -1);
+
+    if (POIs.size() <= n) { return POIs; }
+
+    for (int point : POIs) {
+        double i_dist = 0;
+        vector<int> path = astarShortestPath(id_src, point, euclidianDistance);
+        for (int j = 0; j < path.size() - 1; j++) {
+            Vertex<T> *v = findVertex(path.at(j));
+            i_dist += v->getCostTo(path.at(j + 1));
+        }
+
+        if (nearest.size() < n) {
+            nearest.push_back(make_pair(point, i_dist));
+            if (max.first == -1) { max = nearest.back(); }
+            else {
+                for (auto item : nearest) {
+                    if (item.second > max.second) {
+                        max = item;
+                    }
+                }
+            }
+        } else if (i_dist < max.second) {
+            auto it = find_if(nearest.begin(), nearest.end(), [&](pair<int, double> p) { return p.first == max.first; });
+            *it = make_pair(point, i_dist);
+            for (auto item : nearest) {
+                if (item.second > max.second) {
+                    max = item;
+                }
+            }
+        }
+    }
+
+    vector<int> result;
+    for (auto & it : nearest) {
+        result.push_back(it.first);
+    }
+    return result;
 }
 
 template<class T>
