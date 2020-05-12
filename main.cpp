@@ -18,11 +18,12 @@ int main() {
 //    vector<int> ord;
 //    vector<int> nns = graph.nearestNeighborsSearch(0, 8, POIs, ord); //NOT WORKING /!\
 
+    vector<vector<int>> tarjan = graph.tarjan(0);
     int i=0;
 
-    UI ui = UI(graph, 800, 800);
+//    UI ui = UI(graph, 800, 800);
     //ui.showPath(astar);
-    ui.showGraph();
+//    ui.showGraph();
 
     char c = getchar();
 

@@ -1,8 +1,10 @@
 #ifndef PROJ_GRAPH_H
 #define PROJ_GRAPH_H
 
+#include <iostream>
 #include <vector>
 #include <map>
+#include <stack>
 #include <climits>
 #include <functional>
 #include <algorithm>
@@ -26,14 +28,18 @@ class Vertex {
     vector<Edge<T> *> outgoing;
     vector<Edge<T> *> incoming;
 
-
-
     Edge<T>* addEdge(Vertex<T> *dest, double cost);
     Vertex(T info);
 
+    // Pathfinding
     bool visited;
     Vertex<T>* path = NULL;
     double dist = 0;
+
+    // Tarjan
+    int index = -1;
+    int low = -1;
+    bool onStack = false;
 public:
     int queueIndex = 0; // For MPQ
 
@@ -102,7 +108,9 @@ public:
     int find_nearest(const int &id_src, const vector<int> &POIs);
     vector<int> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
     vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord);
-    void tarjan(const int id_src);
+
+    vector<vector<int>> tarjan(const int id_src);
+    void strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, vector<vector<int>> &scc);
 };
 
 #endif //PROJ_GRAPH_H
