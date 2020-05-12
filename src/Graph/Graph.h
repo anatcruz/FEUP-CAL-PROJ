@@ -14,6 +14,7 @@
 using namespace std;
 
 typedef pair<double, double> coordinates;
+typedef pair<double, vector<int>> path_t;
 
 template<class T> class Edge;
 template<class T> class Graph;
@@ -102,12 +103,14 @@ public:
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;
 
-    vector<int> dijkstraShortestPath(const int id_src, const int id_dest);
-    vector<int> astarShortestPath(const int id_src, const int id_dest, function<double(pair<double, double>, pair<double, double>)> h);
+    path_t genericShortestPath(const int id_src, const int id_dest, function<double(T, T)> h);
+    path_t dijkstraShortestPath(const int id_src, const int id_dest);
+    path_t astarShortestPath(const int id_src, const int id_dest);
 
     int find_nearest(const int &id_src, const vector<int> &POIs);
     vector<int> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
     vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord);
+    vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n);
 
     vector<vector<int>> tarjan(const int id_src);
     void strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, vector<vector<int>> &scc);

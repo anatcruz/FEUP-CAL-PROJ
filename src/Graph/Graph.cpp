@@ -170,68 +170,13 @@ vector<int> Graph<T>::dfs(const int id_src) const {
     return result;
 }
 
-/******Dijkstra******/
-
+/******Shortest Path******/
 template<class T>
-vector<int> Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
+pair<double, vector<int> > Graph<T>::genericShortestPath(const int id_src, const int id_dest, function<double (T, T)> h) {
     for (Vertex<T> *vert: vertexSet) {
         vert->dist = INT_MAX;
         vert->path = NULL;
-    }
-
-    Vertex<T> *src = findVertex(id_src), *dest = findVertex(id_dest), *v;
-    src->dist=0;
-    MutablePriorityQueue<Vertex<T>> Q;
-    Q.insert(src);
-
-    int iter = 0;
-
-    while (!Q.empty()){
-        iter++;
-        v = Q.extractMin();
-
-        if (v == dest){
-            break;
-        }
-
-        for (Edge<T> *w : v->getAdj()){
-            if (w->dest->getDist() > v->dist +  w->getCost()){
-                double d = w->dest->getDist();
-                w->dest->dist = v->dist +  w->getCost();
-                w->dest->path = v;
-                if (d == INT_MAX){
-                    Q.insert(w->dest);
-                }
-                else {
-                    Q.decreaseKey(w->dest);
-                }
-            }
-        }
-    }
-
-    cout << iter << endl;
-
-    vector<int> path;
-    path.push_back(dest->id);
-    Vertex<T>* vertex = dest;
-
-    while (vertex->path != NULL) {
-        vertex = vertex->path;
-        path.emplace(path.begin(), vertex->id);
-    }
-
-    cout << "Size: " << path.size() << endl;
-
-    return path;
-}
-
-/******A-Star******/
-
-template<class T>
-vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, function<double (pair<double, double>, pair<double, double>)> h) {
-    for (Vertex<T> *vert: vertexSet) {
-        vert->dist = INT_MAX;
-        vert->path = NULL;
+        vert->queueIndex = 0;
     }
 
     Vertex<T> *src = findVertex(id_src), *dest = findVertex(id_dest), *v;
@@ -239,10 +184,7 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
     MutablePriorityQueue<Vertex<T>> Q;
     Q.insert(src);
 
-    int iter = 0;
-
     while (!Q.empty()){
-        iter++;
         v = Q.extractMin();
 
         if (v == dest){
@@ -265,20 +207,32 @@ vector<int> Graph<T>::astarShortestPath(const int id_src, const int id_dest, fun
         }
     }
 
-    cout << iter << endl;
-
     vector<int> path;
+    double length = 0;
     path.push_back(dest->id);
     Vertex<T>* vertex = dest;
 
     while (vertex->path != NULL) {
+        length += vertex->path->getCostTo(vertex->id);
         vertex = vertex->path;
         path.emplace(path.begin(), vertex->id);
     }
 
-    cout << "Size: " << path.size() << endl;
+    return make_pair(length, path);
+}
 
-    return path;
+/******Dijkstra******/
+
+template<class T>
+path_t Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
+    return genericShortestPath(id_src, id_dest, [&](T a, T b){ return 0; });
+}
+
+/******A-Star******/
+
+template<class T>
+path_t Graph<T>::astarShortestPath(const int id_src, const int id_dest) {
+    return genericShortestPath(id_src, id_dest, euclidianDistance);
 }
 
 /******NNS******/
@@ -289,15 +243,9 @@ int Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
     double dist = INT_MAX;
 
     for (int i : POIs) {
-        double i_dist = 0;
-        vector<int> path = astarShortestPath(id_src, i, euclidianDistance);
-        // TODO melhorar return da função path
-        for (int j = 0; j < path.size() - 1; j++){
-            Vertex<T> *v = findVertex(path.at(j));
-            i_dist += v->getCostTo(path.at(j + 1));
-        }
+        int i_dist = astarShortestPath(id_src, i).first;
 
-        if(i_dist < dist){
+        if (i_dist < dist) {
             min = i;
             dist = i_dist;
         }
@@ -308,45 +256,19 @@ int Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
 
 template<class T>
 vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n) {
-    vector<pair<int, double>> nearest;
-    pair<int, double> max = make_pair(-1, -1);
-
     if (POIs.size() <= n) { return POIs; }
 
+    map<int, double> dist_map;
     for (int point : POIs) {
-        double i_dist = 0;
-        vector<int> path = astarShortestPath(id_src, point, euclidianDistance);
-        for (int j = 0; j < path.size() - 1; j++) {
-            Vertex<T> *v = findVertex(path.at(j));
-            i_dist += v->getCostTo(path.at(j + 1));
-        }
-
-        if (nearest.size() < n) {
-            nearest.push_back(make_pair(point, i_dist));
-            if (max.first == -1) { max = nearest.back(); }
-            else {
-                for (auto item : nearest) {
-                    if (item.second > max.second) {
-                        max = item;
-                    }
-                }
-            }
-        } else if (i_dist < max.second) {
-            auto it = find_if(nearest.begin(), nearest.end(), [&](pair<int, double> p) { return p.first == max.first; });
-            *it = make_pair(point, i_dist);
-            for (auto item : nearest) {
-                if (item.second > max.second) {
-                    max = item;
-                }
-            }
-        }
+        dist_map.emplace(point, astarShortestPath(id_src, point).first);
     }
 
-    vector<int> result;
-    for (auto & it : nearest) {
-        result.push_back(it.first);
-    }
-    return result;
+    vector<int> nearest = POIs;
+
+    partial_sort(nearest.begin(), nearest.begin() + n, nearest.end(),
+                 [&](int i, int j){ return dist_map[i] < dist_map[j]; });
+
+    return vector<int>(nearest.begin(), nearest.begin() + n);
 }
 
 template<class T>
@@ -362,6 +284,23 @@ vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_de
     POIs.erase(find(POIs.begin(), POIs.end(), next));
 
     return nearestNeighborsSearch(next, id_dest, POIs, ord);
+}
+
+template<class T>
+vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n) {
+    ord.push_back(id_src);
+
+    if (POIs.empty()) {
+        ord.push_back(id_dest);
+        return ord;
+    }
+
+    vector<int> neighbors = find_n_nearest(id_src, POIs, n);
+    int next_i = rand() % neighbors.size();
+    int next = neighbors.at(next_i);
+    POIs.erase(find(POIs.begin(), POIs.end(), next));
+
+    return RNNeighborsSearch(next, id_dest, POIs, ord, n);
 }
 
 /******Tarjan******/
