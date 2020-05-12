@@ -99,6 +99,8 @@ public:
 
     int find_nearest(const int id_src, vector<int> POIs);
     vector<int> nearestNeighborsSearch(const int id_src, const int id_dest, vector<int> POIs, vector<int> ord);
+
+    void tarjan(const int id_src);
 };
 
 #endif //PROJ_GRAPH_H

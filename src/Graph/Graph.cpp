@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Graph.h"
-
+#include <stack>
 //==============================
 //  Vertex
 //==============================
@@ -319,7 +319,36 @@ vector<int> Graph<T>::nearestNeighborsSearch(const int id_src, const int id_dest
     return nearestNeighborsSearch(next, id_dest, POIs, ord);
 }
 
+/******Tarjan******/ //NEEDS CHECKING!!
+template<class T>
+void Graph<T>::tarjan(const int id_src){
+    Vertex<T> *v = findVertex(id_src);
+    int disc[INT_MAX], low[INT_MAX], time = 0;
+    stack <int> *st;
+    disc[id_src] = low[id_src] = time++;
+    bool stackMember[INT_MAX];
+    st->push(id_src);
+    stackMember[id_src] = true;
+    for (Edge<T> *w : v->getAdj()){
+        int i = w->getCost();
+        if(disc[i] == -1){
+            tarjan(i);
+            low[id_src] = min(low[id_src], low[i]);
+        }
+        else if(stackMember[i] == true){
+            low[id_src] = min(low[id_src], disc[i]);
+        }
+    }
+    if(disc[id_src] == low[id_src]){
+        int j;
+        do{
+            j = st->top();
+            st->pop();
+            stackMember[j] = false;
+        }while(id_src != j);
+    }
 
+}
 template class Vertex<coordinates>;
 template class Edge<coordinates>;
 template class Graph<coordinates>;
