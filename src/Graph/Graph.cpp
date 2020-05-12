@@ -288,14 +288,14 @@ template<class T>
 int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
     int min = INT_MAX;
     int dist = INT_MAX;
-    Vertex<T> *src = findVertex(id_src);
 
-    for(int i: POIs){
+    for (int i : POIs) {
         int i_dist = 0;
         vector<int> path = astarShortestPath(id_src, i, euclidianDistance);
-        for (int j=0; j<path.size()-1; j++){
+        // TODO melhorar return da função path
+        for (int j = 0; j < path.size() - 1; j++){
             Vertex<T> *v = findVertex(path.at(j));
-            i_dist += v->getCostTo(path.at(j+1));
+            i_dist += v->getCostTo(path.at(j + 1));
         }
 
         if(i_dist < dist){
@@ -308,13 +308,16 @@ int Graph<T>::find_nearest(const int id_src, vector<int> POIs){
 }
 
 template<class T>
-vector<int> Graph<T>::nearestNeighborsSearch(const int id_src, const int id_dest, vector<int> POIs, vector<int> ord){
+vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord){
     ord.push_back(id_src);
 
-    if (id_src == id_dest) { return ord; }
+    if (POIs.empty()) {
+        ord.push_back(id_dest);
+        return ord;
+    }
 
     int next = find_nearest(id_src, POIs);
-    POIs = removeIdFromVector(POIs, next);
+    POIs.erase(find(POIs.begin(), POIs.end(), next));
 
     return nearestNeighborsSearch(next, id_dest, POIs, ord);
 }
