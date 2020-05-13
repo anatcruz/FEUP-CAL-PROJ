@@ -22,10 +22,13 @@ int main() {
     vector<int> ord;
     Path path;
     vector<int> nns = graph.nearestNeighborsSearch(0, 8, POIs, ord, path);
+    Path twop = graph.twoOpt(nns, path);
+
     ord.clear();
     POIs = {90, 162, 147, 200, 280, 40, 55, 180, 60, 73};
     path = Path();
     vector<int> rnns1 = graph.RNNeighborsSearch(0, 8, POIs, ord, path, 3);
+    Path rtwop = graph.twoOpt(rnns1, path);
 //    ord.clear();
 //    POIs = {16, 24, 10, 22, 2, 9};
 //    vector<int> rnns2 = graph.RNNeighborsSearch(0, 8, POIs, ord, 2);

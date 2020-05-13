@@ -310,7 +310,54 @@ vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, v
     return RNNeighborsSearch(path.getLastNode(), id_dest, POIs, ord, path, n);
 }
 
+template<class T>
+Path Graph<T>::buildPath(const vector<int> &ord) {
+    Path path;
+    for (int i = 0; i < ord.size() - 1; i++) {
+        path.joinPath(astarShortestPath(ord[i], ord[i+1]));
+    }
+    return path;
+}
 
+template<class T>
+Path Graph<T>::twoOpt(const vector<int> &ord, const Path &path) {
+    int improve = 0;
+    Path best = path;
+
+    while (improve < 20) {
+        for (int i = 1; i < ord.size() - 2; i++) {
+            for (int k = i + 1; k < ord.size() - 1; k++) {
+                Path new_path = buildPath(twoOptSwap(ord, i, k));
+                if (new_path.getLength() < best.getLength()) {
+                    improve = 0;
+                    best = new_path;
+                }
+            }
+        }
+        improve++;
+    }
+
+    return best;
+}
+
+template<class T>
+vector<int> Graph<T>::twoOptSwap(const vector<int> &ord, const int &i, const int &k) {
+    vector<int> new_ord;
+
+    for (int c = 0; c < i; c++) {
+        new_ord.push_back(ord.at(c));
+    }
+
+    for (int c = k; c >= i; c--) {
+        new_ord.push_back(ord.at(c));
+    }
+
+    for (int c = k + 1; c < ord.size(); c++) {
+        new_ord.push_back(ord.at(c));
+    }
+
+    return new_ord;
+}
 
 /******Tarjan******/
 // TODO mudar vector para hashtable
