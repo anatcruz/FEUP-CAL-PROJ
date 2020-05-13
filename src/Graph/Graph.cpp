@@ -238,20 +238,18 @@ path_t Graph<T>::astarShortestPath(const int id_src, const int id_dest) {
 /******NNS******/
 
 template<class T>
-int Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
-    int min = INT_MAX;
-    double dist = INT_MAX;
+path_t Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
+    path_t path = make_pair(INT_MAX, vector<int>());
 
     for (int i : POIs) {
-        int i_dist = astarShortestPath(id_src, i).first;
+        path_t i_path = astarShortestPath(id_src, i);
 
-        if (i_dist < dist) {
-            min = i;
-            dist = i_dist;
+        if (i_path.first < path.first) {
+            path = i_path;
         }
     }
 
-    return min;
+    return path;
 }
 
 template<class T>
@@ -272,18 +270,27 @@ vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs,
 }
 
 template<class T>
-vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord){
+vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, path_t &path){
     ord.push_back(id_src);
+    if (ord.size() == 1) {
+        path.second.push_back(id_src);
+    }
 
     if (POIs.empty()) {
         ord.push_back(id_dest);
+        path_t last = astarShortestPath(path.second.at(path.second.size() - 1), id_dest);
+        path.first += last.first;
+        path.second.insert(path.second.end(), last.second.begin() + 1, last.second.end());
         return ord;
     }
 
-    int next = find_nearest(id_src, POIs);
-    POIs.erase(find(POIs.begin(), POIs.end(), next));
+    path_t next = find_nearest(id_src, POIs);
+    int next_id = next.second.at(next.second.size() - 1);
+    path.first += next.first;
+    path.second.insert(path.second.end(), next.second.begin() + 1, next.second.end());
+    POIs.erase(find(POIs.begin(), POIs.end(), next_id));
 
-    return nearestNeighborsSearch(next, id_dest, POIs, ord);
+    return nearestNeighborsSearch(next_id, id_dest, POIs, ord, path);
 }
 
 template<class T>

@@ -107,9 +107,9 @@ public:
     path_t dijkstraShortestPath(const int id_src, const int id_dest);
     path_t astarShortestPath(const int id_src, const int id_dest);
 
-    int find_nearest(const int &id_src, const vector<int> &POIs);
+    path_t find_nearest(const int &id_src, const vector<int> &POIs);
     vector<int> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
-    vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord);
+    vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, path_t &path);
     vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n);
 
     vector<vector<int>> tarjan(const int id_src);
