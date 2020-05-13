@@ -33,7 +33,9 @@ int main() {
     //ui.showPath(astar);
     ui.showGraph();
 
+#ifndef linux
     char c = getchar();
+#endif
 
     return 0;
 }
