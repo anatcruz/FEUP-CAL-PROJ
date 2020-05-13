@@ -9,12 +9,12 @@
 #include <functional>
 #include <algorithm>
 #include "MutablePriorityQueue.h"
+#include "Path.h"
 #include "Utils/Utils.h"
 
 using namespace std;
 
 typedef pair<double, double> coordinates;
-typedef pair<double, vector<int>> path_t;
 
 template<class T> class Edge;
 template<class T> class Graph;
@@ -103,13 +103,13 @@ public:
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;
 
-    path_t genericShortestPath(const int id_src, const int id_dest, function<double(T, T)> h);
-    path_t dijkstraShortestPath(const int id_src, const int id_dest);
-    path_t astarShortestPath(const int id_src, const int id_dest);
+    Path genericShortestPath(const int id_src, const int id_dest, function<double(T, T)> h);
+    Path dijkstraShortestPath(const int id_src, const int id_dest);
+    Path astarShortestPath(const int id_src, const int id_dest);
 
-    path_t find_nearest(const int &id_src, const vector<int> &POIs);
+    Path find_nearest(const int &id_src, const vector<int> &POIs);
     vector<int> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
-    vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, path_t &path);
+    vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path);
     vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n);
 
     vector<vector<int>> tarjan(const int id_src);

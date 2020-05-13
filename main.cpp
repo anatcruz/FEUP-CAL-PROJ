@@ -18,7 +18,7 @@ int main() {
 //    vector<int> nearest = graph.find_n_nearest(20, POIs, 3);
 //    int near = graph.find_nearest(9, POIs);
     vector<int> ord;
-    path_t path = make_pair(0, vector<int>());
+    Path path;
     vector<int> nns = graph.nearestNeighborsSearch(0, 8, POIs, ord, path);
 //    ord.clear();
 //    POIs = {16, 24, 10, 22, 2, 9};
@@ -31,7 +31,7 @@ int main() {
     int i=0;
 
     UI ui = UI(graph, 800, 800);
-    ui.showPath(path.second);
+    ui.showPath(path.getPath());
 //    ui.showGraph();
 
 #ifndef linux

@@ -172,7 +172,7 @@ vector<int> Graph<T>::dfs(const int id_src) const {
 
 /******Shortest Path******/
 template<class T>
-pair<double, vector<int> > Graph<T>::genericShortestPath(const int id_src, const int id_dest, function<double (T, T)> h) {
+Path Graph<T>::genericShortestPath(const int id_src, const int id_dest, function<double (T, T)> h) {
     for (Vertex<T> *vert: vertexSet) {
         vert->dist = INT_MAX;
         vert->path = NULL;
@@ -218,33 +218,33 @@ pair<double, vector<int> > Graph<T>::genericShortestPath(const int id_src, const
         path.emplace(path.begin(), vertex->id);
     }
 
-    return make_pair(length, path);
+    return Path(length, path);
 }
 
 /******Dijkstra******/
 
 template<class T>
-path_t Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
+Path Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
     return genericShortestPath(id_src, id_dest, [&](T a, T b){ return 0; });
 }
 
 /******A-Star******/
 
 template<class T>
-path_t Graph<T>::astarShortestPath(const int id_src, const int id_dest) {
+Path Graph<T>::astarShortestPath(const int id_src, const int id_dest) {
     return genericShortestPath(id_src, id_dest, euclidianDistance);
 }
 
 /******NNS******/
 
 template<class T>
-path_t Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
-    path_t path = make_pair(INT_MAX, vector<int>());
+Path Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
+    Path path = Path(INT_MAX, vector<int>());
 
     for (int i : POIs) {
-        path_t i_path = astarShortestPath(id_src, i);
+        Path i_path = astarShortestPath(id_src, i);
 
-        if (i_path.first < path.first) {
+        if (i_path.getLength() < path.getLength()) {
             path = i_path;
         }
     }
@@ -258,7 +258,7 @@ vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs,
 
     map<int, double> dist_map;
     for (int point : POIs) {
-        dist_map.emplace(point, astarShortestPath(id_src, point).first);
+        dist_map.emplace(point, astarShortestPath(id_src, point).getLength());
     }
 
     vector<int> nearest = POIs;
@@ -270,27 +270,24 @@ vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs,
 }
 
 template<class T>
-vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, path_t &path){
+vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path){
     ord.push_back(id_src);
     if (ord.size() == 1) {
-        path.second.push_back(id_src);
+        path.addNode(id_src);
     }
 
     if (POIs.empty()) {
         ord.push_back(id_dest);
-        path_t last = astarShortestPath(path.second.at(path.second.size() - 1), id_dest);
-        path.first += last.first;
-        path.second.insert(path.second.end(), last.second.begin() + 1, last.second.end());
+        Path last = astarShortestPath(path.getLastNode(), id_dest);
+        path.joinPath(last);
         return ord;
     }
 
-    path_t next = find_nearest(id_src, POIs);
-    int next_id = next.second.at(next.second.size() - 1);
-    path.first += next.first;
-    path.second.insert(path.second.end(), next.second.begin() + 1, next.second.end());
-    POIs.erase(find(POIs.begin(), POIs.end(), next_id));
+    Path next = find_nearest(id_src, POIs);
+    path.joinPath(next);
+    POIs.erase(find(POIs.begin(), POIs.end(), path.getLastNode()));
 
-    return nearestNeighborsSearch(next_id, id_dest, POIs, ord, path);
+    return nearestNeighborsSearch(path.getLastNode(), id_dest, POIs, ord, path);
 }
 
 template<class T>
