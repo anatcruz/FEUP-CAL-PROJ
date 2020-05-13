@@ -108,9 +108,9 @@ public:
     Path astarShortestPath(const int id_src, const int id_dest);
 
     Path find_nearest(const int &id_src, const vector<int> &POIs);
-    vector<int> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
+    vector<Path> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
     vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path);
-    vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n);
+    vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n);
 
     vector<vector<int>> tarjan(const int id_src);
     void strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, vector<vector<int>> &scc);

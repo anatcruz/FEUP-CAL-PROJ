@@ -8,6 +8,8 @@
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
+    srand(time(NULL));
+
     Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt");
 
 //    path_t generic = graph.dijkstraShortestPath(0, 10);
@@ -20,9 +22,10 @@ int main() {
     vector<int> ord;
     Path path;
     vector<int> nns = graph.nearestNeighborsSearch(0, 8, POIs, ord, path);
-//    ord.clear();
-//    POIs = {16, 24, 10, 22, 2, 9};
-//    vector<int> rnns1 = graph.RNNeighborsSearch(0, 8, POIs, ord, 2);
+    ord.clear();
+    POIs = {90, 162, 147, 200, 280, 40, 55, 180, 60, 73};
+    path = Path();
+    vector<int> rnns1 = graph.RNNeighborsSearch(0, 8, POIs, ord, path, 3);
 //    ord.clear();
 //    POIs = {16, 24, 10, 22, 2, 9};
 //    vector<int> rnns2 = graph.RNNeighborsSearch(0, 8, POIs, ord, 2);

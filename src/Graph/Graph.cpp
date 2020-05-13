@@ -253,20 +253,17 @@ Path Graph<T>::find_nearest(const int &id_src, const vector<int> &POIs){
 }
 
 template<class T>
-vector<int> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n) {
-    if (POIs.size() <= n) { return POIs; }
-
-    map<int, double> dist_map;
+vector<Path> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n) {
+    vector<Path> dists;
     for (int point : POIs) {
-        dist_map.emplace(point, astarShortestPath(id_src, point).getLength());
+        dists.push_back(astarShortestPath(id_src, point));
     }
 
-    vector<int> nearest = POIs;
+    if (dists.size() <= n) { return dists; }
 
-    partial_sort(nearest.begin(), nearest.begin() + n, nearest.end(),
-                 [&](int i, int j){ return dist_map[i] < dist_map[j]; });
+    sort(dists.begin(), dists.end(), [&](Path &i, Path &j){ return i.getLength() < j.getLength(); });
 
-    return vector<int>(nearest.begin(), nearest.begin() + n);
+    return vector<Path>(dists.begin(), dists.begin() + n);
 }
 
 template<class T>
@@ -291,21 +288,29 @@ vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_de
 }
 
 template<class T>
-vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, const int &n) {
+vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n) {
     ord.push_back(id_src);
+    if (ord.size() == 1) {
+        path.addNode(id_src);
+    }
 
     if (POIs.empty()) {
         ord.push_back(id_dest);
+        Path last = astarShortestPath(path.getLastNode(), id_dest);
+        path.joinPath(last);
         return ord;
     }
 
-    vector<int> neighbors = find_n_nearest(id_src, POIs, n);
+    vector<Path> neighbors = find_n_nearest(id_src, POIs, n);
     int next_i = rand() % neighbors.size();
-    int next = neighbors.at(next_i);
-    POIs.erase(find(POIs.begin(), POIs.end(), next));
+    Path next = neighbors.at(next_i);
+    path.joinPath(next);
+    POIs.erase(find(POIs.begin(), POIs.end(), path.getLastNode()));
 
-    return RNNeighborsSearch(next, id_dest, POIs, ord, n);
+    return RNNeighborsSearch(path.getLastNode(), id_dest, POIs, ord, path, n);
 }
+
+
 
 /******Tarjan******/
 // TODO mudar vector para hashtable
