@@ -14,14 +14,15 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
         getline(nodes, line);
         stringstream ss(line);
         string entry;
-        int id, x, y;
+        int id;
+        double x, y;
         getline(ss, entry, '(');
         getline(ss, entry, ',');
         id = stoi(entry);
         getline(ss, entry, ',');
-        x = stoi(entry);
+        x = stod(entry);
         getline(ss, entry, ')');
-        y = stoi(entry);
+        y = stod(entry);
         graph.addVertex(id, make_pair(x, y));
     }
 
