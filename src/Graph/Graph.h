@@ -94,7 +94,7 @@ class Graph {
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
     vector<Vertex<T> *> getVertexSet() const;
-    Vertex<T> *addVertex(const T &in);
+    Vertex<T> *addVertex(int id, const T &in);
     Edge<T> *addEdge(const T &sourc, const T &dest, double cost);
     Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
 

@@ -83,13 +83,13 @@ double Edge<T>::getCost() const {
 //  Graph
 //==============================
 template<class T>
-Vertex<T> * Graph<T>::addVertex(const T &in) {
+Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
     Vertex<T> *v = findVertex(in);
     if (v != nullptr) {
         return v;
     }
     v = new Vertex<T>(in);
-    v->id = vertexSet.size();
+    v->id = id;
     vertexSet.push_back(v);
     return v;
 }
