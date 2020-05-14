@@ -89,10 +89,18 @@ template<class T>
 class Graph {
     vector<Vertex<T> *> vertexSet;
 
+    double minX, maxX, minY, maxY;
+
     Vertex<T>* findVertex(const T &info) const;
 
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
+    double getMinX() const;
+    double getMaxX() const;
+    double getMinY() const;
+    double getMaxY() const;
+
+
     vector<Vertex<T> *> getVertexSet() const;
     Vertex<T> *addVertex(int id, const T &in);
     Edge<T> *addEdge(const T &sourc, const T &dest, double cost);
