@@ -8,13 +8,17 @@ void UI::setGraph(Graph<coordinates> &graph) { this->graph = graph; }
 
 void UI::showGraph() {
     gv->createWindow(gv_width, gv_height);
-    int id = 0;
+    double yPercent, xPercent;
+
     for (Vertex<coordinates>* vertex : graph.getVertexSet()) {
-        gv->addNode(id, vertex->getInfo().first, vertex->getInfo().second);
-        gv->setVertexLabel(id, to_string(vertex->getId()));
-        id++;
+        yPercent = 1.0 - ((vertex->getInfo().second - graph.getMinY())/(graph.getMaxY() - graph.getMinY())*0.9 + 0.05);
+        xPercent = (vertex->getInfo().first - graph.getMinX())/(graph.getMaxX() - graph.getMinX())*0.9 + 0.05;
+
+        gv->addNode(vertex->getId(), (int)(xPercent*gv_width), (int)(yPercent*gv_height));
+        gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
     }
-    id = 0;
+
+    int id = 0;
     for (Vertex<coordinates>* vertex : graph.getVertexSet()) {
         for (Edge<coordinates>* edge : vertex->getAdj()) {
             gv->addEdge(id, vertex->getId(), edge->getDest()->getId(), EdgeType::DIRECTED);
