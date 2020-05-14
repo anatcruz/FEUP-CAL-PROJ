@@ -83,12 +83,48 @@ double Edge<T>::getCost() const {
 //  Graph
 //==============================
 template<class T>
+double Graph<T>::getMinX() const {
+    return minX;
+}
+
+template<class T>
+double Graph<T>::getMaxX() const {
+    return maxX;
+}
+
+template<class T>
+double Graph<T>::getMinY() const {
+    return minY;
+}
+
+template<class T>
+double Graph<T>::getMaxY() const {
+    return maxY;
+}
+
+template<class T>
 Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
     Vertex<T> *v = findVertex(in);
     if (v != nullptr) {
         return v;
     }
     v = new Vertex<T>(in);
+    if (vertexSet.empty()) {
+        this->minX = v->getInfo().first;
+        this->minY = v->getInfo().second;
+        this->maxX = v->getInfo().first;
+        this->maxY = v->getInfo().second;
+    }
+    else {
+        if(v->getInfo().first > maxX)
+            maxX = v->getInfo().first;
+        else if(v->getInfo().first < minX)
+            minX = v->getInfo().first;
+        if(v->getInfo().second > maxY)
+            maxY = v->getInfo().second;
+        else if (v->getInfo().second < minY)
+            minY = v->getInfo().second;
+    }
     v->id = id;
     vertexSet.push_back(v);
     return v;
@@ -129,8 +165,15 @@ Edge<T> *Graph<T>::addEdge(const int id_src, const int id_dest, double cost) {
 
 template<class T>
 Vertex<T> *Graph<T>::findVertex(const int &id) const {
-    if (id < 0 || id >= vertexSet.size()) { return nullptr; }
-    else { return vertexSet.at(id); }
+//    if (id < 0 || id >= vertexSet.size()) { return nullptr; }
+//    else { return vertexSet.at(id); }
+// TODO Change vertexSet
+    for (Vertex<T>* vertex : vertexSet) {
+        if (vertex->id == id) {
+            return vertex;
+        }
+    }
+    return nullptr;
 }
 
 //==============================
