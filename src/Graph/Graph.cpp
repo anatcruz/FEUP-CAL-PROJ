@@ -83,24 +83,15 @@ double Edge<T>::getCost() const {
 //  Graph
 //==============================
 template<class T>
-double Graph<T>::getMinX() const {
-    return minX;
+coordinates Graph<T>::getMinCoords() const {
+    return minCoords;
 }
 
 template<class T>
-double Graph<T>::getMaxX() const {
-    return maxX;
+coordinates Graph<T>::getMaxCoords() const {
+    return maxCoords;
 }
 
-template<class T>
-double Graph<T>::getMinY() const {
-    return minY;
-}
-
-template<class T>
-double Graph<T>::getMaxY() const {
-    return maxY;
-}
 
 template<class T>
 Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
@@ -110,20 +101,18 @@ Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
     }
     v = new Vertex<T>(in);
     if (vertexSet.empty()) {
-        this->minX = v->getInfo().first;
-        this->minY = v->getInfo().second;
-        this->maxX = v->getInfo().first;
-        this->maxY = v->getInfo().second;
+        this->minCoords = make_pair(v->getInfo().first, v->getInfo().second);
+        this->maxCoords = make_pair(v->getInfo().first, v->getInfo().second);
     }
     else {
-        if(v->getInfo().first > maxX)
-            maxX = v->getInfo().first;
-        else if(v->getInfo().first < minX)
-            minX = v->getInfo().first;
-        if(v->getInfo().second > maxY)
-            maxY = v->getInfo().second;
-        else if (v->getInfo().second < minY)
-            minY = v->getInfo().second;
+        if(v->getInfo().first > maxCoords.first)
+            maxCoords.first = v->getInfo().first;
+        else if(v->getInfo().first < minCoords.first)
+            minCoords.first = v->getInfo().first;
+        if(v->getInfo().second > maxCoords.second)
+            maxCoords.second = v->getInfo().second;
+        else if (v->getInfo().second < minCoords.second)
+            minCoords.second = v->getInfo().second;
     }
     v->id = id;
     vertexSet.push_back(v);

@@ -89,17 +89,14 @@ template<class T>
 class Graph {
     vector<Vertex<T> *> vertexSet;
 
-    double minX, maxX, minY, maxY;
+    coordinates minCoords, maxCoords;
 
     Vertex<T>* findVertex(const T &info) const;
 
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
-    double getMinX() const;
-    double getMaxX() const;
-    double getMinY() const;
-    double getMaxY() const;
-
+    coordinates getMinCoords() const;
+    coordinates getMaxCoords() const;
 
     vector<Vertex<T> *> getVertexSet() const;
     Vertex<T> *addVertex(int id, const T &in);

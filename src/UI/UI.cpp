@@ -11,8 +11,8 @@ void UI::showGraph() {
     double yPercent, xPercent;
 
     for (Vertex<coordinates>* vertex : graph.getVertexSet()) {
-        yPercent = 1.0 - ((vertex->getInfo().second - graph.getMinY())/(graph.getMaxY() - graph.getMinY())*0.9 + 0.05);
-        xPercent = (vertex->getInfo().first - graph.getMinX())/(graph.getMaxX() - graph.getMinX())*0.9 + 0.05;
+        yPercent = 1.0 - ((vertex->getInfo().second - graph.getMinCoords().second)/(graph.getMaxCoords().second - graph.getMinCoords().second)*0.9 + 0.05);
+        xPercent = (vertex->getInfo().first - graph.getMinCoords().first)/(graph.getMaxCoords().first - graph.getMinCoords().first)*0.9 + 0.05;
 
         gv->addNode(vertex->getId(), (int)(xPercent*gv_width), (int)(yPercent*gv_height));
         gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
