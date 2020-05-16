@@ -10,6 +10,6 @@
 
 using namespace std;
 
-Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file);
+Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid);
 
 #endif //PROJ_MAPPARSER_H

@@ -1,6 +1,6 @@
 #include "MapParser.h"
 
-Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file) {
+Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid) {
     Graph<coordinates> graph;
     string line;
 
@@ -31,8 +31,6 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
     ifstream edges;
     edges.open(edges_file);
 
-    if (!edges.is_open()) { printf("POOOOP\n"); }
-
     getline(edges, line);
     int num_edges = stoi(line);
 
@@ -48,7 +46,8 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
         d = stoi(entry);
         double cost = euclidianDistance(graph.findVertex(s)->getInfo(), graph.findVertex(d)->getInfo());
         graph.addEdge(s, d, cost);
-        graph.addEdge(d, s, cost);
+        if (grid)
+            graph.addEdge(d, s, cost);
     }
 
     edges.close();
