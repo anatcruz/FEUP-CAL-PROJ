@@ -42,10 +42,12 @@ void UI::showPath(vector<int> path) {
         Vertex<coordinates>* a = graph->findVertex(path.at(i));
         Vertex<coordinates>* b = graph->findVertex(path.at(i+1));
         gv->addNode(i, (int)(getXpercent(a->getInfo()) * gv_width), (int)(getYpercent(a->getInfo()) * gv_height));
-//        gv->setVertexLabel(i, to_string(a->getId()));
         gv->addNode(i+1, (int)(getXpercent(b->getInfo()) * gv_width), (int)(getYpercent(b->getInfo()) * gv_height));
-//        gv->setVertexLabel(i+1, to_string(b->getId()));
         gv->addEdge(i, i, i+1, EdgeType::UNDIRECTED);
+        if (graph->isGrid) {
+            gv->setVertexLabel(i, to_string(a->getId()));
+            gv->setVertexLabel(i+1, to_string(b->getId()));
+        }
 //        gv->setEdgeLabel(i, to_string(a->getCostTo(b->getId())));
     }
     gv->rearrange();

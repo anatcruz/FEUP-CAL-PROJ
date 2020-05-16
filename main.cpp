@@ -5,6 +5,7 @@
 #include "UI/UI.h"
 #include "UI/Menu.h"
 #include "Utils/MapParser.h"
+#include "Utils/MenuUtils.h"
 
 int main() {
     signal(SIGINT, SIG_IGN);
@@ -30,8 +31,8 @@ int main() {
     graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); });
 
     shortestPathMenu.addOption("Go back", [&](){});
-    shortestPathMenu.addOption("Dijkstra", [&](){ ui.showPath(graph.dijkstraShortestPath(10, 20).getPath()); });
-    shortestPathMenu.addOption("A-star", [&](){ ui.showPath(graph.astarShortestPath(10, 20).getPath()); });
+    shortestPathMenu.addOption("Dijkstra", [&](){ dijkstra(graph, ui); });
+    shortestPathMenu.addOption("A-star", [&](){ astar(graph, ui); });
 
     mainMenu.start();
 
