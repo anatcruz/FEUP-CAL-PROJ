@@ -95,11 +95,10 @@ coordinates Graph<T>::getMaxCoords() const {
 
 template<class T>
 Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
-    Vertex<T> *v = findVertex(in);
-    if (v != nullptr) {
-        return v;
+    if (vertexMap.count(id) != 0) {
+        return nullptr;
     }
-    v = new Vertex<T>(in);
+    Vertex<T> *v = new Vertex<T>(in);
     if (vertexSet.empty()) {
         this->minCoords = make_pair(v->getInfo().first, v->getInfo().second);
         this->maxCoords = make_pair(v->getInfo().first, v->getInfo().second);
@@ -116,31 +115,12 @@ Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
     }
     v->id = id;
     vertexSet.push_back(v);
+    vertexMap.insert(make_pair(id, vertexSet.size() - 1));
     return v;
 }
 
 template<class T>
-Vertex<T>* Graph<T>::findVertex(const T &info) const {
-    for (Vertex<T>* vertex : vertexSet) {
-        if (vertex->info == info) {
-            return vertex;
-        }
-    }
-    return nullptr;
-}
-
-template<class T>
 vector<Vertex<T> *> Graph<T>::getVertexSet() const { return vertexSet; }
-
-template<class T>
-Edge<T>* Graph<T>::addEdge(const T &sourc, const T &dest, double cost) {
-    Vertex<T>* s = findVertex(sourc);
-    Vertex<T>* d = findVertex(dest);
-    if (s == nullptr || d == nullptr) { return nullptr; }
-    else {
-        return s->addEdge(d, cost);
-    }
-}
 
 template<class T>
 Edge<T> *Graph<T>::addEdge(const int id_src, const int id_dest, double cost) {
@@ -154,15 +134,11 @@ Edge<T> *Graph<T>::addEdge(const int id_src, const int id_dest, double cost) {
 
 template<class T>
 Vertex<T> *Graph<T>::findVertex(const int &id) const {
-//    if (id < 0 || id >= vertexSet.size()) { return nullptr; }
-//    else { return vertexSet.at(id); }
-// TODO Change vertexSet
-    for (Vertex<T>* vertex : vertexSet) {
-        if (vertex->id == id) {
-            return vertex;
-        }
+    auto i = vertexMap.find(id);
+    if (i == vertexMap.end()) {
+        return nullptr;
     }
-    return nullptr;
+    return vertexSet.at(i->second);
 }
 
 //==============================

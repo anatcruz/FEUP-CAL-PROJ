@@ -8,6 +8,7 @@
 #include <climits>
 #include <functional>
 #include <algorithm>
+#include <unordered_map>
 #include "MutablePriorityQueue.h"
 #include "Path.h"
 #include "Utils/Utils.h"
@@ -88,10 +89,9 @@ public:
 template<class T>
 class Graph {
     vector<Vertex<T> *> vertexSet;
+    unordered_map<int, int> vertexMap;
 
     coordinates minCoords, maxCoords;
-
-    Vertex<T>* findVertex(const T &info) const;
 
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
@@ -100,7 +100,6 @@ public:
 
     vector<Vertex<T> *> getVertexSet() const;
     Vertex<T> *addVertex(int id, const T &in);
-    Edge<T> *addEdge(const T &sourc, const T &dest, double cost);
     Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
 
     Vertex<T>* findVertex(const int &id) const;
