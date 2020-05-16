@@ -1,17 +1,20 @@
 #include <iostream>
+#include <csignal>
 
 #include "Graph/Graph.h"
 #include "UI/UI.h"
 #include "Utils/MapParser.h"
 
-
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-
+    signal(SIGINT, SIG_IGN);
     srand(time(NULL));
 
-//    Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt");
-    Graph<coordinates> graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt");
+    Graph<coordinates> graph;
+
+//    Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true);
+//    Graph<coordinates> graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false);
+    graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false);
+//    Graph<coordinates> graph = parseGridMap("../maps/PortugalMaps/Portugal/nodes_x_y_portugal.txt", "../maps/PortugalMaps/Portugal/edges_portugal.txt", false);
 
 //    path_t generic = graph.dijkstraShortestPath(0, 10);
 //    vector<int> dfs = graph.dfs(9);
@@ -34,16 +37,19 @@ int main() {
 //    POIs = {16, 24, 10, 22, 2, 9};
 //    vector<int> rnns2 = graph.RNNeighborsSearch(0, 8, POIs, ord, 2);
 
-//    vector<vector<int>> tarjan = graph.tarjan(0);
+    vector<vector<int>> tarjan = graph.tarjan(0);
+//    int siz = tarjan.size();
+//    int gsi=graph.getVertexSet().size();
+    auto it = max_element(tarjan.begin(), tarjan.end(), [&](const vector<int> &cfc1, const vector<int> &cfc2) { return cfc1.size() < cfc2.size(); });
     int i=0;
+    vector<int> cfc = *it;
+    i = 2;
 
-    UI ui = UI(graph, 800, 800);
-//    ui.showPath(path.getPath());
-    ui.showGraph();
+    UI ui = UI(graph, 1200, 800);
+    ui.showPath(cfc);
+//    ui.showGraph();
 
-#ifndef linux
-    char c = getchar();
-#endif
+    enterWait();
 
     return 0;
 }

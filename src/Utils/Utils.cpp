@@ -43,3 +43,9 @@ vector<int> removeIdFromVector(vector<int> v, int id){
 
     return v;
 }
+
+void enterWait(const string &message) {
+    string str;
+    cout << message << endl;
+    getline(cin,str);
+}

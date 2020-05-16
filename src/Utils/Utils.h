@@ -19,4 +19,6 @@ double euclidianDistance(pair<double, double> point1, pair<double, double> point
 
 vector<int> removeIdFromVector(vector<int> v, int id);
 
+void enterWait(const string &message = "ENTER to go back");
+
 #endif //PROJ_UTILS_H
