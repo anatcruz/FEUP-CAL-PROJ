@@ -16,7 +16,8 @@ void UI::showGraph() {
 
         gv->addNode(vertex->getId(), (int)(xPercent*gv_width), (int)(yPercent*gv_height));
         gv->setVertexSize(vertex->getId(), 3);
-//        gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
+        if (graph->isGrid)
+            gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
     }
 
     int id = 0;

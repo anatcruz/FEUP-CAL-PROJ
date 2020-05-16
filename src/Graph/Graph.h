@@ -95,6 +95,8 @@ class Graph {
 
     void dfsVisit(Vertex<T>* v, vector<int> &res) const;
 public:
+    bool isGrid;
+
     coordinates getMinCoords() const;
     coordinates getMaxCoords() const;
 

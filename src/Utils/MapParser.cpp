@@ -2,6 +2,7 @@
 
 Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid) {
     Graph<coordinates> graph;
+    graph.isGrid = grid;
     string line;
 
     ifstream nodes;
