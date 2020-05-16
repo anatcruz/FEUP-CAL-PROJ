@@ -9,7 +9,7 @@ using namespace std;
 
 class UI {
 private:
-    Graph<coordinates> graph;
+    Graph<coordinates> *graph;
     GraphViewer *gv;
 
     int gv_width;
@@ -18,9 +18,9 @@ private:
     double getYpercent(const coordinates &c) const;
     double getXpercent(const coordinates &c) const;
 public:
-    UI(Graph<coordinates> &graph, int width, int height);
+    UI(Graph<coordinates> *graph, int width, int height);
 
-    void setGraph(Graph<coordinates> &graph);
+    void setGraph(Graph<coordinates> *graph);
     void showGraph();
     void showPath(vector<int> path);
 };

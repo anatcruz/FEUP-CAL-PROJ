@@ -20,7 +20,7 @@ private:
 public:
     /**Constructor for Menu with name.
      */
-    Menu(string &name);
+    Menu(string name);
 
     /**Initializes Menu, calls the display function and gets the user options.
      */
@@ -37,7 +37,7 @@ public:
 
     /** Sets the name of the Menu.
 */
-    void setName(string &name);
+    void setName(string name);
 
     /** Sets the options vector of the Menu.
 */
@@ -45,7 +45,7 @@ public:
 
     /** Creates a new menu option, adding a pair to the options vector.
      */
-    void addOption(string &option, function<void()> &func);
+    void addOption(string option, function<void()> func);
 };
 
 #endif //PROJ_MENU_H

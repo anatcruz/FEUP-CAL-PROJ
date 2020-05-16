@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void Menu::addOption(string &option, function<void()> &func) {
+void Menu::addOption(string option, function<void()> func) {
     pair<string, function<void()>> opt;
     opt.first = option;
     opt.second = func;
@@ -13,11 +13,11 @@ void Menu::addOption(string &option, function<void()> &func) {
 }
 
 
-void Menu::setName(string &name) {
+void Menu::setName(string name) {
     this->name = name;
 }
 
-Menu::Menu(string &name) {
+Menu::Menu(string name) {
     this->name = name;
 }
 
