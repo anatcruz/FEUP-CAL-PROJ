@@ -17,11 +17,13 @@ int main() {
     Menu mainMenu("FarmFresh2U");
     Menu graphLoadMenu("Load graph");
     Menu shortestPathMenu("Shortest Path");
+    Menu connectivityMenu("Graph connectivity");
 
     mainMenu.addOption("Exit", [&](){});
     mainMenu.addOption("Load graph", [&](){ graphLoadMenu.start(); });
     mainMenu.addOption("Show graph", [&](){ ui.showGraph(); });
     mainMenu.addOption("Pathfind", [&](){ shortestPathMenu.start(); });
+    mainMenu.addOption("Connectivity", [&](){ connectivityMenu.start(); });
 
     graphLoadMenu.addOption("Go back", [&](){});
     graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); });
@@ -33,6 +35,9 @@ int main() {
     shortestPathMenu.addOption("Go back", [&](){});
     shortestPathMenu.addOption("Dijkstra", [&](){ dijkstra(graph, ui); });
     shortestPathMenu.addOption("A-star", [&](){ astar(graph, ui); });
+
+    connectivityMenu.addOption("Go back", [&](){});
+    connectivityMenu.addOption("View largest SCC", [&](){ largestSCC(graph, ui); });
 
     mainMenu.start();
 

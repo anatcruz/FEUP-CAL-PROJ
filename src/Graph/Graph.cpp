@@ -371,6 +371,12 @@ vector<int> Graph<T>::twoOptSwap(const vector<int> &ord, const int &i, const int
 // TODO mudar vector para hashtable
 template<class T>
 vector<vector<int>> Graph<T>::tarjan(const int id_src) {
+    for (Vertex<T>* vertex : vertexSet) {
+        vertex->index = -1;
+        vertex->low = -1;
+        vertex->onStack = false;
+    }
+
     vector<vector<int>> scc;
 
     int index = 0;

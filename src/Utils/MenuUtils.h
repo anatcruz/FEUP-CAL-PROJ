@@ -15,4 +15,6 @@ void dijkstra(Graph<coordinates> &graph, UI &ui);
 
 void astar(Graph<coordinates> &graph, UI &ui);
 
+void largestSCC(Graph<coordinates> &graph, UI &ui);
+
 #endif //PROJ_MENUUTILS_H
