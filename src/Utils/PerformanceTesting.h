@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <limits>
 #include <chrono>
+#include <functional>
 #include "../Graph/Graph.h"
 #include "Utils.h"
 
