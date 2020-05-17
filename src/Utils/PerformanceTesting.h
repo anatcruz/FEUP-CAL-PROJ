@@ -13,4 +13,6 @@ using namespace std::chrono;
 
 void dijkstraPerfTest(Graph<coordinates> &graph);
 
+void astarPerfTest(Graph<coordinates> &graph);
+
 #endif //PROJ_PERFORMANCETESTING_H
