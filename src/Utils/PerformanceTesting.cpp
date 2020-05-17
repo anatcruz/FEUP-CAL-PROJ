@@ -1,6 +1,6 @@
 #include "PerformanceTesting.h"
 
-void shortestPathPerfTest(function<Path (int, int)> spAlgorithm) {
+void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char test) {
     int id_src, id_dest, num_iter;
     getOption(id_src, "Source node ID: ");
     getOption(id_dest, "Destination node ID: ");
@@ -25,13 +25,27 @@ void shortestPathPerfTest(function<Path (int, int)> spAlgorithm) {
     cout << "Average run time: " << average << endl;
     cout << "Total run time: " << total << endl;
 
+    ofstream log;
+    log.open(LOG_FILE, ofstream::app);
+
+    log << test << "," << id_src << "," << id_dest << "," << min_d << "," << max_d << "," << average << "," << total
+        << "," << num_iter << "," << endl;
+
+    log.close();
+
     enterWait();
 }
 
 void dijkstraPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.dijkstraShortestPath(s, d); });
+    shortestPathPerfTest([&](int s, int d) { return graph.dijkstraShortestPath(s, d); }, 'D');
 }
 
 void astarPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.astarShortestPath(s, d); });
+    shortestPathPerfTest([&](int s, int d) { return graph.astarShortestPath(s, d); }, 'A');
+}
+
+void clearLog() {
+    ofstream log;
+    log.open(LOG_FILE, ofstream::trunc);
+    log.close();
 }

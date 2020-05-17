@@ -44,6 +44,7 @@ int main() {
     performanceMenu.addOption("Go back", [&](){});
     performanceMenu.addOption("Dijkstra performance", [&](){ dijkstraPerfTest(graph); });
     performanceMenu.addOption("A-star performance", [&](){ astarPerfTest(graph); });
+    performanceMenu.addOption("Clear log", [&](){ clearLog(); });
 
     mainMenu.start();
 
