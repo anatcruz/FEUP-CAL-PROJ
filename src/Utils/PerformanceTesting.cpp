@@ -6,7 +6,7 @@ void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char tes
     getOption(id_dest, "Destination node ID: ");
     getOption(num_iter, "Number of iterations: ");
 
-    long long total = 0, min_d = LONG_MAX, max_d = 0;
+    long total = 0, min_d = LONG_MAX, max_d = 0;
 
     for (int i = 0; i < num_iter; i++) {
         auto start = high_resolution_clock::now();
@@ -14,8 +14,8 @@ void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char tes
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         total += duration.count();
-        min_d = min(min_d, duration.count());
-        max_d = max(max_d, duration.count());
+        min_d = min(min_d, (long) duration.count());
+        max_d = max(max_d, (long) duration.count());
     }
 
     double average = (double) total / (double) num_iter;
