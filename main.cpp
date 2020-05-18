@@ -45,7 +45,9 @@ int main() {
 
     performanceMenu.addOption("Go back", [&](){});
     performanceMenu.addOption("Dijkstra performance", [&](){ dijkstraPerfTest(graph); });
+    performanceMenu.addOption("Dijkstra Bi-Directional performance", [&](){ dijkstraBiDirPerfTest(graph); });
     performanceMenu.addOption("A-star performance", [&](){ astarPerfTest(graph); });
+    performanceMenu.addOption("A-star Bi-Directional performance", [&](){ astarBiDirPerfTest(graph); });
     performanceMenu.addOption("Clear log", [&](){ clearLog(); });
 
     mainMenu.start();

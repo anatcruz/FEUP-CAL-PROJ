@@ -40,8 +40,16 @@ void dijkstraPerfTest(Graph<coordinates> &graph) {
     shortestPathPerfTest([&](int s, int d) { return graph.dijkstraShortestPath(s, d); }, 'D');
 }
 
+void dijkstraBiDirPerfTest(Graph<coordinates> &graph) {
+    shortestPathPerfTest([&](int s, int d) { return graph.dijkstraBiDirShortestPath(s, d); }, 'E');
+}
+
 void astarPerfTest(Graph<coordinates> &graph) {
     shortestPathPerfTest([&](int s, int d) { return graph.astarShortestPath(s, d); }, 'A');
+}
+
+void astarBiDirPerfTest(Graph<coordinates> &graph) {
+    shortestPathPerfTest([&](int s, int d) { return graph.astarBiDirShortestPath(s, d); }, 'B');
 }
 
 void clearLog() {

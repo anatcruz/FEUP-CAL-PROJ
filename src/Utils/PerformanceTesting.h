@@ -17,7 +17,11 @@ using namespace std::chrono;
 
 void dijkstraPerfTest(Graph<coordinates> &graph);
 
+void dijkstraBiDirPerfTest(Graph<coordinates> &graph);
+
 void astarPerfTest(Graph<coordinates> &graph);
+
+void astarBiDirPerfTest(Graph<coordinates> &graph);
 
 void clearLog();
 
