@@ -36,7 +36,9 @@ int main() {
 
     shortestPathMenu.addOption("Go back", [&](){});
     shortestPathMenu.addOption("Dijkstra", [&](){ dijkstra(graph, ui); });
+    shortestPathMenu.addOption("Dijkstra Bi-Directional", [&](){ dijkstraBiDir(graph, ui); });
     shortestPathMenu.addOption("A-star", [&](){ astar(graph, ui); });
+    shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});
     connectivityMenu.addOption("View largest SCC", [&](){ largestSCC(graph, ui); });

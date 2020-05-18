@@ -37,6 +37,11 @@ template<class T>
 double Vertex<T>::getDist() const { return dist; }
 
 template<class T>
+bool Vertex<T>::compare(const Vertex<T> &rhs, bool inv) {
+    return (inv)? (this->dist_inv < rhs.dist_inv) : (this->dist < rhs.dist);
+}
+
+template<class T>
 bool Vertex<T>::operator<(const Vertex &rhs) const {
     return this->dist < rhs.dist;
 }
@@ -229,6 +234,135 @@ Path Graph<T>::genericShortestPath(const int id_src, const int id_dest, function
     return Path(length, path);
 }
 
+template<class T>
+Path Graph<T>::genericBiDirShortestPath(const int id_src, const int id_dest, function<double (T, T)> h) {
+    // Reset forward/reverse search parameters
+    for (Vertex<T> *vert: vertexSet) {
+        vert->dist = INT_MAX;
+        vert->path = NULL;
+        vert->queueIndex = 0;
+        vert->dist_inv = INT_MAX;
+        vert->path_inv = NULL;
+        vert->queueIndexInv = 0;
+    }
+
+    // Maps to keep track of visited vertices
+    // TODO is the bool value useless, or useful for optimizing path builder?
+    unordered_map<int, bool> fwdVisited;
+    unordered_map<int, bool> revVisited;
+
+    // Create both forward/reverse priority queues
+    // Requires changing MPQ implementation to support queueIndexInv
+    MutablePriorityQueue<Vertex<T>> fwdQ;
+    MutablePriorityQueue<Vertex<T>> revQ(true);
+
+    // Set-up starting values for source/destination vertices
+    Vertex<T> *src = findVertex(id_src), *dest = findVertex(id_dest), *mid; // Middle vertex
+    src->dist = h(src->getInfo(), dest->getInfo());
+    dest->dist_inv = h(dest->getInfo(), src->getInfo());
+
+    fwdQ.insert(src);
+    revQ.insert(dest);
+
+    // Alternating search loop
+    while (!fwdQ.empty() && !revQ.empty()) {
+        // Forward search
+        // Extract minimum from forward queue and mark vertex as visited by forward search
+        Vertex<T>* fwdV = fwdQ.extractMin();
+        fwdVisited.emplace(fwdV->getId(), true);
+
+        // If the vertex has been visited by reverse search, path has been found
+        if (revVisited.count(fwdV->getId()) > 0) {
+            mid = fwdV;
+            break;
+        }
+
+        // Explore edges in regular graph
+        for (Edge<T> *w : fwdV->outgoing){
+            double f = fwdV->dist - h(fwdV->getInfo(), dest->getInfo()) +  w->getCost() + h(w->dest->getInfo(), dest->getInfo());
+            if (w->dest->getDist() > f){
+                double d = w->dest->getDist();
+                w->dest->dist = f;
+                w->dest->path = fwdV;
+                if (d == INT_MAX){
+                    fwdQ.insert(w->dest);
+                }
+                else {
+                    fwdQ.decreaseKey(w->dest);
+                }
+            }
+        }
+
+        // Reverse search
+        // Extract minimum from reverse queue and mark vertex as visited by reverse search
+        Vertex<T>* revV = revQ.extractMin();
+        revVisited.emplace(revV->getId(), true);
+
+        // If the vertex has been visited by forward search, path has been found
+        if (fwdVisited.count(revV->getId()) > 0) {
+            mid = revV;
+            break;
+        }
+
+        // Explore edges in reverse graph
+        // Since nodes store both incoming and outgoing edges, the reverse graph is implicit
+        // Normal graph: A -> B -> C
+        // Reverse graph: A <- B <- C [outgoing edges become incoming edges, destination nodes become origin nodes]
+        // When considering the normal graph, exploring node B edges would be done by analysing destination nodes
+        // of outgoing edges. To "transform" it into the reverse graph, we can analyse origin nodes of incoming edges.
+        for (Edge<T> *w : revV->incoming){
+            double f = revV->dist_inv - h(revV->getInfo(), src->getInfo()) +  w->getCost() + h(w->orig->getInfo(), src->getInfo());
+            if (w->orig->dist_inv > f){
+                double d = w->orig->dist_inv;
+                w->orig->dist_inv = f;
+                w->orig->path_inv = revV;
+                if (d == INT_MAX){
+                    revQ.insert(w->orig);
+                }
+                else {
+                    revQ.decreaseKey(w->orig);
+                }
+            }
+        }
+    }
+
+    // Path builder
+    vector<int> path;
+    double length = mid->dist - h(mid->getInfo(), dest->getInfo()) + mid->dist_inv - h(mid->getInfo(), src->getInfo()); // Best length so far
+
+    // Verify if alternative paths (not through the mid vertex) are better
+    for (auto node : fwdVisited) {
+        Vertex<T>* a = findVertex(node.first);
+        for (Edge<T>* edge : a->outgoing) {
+            Vertex<T>* b = edge->dest;
+            if (revVisited.count(b->getId()) > 0) {
+                double temp_length = a->dist - h(a->getInfo(), dest->getInfo()) + b->dist_inv - h(b->getInfo(), src->getInfo()) + edge->cost;
+                if (temp_length < length) {
+                    b->path = a;
+                    mid = b;
+                    length = temp_length;
+                }
+            }
+        }
+    }
+
+    // Start building path from mid
+    path.push_back(mid->id);
+    Vertex<T>* vertex = mid;
+
+    while (vertex->path != NULL) {
+        vertex = vertex->path;
+        path.emplace(path.begin(), vertex->id);
+    }
+    vertex = mid;
+    while (vertex->path_inv != NULL) {
+        vertex = vertex->path_inv;
+        path.push_back(vertex->id);
+    }
+
+    return Path(length, path);
+}
+
 /******Dijkstra******/
 
 template<class T>
@@ -236,11 +370,21 @@ Path Graph<T>::dijkstraShortestPath(const int id_src, const int id_dest) {
     return genericShortestPath(id_src, id_dest, [&](T a, T b){ return 0; });
 }
 
+template<class T>
+Path Graph<T>::dijkstraBiDirShortestPath(const int id_src, const int id_dest) {
+    return genericBiDirShortestPath(id_src, id_dest, [&](T a, T b){ return 0; });
+}
+
 /******A-Star******/
 
 template<class T>
 Path Graph<T>::astarShortestPath(const int id_src, const int id_dest) {
     return genericShortestPath(id_src, id_dest, euclidianDistance);
+}
+
+template<class T>
+Path Graph<T>::astarBiDirShortestPath(const int id_src, const int id_dest) {
+    return genericBiDirShortestPath(id_src, id_dest, euclidianDistance);
 }
 
 /******NNS******/

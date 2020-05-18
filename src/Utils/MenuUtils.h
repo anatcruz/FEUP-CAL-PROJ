@@ -13,7 +13,11 @@ using namespace std::chrono;
 
 void dijkstra(Graph<coordinates> &graph, UI &ui);
 
+void dijkstraBiDir(Graph<coordinates> &graph, UI &ui);
+
 void astar(Graph<coordinates> &graph, UI &ui);
+
+void astarBiDir(Graph<coordinates> &graph, UI &ui);
 
 void largestSCC(Graph<coordinates> &graph, UI &ui);
 

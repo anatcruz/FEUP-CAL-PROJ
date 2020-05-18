@@ -16,6 +16,22 @@ void dijkstra(Graph<coordinates> &graph, UI &ui) {
     ui.showPath(path.getPath());
 }
 
+void dijkstraBiDir(Graph<coordinates> &graph, UI &ui) {
+    int id_src, id_dest;
+    getOption(id_src, "Source node ID: ");
+    getOption(id_dest, "Destination node ID: ");
+
+    auto start = high_resolution_clock::now();
+    Path path = graph.dijkstraBiDirShortestPath(id_src, id_dest);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << "Size: " << path.getLength() << endl;
+    cout << "Time to pathfind: " << duration.count() << endl;
+
+    ui.showPath(path.getPath());
+}
+
 void astar(Graph<coordinates> &graph, UI &ui) {
     int id_src, id_dest;
     getOption(id_src, "Source node ID: ");
@@ -23,6 +39,22 @@ void astar(Graph<coordinates> &graph, UI &ui) {
 
     auto start = high_resolution_clock::now();
     Path path = graph.astarShortestPath(id_src, id_dest);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << "Size: " << path.getLength() << endl;
+    cout << "Time to pathfind: " << duration.count() << endl;
+
+    ui.showPath(path.getPath());
+}
+
+void astarBiDir(Graph<coordinates> &graph, UI &ui) {
+    int id_src, id_dest;
+    getOption(id_src, "Source node ID: ");
+    getOption(id_dest, "Destination node ID: ");
+
+    auto start = high_resolution_clock::now();
+    Path path = graph.astarBiDirShortestPath(id_src, id_dest);
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
 

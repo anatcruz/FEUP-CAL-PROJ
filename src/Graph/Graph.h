@@ -8,6 +8,7 @@
 #include <climits>
 #include <functional>
 #include <algorithm>
+#include <thread>
 #include <unordered_map>
 #include "MutablePriorityQueue.h"
 #include "Path.h"
@@ -33,10 +34,14 @@ class Vertex {
     Edge<T>* addEdge(Vertex<T> *dest, double cost);
     Vertex(T info);
 
-    // Pathfinding
+    // DFS
     bool visited;
+
+    // Pathfinding
     Vertex<T>* path = NULL;
     double dist = 0;
+    Vertex<T>* path_inv = NULL;
+    double dist_inv = 0;
 
     // Tarjan
     int index = -1;
@@ -44,12 +49,15 @@ class Vertex {
     bool onStack = false;
 public:
     int queueIndex = 0; // For MPQ
+    int queueIndexInv = 0; // For MPQ
 
     int getId() const;
     T getInfo() const;
     double getDist() const;
     vector<Edge<T> *> getAdj() const;
     double getCostTo(int dest_id) const;
+
+    bool compare(const Vertex &rhs, bool inv);
 
     bool operator<(const Vertex &rhs) const;
 
@@ -110,8 +118,11 @@ public:
     vector<int> dfs(const int id_src) const;
 
     Path genericShortestPath(const int id_src, const int id_dest, function<double(T, T)> h);
+    Path genericBiDirShortestPath(const int id_src, const int id_dest, function<double(T, T)> h);
     Path dijkstraShortestPath(const int id_src, const int id_dest);
+    Path dijkstraBiDirShortestPath(const int id_src, const int id_dest);
     Path astarShortestPath(const int id_src, const int id_dest);
+    Path astarBiDirShortestPath(const int id_src, const int id_dest);
 
     Path find_nearest(const int &id_src, const vector<int> &POIs);
     vector<Path> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
