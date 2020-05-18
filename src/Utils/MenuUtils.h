@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <functional>
 #include <chrono>
 #include "../Graph/Graph.h"
 #include "../UI/UI.h"

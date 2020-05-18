@@ -1,12 +1,12 @@
 #include "MenuUtils.h"
 
-void dijkstra(Graph<coordinates> &graph, UI &ui) {
+void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, int)> &spAlgorithm) {
     int id_src, id_dest;
     getOption(id_src, "Source node ID: ");
     getOption(id_dest, "Destination node ID: ");
 
     auto start = high_resolution_clock::now();
-    Path path = graph.dijkstraShortestPath(id_src, id_dest);
+    Path path = spAlgorithm(id_src, id_dest);
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
 
@@ -14,54 +14,22 @@ void dijkstra(Graph<coordinates> &graph, UI &ui) {
     cout << "Time to pathfind: " << duration.count() << endl;
 
     ui.showPath(path.getPath());
+}
+
+void dijkstra(Graph<coordinates> &graph, UI &ui) {
+    shortestPath(graph, ui, [&](int s, int d) { return graph.dijkstraShortestPath(s, d); });
 }
 
 void dijkstraBiDir(Graph<coordinates> &graph, UI &ui) {
-    int id_src, id_dest;
-    getOption(id_src, "Source node ID: ");
-    getOption(id_dest, "Destination node ID: ");
-
-    auto start = high_resolution_clock::now();
-    Path path = graph.dijkstraBiDirShortestPath(id_src, id_dest);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-
-    cout << "Size: " << path.getLength() << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
-
-    ui.showPath(path.getPath());
+    shortestPath(graph, ui, [&](int s, int d) { return graph.dijkstraBiDirShortestPath(s, d); });
 }
 
 void astar(Graph<coordinates> &graph, UI &ui) {
-    int id_src, id_dest;
-    getOption(id_src, "Source node ID: ");
-    getOption(id_dest, "Destination node ID: ");
-
-    auto start = high_resolution_clock::now();
-    Path path = graph.astarShortestPath(id_src, id_dest);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-
-    cout << "Size: " << path.getLength() << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
-
-    ui.showPath(path.getPath());
+    shortestPath(graph, ui, [&](int s, int d) { return graph.astarShortestPath(s, d); });
 }
 
 void astarBiDir(Graph<coordinates> &graph, UI &ui) {
-    int id_src, id_dest;
-    getOption(id_src, "Source node ID: ");
-    getOption(id_dest, "Destination node ID: ");
-
-    auto start = high_resolution_clock::now();
-    Path path = graph.astarBiDirShortestPath(id_src, id_dest);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-
-    cout << "Size: " << path.getLength() << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
-
-    ui.showPath(path.getPath());
+    shortestPath(graph, ui, [&](int s, int d) { return graph.astarBiDirShortestPath(s, d); });
 }
 
 void largestSCC(Graph<coordinates> &graph, UI &ui) {
