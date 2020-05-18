@@ -6,7 +6,7 @@ void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char tes
     getOption(id_dest, "Destination node ID: ");
     getOption(num_iter, "Number of iterations: ");
 
-    long total = 0, min_d = LONG_MAX, max_d = 0;
+    long long total = 0, min_d = LONG_MAX, max_d = 0;
 
     for (int i = 0; i < num_iter; i++) {
         auto start = high_resolution_clock::now();
