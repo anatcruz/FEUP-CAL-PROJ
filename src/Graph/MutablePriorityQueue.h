@@ -4,6 +4,7 @@
  *
  * Created on: 17/03/2018
  *      Author: Jo�o Pascoal Faria
+ * Adapted for bi-directional search support by António Bezerra
  */
 
 #ifndef SRC_MUTABLEPRIORITYQUEUE_H_
@@ -15,7 +16,7 @@
 using namespace std;
 
 /**
- * class T must have: (i) accessible field int queueIndex; (ii) operator< defined.
+ * class T must have: (i) accessible field int queueIndex; (ii) valid compare function defined.
  */
 
 template <class T>
