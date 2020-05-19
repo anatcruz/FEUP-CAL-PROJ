@@ -9,6 +9,8 @@
 
 using namespace std;
 
+typedef pair<double, double> coordinates;
+
 void line(int size, char ch = '-');
 
 void cinERR(const string &message);

@@ -16,8 +16,6 @@
 
 using namespace std;
 
-typedef pair<double, double> coordinates;
-
 template<class T> class Edge;
 template<class T> class Graph;
 
