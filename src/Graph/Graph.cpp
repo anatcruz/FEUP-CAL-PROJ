@@ -146,6 +146,20 @@ Vertex<T> *Graph<T>::findVertex(const int &id) const {
     return vertexSet.at(i->second);
 }
 
+template<class T>
+bool Graph<T>::isValidID(const int &id) {
+    return findVertex(id) != nullptr;
+}
+
+template<class T>
+void Graph<T>::getValidID(int &id, const string &message) {
+    getOption(id, message);
+    while(!isValidID(id)){
+        cinERR("ERROR: Invalid node id, try again");
+        getOption(id, message);
+    }
+}
+
 //==============================
 //  Algorithms
 //==============================
