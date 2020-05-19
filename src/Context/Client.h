@@ -5,11 +5,12 @@
 
 class Client {
 private:
-    coordinates clientCoords;
+    int clientNodeID;
     int nif;
+
 public:
-    Client(coordinates clientCoords, int nif);
-    coordinates getCoords() const;
+    Client(int clientNodeID, int nif);
+    int getClientNodeID() const;
     int getNif() const;
 };
 
