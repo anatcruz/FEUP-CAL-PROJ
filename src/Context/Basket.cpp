@@ -1,9 +1,8 @@
 #include "Basket.h"
 
-Basket::Basket(double weight, int client_nif, int id) {
+Basket::Basket(double weight, int client_nif) {
     this->weight = weight;
     this->client_nif = client_nif;
-    this->id = id;
 }
 
 double Basket::getWeight() const {
@@ -12,8 +11,4 @@ double Basket::getWeight() const {
 
 double Basket::getClientNif() const {
     return client_nif;
-}
-
-double Basket::getID() const {
-    return id;
 }

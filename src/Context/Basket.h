@@ -5,12 +5,10 @@ class Basket {
 private:
     double weight;
     int client_nif;
-    int id;
 public:
-    Basket(double weight, int client_nif, int id);
+    Basket(double weight, int client_nif);
     double getWeight() const;
     double getClientNif() const;
-    double getID() const;
 };
 
 
