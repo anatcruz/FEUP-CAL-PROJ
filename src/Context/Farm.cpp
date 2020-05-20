@@ -1,5 +1,8 @@
 #include "Farm.h"
 
+Farm::Farm() {
+    this->farmNodeID = -1;
+}
 
 Farm::Farm(int farmNodeID) {
     this->farmNodeID = farmNodeID;
@@ -23,4 +26,12 @@ unordered_map<int, Client> Farm::getClients() {
 
 void Farm::addClient(Client client) {
     clients[client.getNif()] = client;
+}
+
+void Farm::setGarage(Garage garage) {
+    this->garage = garage;
+}
+
+Garage Farm::getGarage() {
+    return garage;
 }
