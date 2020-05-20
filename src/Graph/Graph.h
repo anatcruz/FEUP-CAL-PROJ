@@ -110,6 +110,9 @@ public:
     Vertex<T> *addVertex(int id, const T &in);
     Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
 
+    void clearGraph();
+    void makePathGraph(const vector<int> &path);
+
     Vertex<T>* findVertex(const int &id) const;
 
     vector<int> dfs() const;

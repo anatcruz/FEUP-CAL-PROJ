@@ -32,7 +32,7 @@ void astarBiDir(Graph<coordinates> &graph, UI &ui) {
     shortestPath(graph, ui, [&](int s, int d) { return graph.astarBiDirShortestPath(s, d); });
 }
 
-void largestSCC(Graph<coordinates> &graph, UI &ui) {
+vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     auto start = high_resolution_clock::now();
     vector<vector<int>> scc_list = graph.tarjan(0);
     auto stop = high_resolution_clock::now();
@@ -42,4 +42,6 @@ void largestSCC(Graph<coordinates> &graph, UI &ui) {
     auto largest = max_element(scc_list.begin(), scc_list.end(), [&](vector<int> &scc1, vector<int> &scc2) { return scc1.size() < scc2.size(); });
 
     ui.showPath(*largest);
+
+    return *largest;
 }

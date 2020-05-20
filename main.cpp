@@ -13,6 +13,7 @@ int main() {
 
     Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true);;
     UI ui = UI(&graph, 1200, 800);
+    vector<int> last_path;
 
     Menu mainMenu("FarmFresh2U");
     Menu graphLoadMenu("Load graph");
@@ -28,11 +29,11 @@ int main() {
     mainMenu.addOption("Performance", [&](){ performanceMenu.start(); });
 
     graphLoadMenu.addOption("Go back", [&](){});
-    graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); });
-    graphLoadMenu.addOption("Lisboa", [&](){ graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false); });
-    graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); });
-    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); });
-    graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); });
+    graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); last_path.clear(); });
+    graphLoadMenu.addOption("Lisboa", [&](){ graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false); last_path.clear(); });
+    graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); last_path.clear(); });
+    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); last_path.clear(); });
+    graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); last_path.clear(); });
 
     shortestPathMenu.addOption("Go back", [&](){});
     shortestPathMenu.addOption("Dijkstra", [&](){ dijkstra(graph, ui); });
@@ -41,7 +42,8 @@ int main() {
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});
-    connectivityMenu.addOption("View largest SCC", [&](){ largestSCC(graph, ui); });
+    connectivityMenu.addOption("View largest SCC", [&](){ last_path = largestSCC(graph, ui); });
+    connectivityMenu.addOption("Make graph largest SCC", [&](){ graph.makePathGraph(last_path); });
 
     performanceMenu.addOption("Go back", [&](){});
     performanceMenu.addOption("Dijkstra performance", [&](){ dijkstraPerfTest(graph); });

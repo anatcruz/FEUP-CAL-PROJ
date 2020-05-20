@@ -97,6 +97,18 @@ coordinates Graph<T>::getMaxCoords() const {
     return maxCoords;
 }
 
+template<class T>
+void Graph<T>::clearGraph() {
+    for (auto vertex : vertexSet) {
+        for (auto edge : vertex->outgoing) {
+            delete edge;
+        }
+        delete vertex;
+    }
+    vertexMap.clear();
+    minCoords = make_pair(0,0);
+    maxCoords = make_pair(0,0);
+}
 
 template<class T>
 Vertex<T> * Graph<T>::addVertex(int id, const T &in) {
@@ -144,6 +156,28 @@ Vertex<T> *Graph<T>::findVertex(const int &id) const {
         return nullptr;
     }
     return vertexSet.at(i->second);
+}
+
+template<class T>
+void Graph<T>::makePathGraph(const vector<int> &path) {
+    Graph<T> new_graph;
+    new_graph.isGrid = this->isGrid;
+
+    for (int vertex : path) {
+        new_graph.addVertex(vertex, findVertex(vertex)->getInfo());
+    }
+    for (int vertex : path) {
+        for (auto edge : findVertex(vertex)->getAdj()) {
+            // Only add edges between nodes in path
+            if (new_graph.vertexMap.count(edge->orig->id) > 0 && new_graph.vertexMap.count(edge->dest->id) > 0) {
+                new_graph.addEdge(edge->orig->id, edge->dest->id, edge->cost);
+            }
+        }
+    }
+
+    clearGraph();
+
+    *this = new_graph;
 }
 
 //==============================
