@@ -10,6 +10,7 @@ private:
     int garageNodeID;
     vector<Truck> trucks;
 public:
+    Garage();
     Garage(int garageNodeID);
     int getGarageNodeID() const;
     vector<Truck> getTrucks();

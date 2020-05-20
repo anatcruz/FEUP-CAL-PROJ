@@ -1,6 +1,10 @@
 #include "Garage.h"
 
 
+Garage::Garage() {
+    this->garageNodeID = -1;
+}
+
 Garage::Garage(int garageNodeID) {
     this->garageNodeID = garageNodeID;
 }
