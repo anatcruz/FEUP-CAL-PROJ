@@ -30,6 +30,26 @@ void getOption(int &dest, const string &message) {
     }
 }
 
+void getOptionList(vector<int> &dest, const string &message) {
+    string str;
+
+    while (true) {
+        try {
+            cout << endl << message;
+            getline(cin, str);
+            cout << endl;
+            dest.push_back(stoi(str));
+        }
+        catch (invalid_argument &e) {
+            if (str == "*") {
+                return;
+            }
+            str = "";
+            cinERR("ERROR: Invalid entry, try again");
+        }
+    }
+}
+
 double euclidianDistance(pair<double, double> point1, pair<double, double> point2) {
     return sqrt(pow((point1.first - point2.first), 2) + pow((point1.second - point2.second), 2));
 }

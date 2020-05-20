@@ -7,6 +7,8 @@
 #include "Utils/MenuUtils.h"
 #include "Utils/PerformanceTesting.h"
 
+#define EXIT [&](){}
+
 int main() {
     signal(SIGINT, SIG_IGN);
     srand(time(NULL));
@@ -18,28 +20,35 @@ int main() {
     Menu mainMenu("FarmFresh2U");
     Menu graphLoadMenu("Load graph");
     Menu shortestPathMenu("Shortest Path");
+    Menu deliveryPathMenu("Delivery Path");
     Menu connectivityMenu("Graph connectivity");
     Menu performanceMenu("Performance");
 
-    mainMenu.addOption("Exit", [&](){});
+    mainMenu.addOption("Exit", EXIT);
     mainMenu.addOption("Load graph", [&](){ graphLoadMenu.start(); });
     mainMenu.addOption("Show graph", [&](){ ui.showGraph(); });
     mainMenu.addOption("Pathfind", [&](){ shortestPathMenu.start(); });
+    mainMenu.addOption("Delivery path", [&](){ deliveryPathMenu.start(); });
     mainMenu.addOption("Connectivity", [&](){ connectivityMenu.start(); });
     mainMenu.addOption("Performance", [&](){ performanceMenu.start(); });
 
-    graphLoadMenu.addOption("Go back", [&](){});
+    graphLoadMenu.addOption("Go back", EXIT);
     graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("Lisboa", [&](){ graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); last_path.clear(); });
     graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); loadContext(graph, "../maps/GridGraphs/custom/8x8/tags.txt"); last_path.clear(); });
     graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); last_path.clear(); });
 
-    shortestPathMenu.addOption("Go back", [&](){});
+    shortestPathMenu.addOption("Go back", EXIT);
     shortestPathMenu.addOption("Dijkstra", [&](){ dijkstra(graph, ui); });
     shortestPathMenu.addOption("Dijkstra Bi-Directional", [&](){ dijkstraBiDir(graph, ui); });
     shortestPathMenu.addOption("A-star", [&](){ astar(graph, ui); });
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
+
+    deliveryPathMenu.addOption("Go back", EXIT);
+    deliveryPathMenu.addOption("List clients", [&](){ showClientList(graph, ui); });
+    deliveryPathMenu.addOption("Make delivery route", [&](){ makeDeliveryRoute(graph, ui); });
+    deliveryPathMenu.addOption("General TSP", [&](){});
 
     connectivityMenu.addOption("Go back", [&](){});
     connectivityMenu.addOption("View largest SCC", [&](){ last_path = largestSCC(graph, ui); });

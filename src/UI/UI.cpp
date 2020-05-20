@@ -42,7 +42,6 @@ void UI::showGraph() {
     for (Vertex<coordinates>* vertex : graph->getVertexSet()) {
         for (Edge<coordinates>* edge : vertex->getAdj()) {
             gv->addEdge(id, vertex->getId(), edge->getDest()->getId(), EdgeType::UNDIRECTED);
-//            gv->setEdgeLabel(id, to_string(edge->getCost()));
             id++;
         }
     }
@@ -54,19 +53,55 @@ void UI::showGraph() {
 void UI::showPath(vector<int> path) {
     this->gv = new GraphViewer(gv_width, gv_height, false);
     gv->defineEdgeCurved(false);
-    gv->defineVertexSize(5);
     gv->createWindow(gv_width, gv_height);
-    for (int i = 0; i < path.size() - 1; i++) {
-        Vertex<coordinates>* a = graph->findVertex(path.at(i));
-        Vertex<coordinates>* b = graph->findVertex(path.at(i+1));
+
+    Vertex<coordinates>* a = graph->findVertex(path.at(0));
+    gv->addNode(0, (int)(getXpercent(a->getInfo()) * gv_width), (int)(getYpercent(a->getInfo()) * gv_height));
+    gv->setVertexLabel(0, to_string(a->getId()));
+    switch (a->tag) {
+        case quinta:
+            gv->setVertexSize(0, 10);
+            gv->setVertexColor(0, "BLUE");
+            break;
+        case garagem:
+            gv->setVertexSize(0, 10);
+            gv->setVertexColor(0, "ORANGE");
+            break;
+        case cliente:
+            gv->setVertexSize(0, 10);
+            gv->setVertexColor(0, "RED");
+            break;
+        case none:
+            gv->setVertexSize(0, 3);
+            gv->setVertexColor(0, "YELLOW");
+            break;
+    }
+
+    for (int i = 1; i < path.size() - 1; i++) {
+        a = graph->findVertex(path.at(i+1));
+
         gv->addNode(i, (int)(getXpercent(a->getInfo()) * gv_width), (int)(getYpercent(a->getInfo()) * gv_height));
-        gv->addNode(i+1, (int)(getXpercent(b->getInfo()) * gv_width), (int)(getYpercent(b->getInfo()) * gv_height));
-        gv->addEdge(i, i, i+1, EdgeType::UNDIRECTED);
-//        if (graph->isGrid) {
-            gv->setVertexLabel(i, to_string(a->getId()));
-            gv->setVertexLabel(i+1, to_string(b->getId()));
-//        }
-//        gv->setEdgeLabel(i, to_string(a->getCostTo(b->getId())));
+        gv->addEdge(i, i-1, i, EdgeType::DIRECTED);
+        gv->setVertexLabel(i, to_string(a->getId()));
+        switch (a->tag) {
+            case quinta:
+                gv->setVertexSize(i, 10);
+                gv->setVertexColor(i, "BLUE");
+                break;
+            case garagem:
+                gv->setVertexSize(i, 10);
+                gv->setVertexColor(i, "ORANGE");
+                break;
+            case cliente:
+                gv->setVertexSize(i, 10);
+                gv->setVertexColor(i, "RED");
+                break;
+            case none:
+                gv->setVertexSize(i, 3);
+                gv->setVertexColor(i, "YELLOW");
+                break;
+        }
+
     }
     gv->rearrange();
 

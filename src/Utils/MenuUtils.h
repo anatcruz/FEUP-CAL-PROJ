@@ -20,6 +20,10 @@ void astar(Graph<coordinates> &graph, UI &ui);
 
 void astarBiDir(Graph<coordinates> &graph, UI &ui);
 
+void showClientList(Graph<coordinates> &graph, UI &ui);
+
+void makeDeliveryRoute(Graph<coordinates> &graph, UI &ui);
+
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui);
 
 #endif //PROJ_MENUUTILS_H

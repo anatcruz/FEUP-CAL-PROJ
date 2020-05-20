@@ -17,6 +17,8 @@ void cinERR(const string &message);
 
 void getOption(int &dest, const string &message = "Option: ");
 
+void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ");
+
 double euclidianDistance(pair<double, double> point1, pair<double, double> point2);
 
 vector<int> removeIdFromVector(vector<int> v, int id);
