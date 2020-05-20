@@ -55,3 +55,28 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
 
     return graph;
 }
+
+void loadContext(Graph<coordinates> &graph, const string &tags_file) {
+    string line;
+    ifstream tags;
+    tags.open(tags_file);
+
+    while (getline(tags, line)) {
+        stringstream ss(line);
+        Tag tag = none;
+        if (line == "Q") {
+            tag = quinta;
+        } else if (line == "G") {
+            tag = garagem;
+        } else if (line[0] == 'C') {
+            tag = cliente;
+        }
+        getline(tags, line);
+        int num_nodes = stoi(line);
+        for (int i = 0; i < num_nodes; i++) {
+            getline(tags, line);
+            auto vertex = graph.findVertex(stoi(line));
+            vertex->tag = tag;
+        }
+    }
+}

@@ -12,4 +12,6 @@ using namespace std;
 
 Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid);
 
+void loadContext(Graph<coordinates> &graph, const string &tags_file);
+
 #endif //PROJ_MAPPARSER_H

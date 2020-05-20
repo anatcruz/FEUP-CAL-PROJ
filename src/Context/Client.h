@@ -7,7 +7,6 @@ class Client {
 private:
     int clientNodeID;
     int nif;
-
 public:
     Client(int clientNodeID, int nif);
     int getClientNodeID() const;

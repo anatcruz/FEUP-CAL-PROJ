@@ -19,6 +19,8 @@ using namespace std;
 template<class T> class Edge;
 template<class T> class Graph;
 
+enum Tag {quinta, garagem, cliente, none};
+
 //==============================
 //  Vertex
 //==============================
@@ -48,6 +50,8 @@ class Vertex {
 public:
     int queueIndex = 0; // For MPQ
     int queueIndexInv = 0; // For MPQ
+
+    Tag tag = none;
 
     int getId() const;
     T getInfo() const;

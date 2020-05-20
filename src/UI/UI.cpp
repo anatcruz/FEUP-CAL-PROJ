@@ -15,7 +15,25 @@ void UI::showGraph() {
         xPercent = getXpercent(vertex->getInfo());
 
         gv->addNode(vertex->getId(), (int)(xPercent*gv_width), (int)(yPercent*gv_height));
-        gv->setVertexSize(vertex->getId(), 3);
+        switch (vertex->tag) {
+            case quinta:
+                gv->setVertexSize(vertex->getId(), 10);
+                gv->setVertexColor(vertex->getId(), "BLUE");
+                break;
+            case garagem:
+                gv->setVertexSize(vertex->getId(), 10);
+                gv->setVertexColor(vertex->getId(), "ORANGE");
+                break;
+            case cliente:
+                gv->setVertexSize(vertex->getId(), 10);
+                gv->setVertexColor(vertex->getId(), "RED");
+                break;
+            case none:
+                gv->setVertexSize(vertex->getId(), 3);
+                gv->setVertexColor(vertex->getId(), "YELLOW");
+                break;
+        }
+
         if (graph->isGrid)
             gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
     }

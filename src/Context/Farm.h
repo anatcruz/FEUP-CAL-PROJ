@@ -9,7 +9,6 @@ class Farm {
 private:
     int farmNodeID;
     vector<Basket> baskets;
-
 public:
     Farm(int farmNodeID);
     int getFarmNodeID() const;

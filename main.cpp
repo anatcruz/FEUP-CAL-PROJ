@@ -32,7 +32,7 @@ int main() {
     graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("Lisboa", [&](){ graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); last_path.clear(); });
-    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); last_path.clear(); });
+    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); loadContext(graph, "../maps/GridGraphs/custom/8x8/tags.txt"); last_path.clear(); });
     graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); last_path.clear(); });
 
     shortestPathMenu.addOption("Go back", [&](){});
