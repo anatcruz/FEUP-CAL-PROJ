@@ -56,27 +56,55 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
     return graph;
 }
 
-void loadContext(Graph<coordinates> &graph, const string &tags_file) {
+
+Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const string &clients_file) {
     string line;
     ifstream tags;
-    tags.open(tags_file);
 
-    while (getline(tags, line)) {
-        stringstream ss(line);
-        Tag tag = none;
-        if (line == "Q") {
-            tag = quinta;
-        } else if (line == "G") {
-            tag = garagem;
-        } else if (line[0] == 'C') {
-            tag = cliente;
-        }
+    //Read farm file
+    tags.open(farm_file);
+
+    getline(tags, line);
+    int farmNodeID = stoi(line);
+    auto vertex = graph.findVertex(farmNodeID);
+    vertex->tag = quinta;
+    Farm farm = Farm(farmNodeID);
+
+    getline(tags, line);
+    int garageNodeID = stoi(line);
+    vertex = graph.findVertex(garageNodeID);
+    vertex->tag = garagem;
+    Garage garage = Garage(garageNodeID);
+
+    getline(tags, line);
+    int num_trucks = stoi(line);
+    for(int i=0; i<num_trucks; i++){
         getline(tags, line);
-        int num_nodes = stoi(line);
-        for (int i = 0; i < num_nodes; i++) {
-            getline(tags, line);
-            auto vertex = graph.findVertex(stoi(line));
-            vertex->tag = tag;
+        string plate = line;
+        getline(tags, line);
+        int capacity = stoi(line);
+        garage.addTruck(Truck(capacity, plate));
+    }
+    farm.setGarage(garage);
+
+    tags.close();
+
+    tags.open(clients_file);
+    while(getline(tags, line)){
+        int nif = stoi(line);
+        getline(tags, line);
+        int id = stoi(line);
+        farm.addClient(Client(id,nif));
+        vertex = graph.findVertex(id);
+        vertex->tag = cliente;
+
+        getline(tags,line);
+        int num_baskets = stoi(line);
+        for (int i=0; i<num_baskets; i++){
+            getline(tags,line);
+            farm.addBasket(Basket(stoi(line), nif));
         }
     }
+
+    return farm;
 }

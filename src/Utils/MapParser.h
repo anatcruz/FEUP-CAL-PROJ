@@ -6,12 +6,13 @@
 #include <sstream>
 
 #include "../Graph/Graph.h"
+#include "../Context/Farm.h"
 #include "Utils.h"
 
 using namespace std;
 
 Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid);
 
-void loadContext(Graph<coordinates> &graph, const string &tags_file);
+Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const string &clients_file);
 
 #endif //PROJ_MAPPARSER_H

@@ -1,6 +1,7 @@
 #include <csignal>
 
 #include "Graph/Graph.h"
+#include "Context/Farm.h"
 #include "UI/UI.h"
 #include "UI/Menu.h"
 #include "Utils/MapParser.h"
@@ -16,6 +17,7 @@ int main() {
     Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true);;
     UI ui = UI(&graph, 1900, 1000);
     vector<int> last_path;
+    Farm farm;
 
     Menu mainMenu("FarmFresh2U");
     Menu graphLoadMenu("Load graph");
@@ -36,7 +38,7 @@ int main() {
     graphLoadMenu.addOption("Porto Full", [&](){ graph = parseGridMap("../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("Porto Strong", [&](){ graph = parseGridMap("../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); last_path.clear(); });
-    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); loadContext(graph, "../maps/GridGraphs/custom/8x8/tags.txt"); last_path.clear(); });
+    graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); farm = loadContext(graph, "../maps/GridGraphs/custom/8x8/data/farm.txt", "../maps/GridGraphs/custom/8x8/data/clients.txt"); last_path.clear(); });
     graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); last_path.clear(); });
 
     shortestPathMenu.addOption("Go back", EXIT);
