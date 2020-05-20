@@ -133,8 +133,8 @@ public:
 
     Path find_nearest(const int &id_src, const vector<int> &POIs);
     vector<Path> find_n_nearest(const int &id_src, const vector<int> &POIs, const int &n);
-    vector<int> nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path);
-    vector<int> RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n);
+    Path nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path);
+    Path RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n);
     Path buildPath(const vector<int> &ord);
     Path twoOpt(const vector<int> &ord, const Path &path);
     vector<int> twoOptSwap(const vector<int> &ord, const int &i, const int &k);

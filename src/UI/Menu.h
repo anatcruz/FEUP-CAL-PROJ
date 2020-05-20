@@ -6,6 +6,8 @@
 #include <functional>
 #include "../Utils/Utils.h"
 
+#define EXIT [&](){}
+
 using namespace std;
 
 class Menu {
@@ -17,10 +19,12 @@ private:
     /** Structure that holds Menu options, the first is the option text and the second is the function it will execute.
      */
     vector<pair<string, function<void()>>> options;
+
+    bool persistent;
 public:
     /**Constructor for Menu with name.
      */
-    Menu(string name);
+    Menu(string name, bool persistent = true);
 
     /**Initializes Menu, calls the display function and gets the user options.
      */

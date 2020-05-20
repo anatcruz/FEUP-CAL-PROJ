@@ -468,7 +468,7 @@ vector<Path> Graph<T>::find_n_nearest(const int &id_src, const vector<int> &POIs
 }
 
 template<class T>
-vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path){
+Path Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path){
     ord.push_back(id_src);
     if (ord.size() == 1) {
         path.addNode(id_src);
@@ -478,7 +478,7 @@ vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_de
         ord.push_back(id_dest);
         Path last = astarShortestPath(path.getLastNode(), id_dest);
         path.joinPath(last);
-        return ord;
+        return path;
     }
 
     Path next = find_nearest(id_src, POIs);
@@ -489,7 +489,7 @@ vector<int> Graph<T>::nearestNeighborsSearch(const int &id_src, const int &id_de
 }
 
 template<class T>
-vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n) {
+Path Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n) {
     ord.push_back(id_src);
     if (ord.size() == 1) {
         path.addNode(id_src);
@@ -499,7 +499,7 @@ vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, v
         ord.push_back(id_dest);
         Path last = astarShortestPath(path.getLastNode(), id_dest);
         path.joinPath(last);
-        return ord;
+        return path;
     }
 
     vector<Path> neighbors = find_n_nearest(id_src, POIs, n);
@@ -514,6 +514,7 @@ vector<int> Graph<T>::RNNeighborsSearch(const int &id_src, const int &id_dest, v
 template<class T>
 Path Graph<T>::buildPath(const vector<int> &ord) {
     Path path;
+    path.addNode(ord[0]);
     for (int i = 0; i < ord.size() - 1; i++) {
         path.joinPath(astarShortestPath(ord[i], ord[i+1]));
     }

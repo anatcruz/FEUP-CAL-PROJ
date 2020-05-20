@@ -17,8 +17,9 @@ void Menu::setName(string name) {
     this->name = name;
 }
 
-Menu::Menu(string name) {
+Menu::Menu(string name, bool persistent) {
     this->name = name;
+    this->persistent = persistent;
 }
 
 void Menu::setOptions(vector<pair<string, function<void()>>> &options) {
@@ -47,6 +48,7 @@ void Menu::start() {
         getOption(opt);
         if (opt > 0 && opt < options.size()) {
             options.at(opt).second();
+            if (!persistent) { break; }
         } else if (opt == 0) {
             options.at(opt).second();
             break;

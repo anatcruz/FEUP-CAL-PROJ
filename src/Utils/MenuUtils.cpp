@@ -44,33 +44,48 @@ void showClientList(Graph<coordinates> &graph, UI &ui) {
     line(20);
 }
 
-void makeDeliveryRoute(Graph<coordinates> &graph, UI &ui) {
-    vector<int> POIs;
-    getOptionList(POIs);
-
-    int farm_id = -1, garage_id = -1;
-    for (auto vertex : graph.getVertexSet()) {
-        if (vertex->tag == quinta) {
-            farm_id = vertex->getId();
-        } else if (vertex->tag == garagem) {
-            garage_id = vertex->getId();
-        }
-        if (farm_id != -1 && garage_id != -1) {
-            break;
-        }
-    }
-
-    auto start = high_resolution_clock::now();
+void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, const int &end_node, vector<int> &POIs) {
+    function<Path ()> tsp_algorithm;
     Path path;
     vector<int> ord;
-    graph.nearestNeighborsSearch(farm_id, garage_id, POIs, ord, path);
+    bool cancel = false;
+
+    Menu algorithmSelector("Select algorithm", false);
+    algorithmSelector.addOption("Cancel", [&](){ cancel = true; });
+    algorithmSelector.addOption("Nearest-neighbor", [&](){ tsp_algorithm = [&](){ return graph.nearestNeighborsSearch(start_node, end_node, POIs, ord, path); }; });
+    algorithmSelector.addOption("Nearest-neighbor 2-opt", [&](){ tsp_algorithm = [&](){ graph.nearestNeighborsSearch(start_node, end_node, POIs, ord, path); return graph.twoOpt(ord, path); }; });
+    algorithmSelector.addOption("Randomized NN", [&](){ tsp_algorithm = [&](){ return graph.RNNeighborsSearch(start_node, end_node, POIs, ord, path, 3); }; });
+    algorithmSelector.addOption("Randomized NN 2-opt", [&](){ tsp_algorithm = [&](){ graph.RNNeighborsSearch(start_node, end_node, POIs, ord, path, 3); return graph.twoOpt(ord, path); }; });
+    algorithmSelector.start();
+    if (cancel) { return; }
+
+    auto start = high_resolution_clock::now();
+    path = tsp_algorithm();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Size: " << path.getLength() << endl;
     cout << "Time to pathfind: " << duration.count() << endl;
 
-    ui.showPath(path.getPath());
+    Menu showMenu("Show graph?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ ui.showPath(path.getPath()); });
+    showMenu.start();
+}
+
+void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm) {
+    int total_baskets = 0;
+    int start_node = farm.getFarmNodeID(), end_node = farm.getGarage().getGarageNodeID();
+    vector<int> POIs;
+
+    for (const auto& cb_pair : farm.getBaskets()) {
+        POIs.push_back(farm.getClients()[cb_pair.first].getClientNodeID());
+        total_baskets += cb_pair.second.size();
+    }
+
+    cout << "Visiting " << farm.getBaskets().size() << " nodes to deliver " << total_baskets << " baskets." << endl;
+
+    solveTSPRoute(graph, ui, start_node, end_node, POIs);
 }
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
