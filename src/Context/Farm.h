@@ -1,15 +1,20 @@
 #ifndef PROJ_FARM_H
 #define PROJ_FARM_H
 
+#include <vector>
 #include "Utils/Utils.h"
+#include "Basket.h"
 
 class Farm {
 private:
-    coordinates farmCoords;
+    int farmNodeID;
+    vector<Basket> baskets;
 
 public:
-    Farm(coordinates farmCoords);
-    coordinates getFarmCoords() const;
+    Farm(int farmNodeID);
+    int getFarmNodeID() const;
+    vector<Basket> getBaskets();
+    void addBasket(Basket basket);
 };
 
 

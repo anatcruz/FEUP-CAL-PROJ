@@ -114,6 +114,8 @@ public:
     void makePathGraph(const vector<int> &path);
 
     Vertex<T>* findVertex(const int &id) const;
+    bool isValidID(const int &id);
+    void getValidID(int &id, const string &message);
 
     vector<int> dfs() const;
     vector<int> dfs(const int id_src) const;
