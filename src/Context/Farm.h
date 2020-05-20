@@ -2,18 +2,24 @@
 #define PROJ_FARM_H
 
 #include <vector>
+#include <unordered_map>
 #include "Utils/Utils.h"
+#include "Client.h"
 #include "Basket.h"
 
 class Farm {
 private:
     int farmNodeID;
-    vector<Basket> baskets;
+    unordered_map<int, Client> clients;
+    unordered_map<int,vector<Basket>> baskets;
 public:
     Farm(int farmNodeID);
     int getFarmNodeID() const;
-    vector<Basket> getBaskets();
+    unordered_map<int, vector<Basket>> getBaskets();
     void addBasket(Basket basket);
+
+    unordered_map<int, Client> getClients();
+    void addClient(Client client);
 };
 
 

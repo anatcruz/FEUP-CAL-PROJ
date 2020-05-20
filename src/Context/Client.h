@@ -8,6 +8,7 @@ private:
     int clientNodeID;
     int nif;
 public:
+    Client();
     Client(int clientNodeID, int nif);
     int getClientNodeID() const;
     int getNif() const;

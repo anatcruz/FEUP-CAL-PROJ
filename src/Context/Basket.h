@@ -6,7 +6,6 @@ private:
     double weight;
     int client_nif;
     int id;
-
 public:
     Basket(double weight, int client_nif, int id);
     double getWeight() const;
