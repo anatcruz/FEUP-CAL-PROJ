@@ -14,7 +14,7 @@ int main() {
     srand(time(NULL));
 
     Graph<coordinates> graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true);;
-    UI ui = UI(&graph, 1200, 800);
+    UI ui = UI(&graph, 1900, 1000);
     vector<int> last_path;
 
     Menu mainMenu("FarmFresh2U");
@@ -33,8 +33,8 @@ int main() {
     mainMenu.addOption("Performance", [&](){ performanceMenu.start(); });
 
     graphLoadMenu.addOption("Go back", EXIT);
-    graphLoadMenu.addOption("Porto", [&](){ graph = parseGridMap("../maps/PortugalMaps/Porto/nodes_x_y_porto.txt", "../maps/PortugalMaps/Porto/edges_porto.txt", false); last_path.clear(); });
-    graphLoadMenu.addOption("Lisboa", [&](){ graph = parseGridMap("../maps/PortugalMaps/Lisboa/nodes_x_y_lisboa.txt", "../maps/PortugalMaps/Lisboa/edges_lisboa.txt", false); last_path.clear(); });
+    graphLoadMenu.addOption("Porto Full", [&](){ graph = parseGridMap("../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); last_path.clear(); });
+    graphLoadMenu.addOption("Porto Strong", [&](){ graph = parseGridMap("../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", false); last_path.clear(); });
     graphLoadMenu.addOption("4x4", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); last_path.clear(); });
     graphLoadMenu.addOption("8x8", [&](){ graph = parseGridMap("../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); loadContext(graph, "../maps/GridGraphs/custom/8x8/tags.txt"); last_path.clear(); });
     graphLoadMenu.addOption("16x16", [&](){ graph = parseGridMap("../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); last_path.clear(); });

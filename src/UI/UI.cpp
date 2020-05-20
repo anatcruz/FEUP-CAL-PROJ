@@ -8,13 +8,9 @@ void UI::showGraph() {
     this->gv = new GraphViewer(gv_width, gv_height, false);
     gv->defineEdgeCurved(false);
     gv->createWindow(gv_width, gv_height);
-    double yPercent, xPercent;
 
     for (Vertex<coordinates>* vertex : graph->getVertexSet()) {
-        yPercent = getYpercent(vertex->getInfo());
-        xPercent = getXpercent(vertex->getInfo());
-
-        gv->addNode(vertex->getId(), (int)(xPercent*gv_width), (int)(yPercent*gv_height));
+        gv->addNode(vertex->getId(), x_fitted(vertex->getInfo().first), y_fitted(vertex->getInfo().second));
         switch (vertex->tag) {
             case quinta:
                 gv->setVertexSize(vertex->getId(), 10);
@@ -56,8 +52,8 @@ void UI::showPath(vector<int> path) {
     gv->createWindow(gv_width, gv_height);
 
     Vertex<coordinates>* a = graph->findVertex(path.at(0));
-    gv->addNode(0, (int)(getXpercent(a->getInfo()) * gv_width), (int)(getYpercent(a->getInfo()) * gv_height));
-    gv->setVertexLabel(0, to_string(a->getId()));
+    gv->addNode(0, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
+//    gv->setVertexLabel(0, to_string(a->getId()));
     switch (a->tag) {
         case quinta:
             gv->setVertexSize(0, 10);
@@ -80,9 +76,9 @@ void UI::showPath(vector<int> path) {
     for (int i = 1; i < path.size() - 1; i++) {
         a = graph->findVertex(path.at(i+1));
 
-        gv->addNode(i, (int)(getXpercent(a->getInfo()) * gv_width), (int)(getYpercent(a->getInfo()) * gv_height));
+        gv->addNode(i, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
         gv->addEdge(i, i-1, i, EdgeType::DIRECTED);
-        gv->setVertexLabel(i, to_string(a->getId()));
+//        gv->setVertexLabel(i, to_string(a->getId()));
         switch (a->tag) {
             case quinta:
                 gv->setVertexSize(i, 10);
@@ -109,12 +105,11 @@ void UI::showPath(vector<int> path) {
     delete gv;
 }
 
-double UI::getXpercent(const coordinates &c) const {
-    return (c.first - graph->getMinCoords().first) /
-            (graph->getMaxCoords().first - graph->getMinCoords().first) * 0.9 + 0.05;
+int UI::x_fitted(double x) {
+    return (x - graph->getMinCoords().first) * (gv_width - 50) / (graph->getMaxCoords().first - graph->getMinCoords().first) + 25;
 }
 
-double UI::getYpercent(const coordinates &c) const {
-    return 1.0 - ((c.second - graph->getMinCoords().second) /
-            (graph->getMaxCoords().second - graph->getMinCoords().second) * 0.9 + 0.05);
+int UI::y_fitted(double y) {
+    return (y - graph->getMinCoords().second) * (gv_height - 50) / (graph->getMaxCoords().second - graph->getMinCoords().second) + 25;
 }
+

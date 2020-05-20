@@ -15,8 +15,8 @@ private:
     int gv_width;
     int gv_height;
 
-    double getYpercent(const coordinates &c) const;
-    double getXpercent(const coordinates &c) const;
+    int x_fitted(double x);
+    int y_fitted(double y);
 public:
     UI(Graph<coordinates> *graph, int width, int height);
 
