@@ -50,6 +50,7 @@ int main() {
     deliveryPathMenu.addOption("Go back", EXIT);
     deliveryPathMenu.addOption("List clients", [&](){ showClientList(farm); });
     deliveryPathMenu.addOption("Make delivery route", [&](){ solveTSPwithContext(graph, ui, farm); });
+    deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ solveVRPsweep(graph, ui, farm); });
     deliveryPathMenu.addOption("General TSP", [&](){ solveTSPnoContext(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});

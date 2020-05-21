@@ -11,6 +11,7 @@
 using namespace std;
 
 typedef pair<double, double> coordinates;
+typedef pair<int, double> deliverypoint;
 
 void line(int size, char ch = '-');
 
@@ -21,6 +22,8 @@ void getOption(int &dest, const string &message = "Option: ");
 void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ", function<bool(int)> cond = [](int a) { return true; });
 
 double euclidianDistance(pair<double, double> point1, pair<double, double> point2);
+
+double angle(pair<double, double> point1, pair<double, double> point2);
 
 vector<int> removeIdFromVector(vector<int> v, int id);
 

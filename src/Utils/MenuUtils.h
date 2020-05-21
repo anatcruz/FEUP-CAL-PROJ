@@ -33,6 +33,8 @@ void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
 void solveTSPnoContext(Graph<coordinates> &graph, UI &ui);
 
+void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm);
+
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui);
 
 #endif //PROJ_MENUUTILS_H

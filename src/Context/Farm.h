@@ -42,6 +42,7 @@ public:
     void addClient(Client client);
 
     vector<Truck> getTrucks();
+    vector<double> getCapacities();
     void addTruck(Truck truck);
 };
 

@@ -7,7 +7,6 @@ class Truck {
 private:
     double capacity;
     string plate;
-
 public:
     Truck(string plate);
     Truck(double capacity, string plate);

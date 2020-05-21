@@ -65,6 +65,14 @@ vector<Truck> Farm::getTrucks() {
     return trucks;
 }
 
+vector<double> Farm::getCapacities() {
+    vector<double> capacities;
+    for (auto &truck : trucks) {
+        capacities.push_back(truck.getCapacity());
+    }
+    return capacities;
+}
+
 void Farm::addTruck(Truck truck) {
     trucks.push_back(truck);
 }

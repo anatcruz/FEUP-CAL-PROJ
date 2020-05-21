@@ -119,6 +119,27 @@ void solveTSPnoContext(Graph<coordinates> &graph, UI &ui) {
     solveTSPRoute(graph, ui, start_node, end_node, POIs);
 }
 
+void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
+    int total_baskets = 0;
+    int total_weight = 0;
+    int start_node = farm.getFarmNodeID(), end_node = farm.getGarageNodeID();
+    vector<deliverypoint> POIs;
+
+    for (const auto& cb_pair : farm.getBaskets()) {
+        double weight = 0;
+        for (auto basket : cb_pair.second) {
+            weight += basket.getWeight();
+        }
+        POIs.emplace_back(farm.getClients()[cb_pair.first].getClientNodeID(), weight);
+        total_baskets += cb_pair.second.size();
+        total_weight += weight;
+    }
+
+    cout << "Visiting " << farm.getBaskets().size() << " nodes to deliver " << total_baskets << " baskets with a total weight of " << total_weight << endl;
+
+    vector<Route> hhr = graph.sweep(farm.getFarmNodeID(), farm.getCapacities(), POIs);
+}
+
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     auto start = high_resolution_clock::now();
     vector<vector<int>> scc_list = graph.tarjan(0);

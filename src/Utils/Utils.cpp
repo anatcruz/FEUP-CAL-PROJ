@@ -59,6 +59,12 @@ double euclidianDistance(pair<double, double> point1, pair<double, double> point
     return sqrt(pow((point1.first - point2.first), 2) + pow((point1.second - point2.second), 2));
 }
 
+double angle(pair<double, double> point1, pair<double, double> point2) {
+    double x = point2.first - point1.first;
+    double y = point2.second - point2.second;
+    return atan2(y, x);
+}
+
 vector<int> removeIdFromVector(vector<int> v, int id){
     for (auto it=v.begin(); it!=v.end(); it++){
         if( (*it) == id){

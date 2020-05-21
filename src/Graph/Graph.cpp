@@ -615,6 +615,42 @@ void Graph<T>::strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, 
     }
 }
 
+/******sweep******/
+template<class T>
+vector<Route> Graph<T>::sweep(const int &centre_id, const vector<double> &capacities, vector<deliverypoint> &POIs) {
+    sort(POIs.begin(), POIs.end(), [&](auto i, auto j){ return angleBetweenNodes(centre_id, i.first) < angleBetweenNodes(centre_id, j.first); });
+
+    vector<Route> routes;
+    int current_vehicle = 0;
+    int current_load = 0;
+    Route current_route;
+    for (auto poi : POIs) {
+        if (current_load + poi.second <= capacities.at(current_vehicle)) {
+            current_route.addDeliverypoint(poi);
+            current_load += poi.second;
+            continue;
+        } else {
+            routes.push_back(current_route);
+            current_vehicle++;
+            current_route = Route();
+            current_route.addDeliverypoint(poi);
+            current_load = poi.second;
+        }
+    }
+
+    routes.push_back(current_route);
+
+    return routes;
+}
+
+template<class T>
+double Graph<T>::angleBetweenNodes(const int &a, const int &b) {
+    Vertex<T> *v_a = findVertex(a);
+    Vertex<T> *v_b = findVertex(b);
+    return angle(v_a->getInfo(), v_b->getInfo());
+}
+
+
 template class Vertex<coordinates>;
 template class Edge<coordinates>;
 template class Graph<coordinates>;
