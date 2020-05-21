@@ -21,6 +21,14 @@ string Farm::getClientsFile() {
     return clients_file;
 }
 
+bool Farm::isFarmFileChanged() const {
+    return farmFileChanged;
+}
+
+bool Farm::isClientsFileChanged() const {
+    return clientsFileChanged;
+}
+
 void Farm::setFarmNodeID(int nodeID) {
     this->farmNodeID = nodeID;
 }

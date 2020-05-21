@@ -11,6 +11,8 @@
 class Farm {
 private:
     string farm_file, clients_file;
+    bool farmFileChanged = false;
+    bool clientsFileChanged = false;
     int farmNodeID;
     int garageNodeID;
     vector<Truck> trucks;
@@ -23,6 +25,9 @@ public:
 
     string getFarmFile();
     string getClientsFile();
+
+    bool isFarmFileChanged() const;
+    bool isClientsFileChanged() const;
 
     void setFarmNodeID(int nodeID);
     int getFarmNodeID() const;
