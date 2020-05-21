@@ -15,4 +15,6 @@ Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_fi
 
 Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const string &clients_file);
 
+void saveFarmChanges(Farm &farm);
+
 #endif //PROJ_MAPPARSER_H

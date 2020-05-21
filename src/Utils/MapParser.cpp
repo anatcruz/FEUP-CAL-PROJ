@@ -108,3 +108,36 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
 
     return farm;
 }
+
+void saveFarmChanges(Farm &farm) {
+
+    if(farm.isFarmFileChanged()){
+        ofstream tags (farm.getFarmFile());
+        if(tags.is_open()){
+            tags << farm.getFarmNodeID() << endl;
+            tags << farm.getGarageNodeID() << endl;
+            tags << farm.getTrucks().size() << endl;
+            for(Truck t: farm.getTrucks()){
+                tags << t.getPlate() << endl;
+                tags << t.getCapacity() << endl;
+            }
+            tags.close();
+        }
+    }
+
+    if(farm.isClientsFileChanged()){
+        ofstream clients (farm.getClientsFile());
+        if(clients.is_open()){
+            for (const auto& cb_pair : farm.getClients()) {
+                clients << cb_pair.first << endl;
+                clients << cb_pair.second.getClientNodeID() << endl;
+                vector<Basket> baskets = farm.getBaskets()[cb_pair.first];
+                clients << baskets.size() << endl;
+                for (Basket b: baskets){
+                    clients << b.getWeight() << endl;
+                }
+            }
+            clients.close();
+        }
+    }
+}
