@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Graph<coordinates> parseGridMap(const string &nodes_file, const string &edges_file, bool grid);
+Graph<coordinates> parseMap(const string &nodes_file, const string &edges_file, bool grid);
 
 Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const string &clients_file);
 

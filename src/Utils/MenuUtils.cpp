@@ -1,5 +1,17 @@
 #include "MenuUtils.h"
 
+void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, const string &nodes_file, const string &edges_file, bool grid) {
+    graph = parseMap(nodes_file, edges_file, grid);
+    farm = Farm();
+    last_path.clear();
+}
+
+void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, const string &nodes_file, const string &edges_file, bool grid, const string &farm_file, const string &clients_file) {
+    graph = parseMap(nodes_file, edges_file, grid);
+    farm = loadContext(graph, farm_file, clients_file);
+    last_path.clear();
+}
+
 void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, int)> &spAlgorithm) {
     int id_src, id_dest;
     graph.getValidID(id_src, "Source node ID: ");
@@ -13,7 +25,10 @@ void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, i
     cout << "Size: " << path.getLength() << endl;
     cout << "Time to pathfind: " << duration.count() << endl;
 
-    ui.showPath(path.getPath());
+    Menu showMenu("Show path?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ ui.showPath(path.getPath()); });
+    showMenu.start();
 }
 
 void dijkstra(Graph<coordinates> &graph, UI &ui) {
@@ -67,7 +82,7 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
     cout << "Size: " << path.getLength() << endl;
     cout << "Time to pathfind: " << duration.count() << endl;
 
-    Menu showMenu("Show graph?", false);
+    Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
     showMenu.addOption("Yes", [&](){ ui.showPath(path.getPath()); });
     showMenu.start();
@@ -94,10 +109,16 @@ vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time: " << duration.count() << endl;
+    cout << "Total number of strongly connected components: " << scc_list.size() << endl;
 
     auto largest = max_element(scc_list.begin(), scc_list.end(), [&](vector<int> &scc1, vector<int> &scc2) { return scc1.size() < scc2.size(); });
 
-    ui.showPath(*largest);
+    cout << "Largest SCC size: " << largest->size();
+
+    Menu showMenu("Show largest SCC?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ ui.showPath(*largest); });
+    showMenu.start();
 
     return *largest;
 }

@@ -9,10 +9,15 @@
 #include "../Context/Farm.h"
 #include "../UI/UI.h"
 #include "../UI/Menu.h"
+#include "MapParser.h"
 #include "Utils.h"
 
 using namespace std;
 using namespace std::chrono;
+
+void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, const string &nodes_file, const string &edges_file, bool grid);
+
+void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, const string &nodes_file, const string &edges_file, bool grid, const string &farm_file, const string &clients_file);
 
 void dijkstra(Graph<coordinates> &graph, UI &ui);
 
