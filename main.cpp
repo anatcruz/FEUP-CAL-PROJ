@@ -47,7 +47,7 @@ int main() {
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     deliveryPathMenu.addOption("Go back", EXIT);
-    deliveryPathMenu.addOption("List clients", [&](){ showClientList(graph, ui); });
+    deliveryPathMenu.addOption("List clients", [&](){ showClientList(farm); });
     deliveryPathMenu.addOption("Make delivery route", [&](){ solveTSPwithContext(graph, ui, farm); });
     deliveryPathMenu.addOption("General TSP", [&](){});
 

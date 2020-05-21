@@ -32,14 +32,17 @@ void astarBiDir(Graph<coordinates> &graph, UI &ui) {
     shortestPath(graph, ui, [&](int s, int d) { return graph.astarBiDirShortestPath(s, d); });
 }
 
-void showClientList(Graph<coordinates> &graph, UI &ui) {
+void showClientList(Farm &farm) {
     line(20);
     cout << "Clients" << endl;
     line(20);
-    for (auto vertex : graph.getVertexSet()) {
-        if (vertex->tag == cliente) {
-            cout << vertex->getId() << " : " << "Name" << endl;
+    for (const auto& cb_pair : farm.getClients()) {
+        vector<Basket> baskets = farm.getBaskets()[cb_pair.first];
+        double total = 0;
+        for (Basket b: baskets){
+            total += b.getWeight();
         }
+        cout << "NIF: " << cb_pair.first << " | Node ID: " << cb_pair.second.getClientNodeID() << " | Baskets total weight: " << total << endl;
     }
     line(20);
 }

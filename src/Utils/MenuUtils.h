@@ -22,7 +22,7 @@ void astar(Graph<coordinates> &graph, UI &ui);
 
 void astarBiDir(Graph<coordinates> &graph, UI &ui);
 
-void showClientList(Graph<coordinates> &graph, UI &ui);
+void showClientList(Farm &farm);
 
 void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
