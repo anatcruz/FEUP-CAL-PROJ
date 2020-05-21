@@ -19,4 +19,4 @@ add_executable(Proj main.cpp src/Graph/Graph.cpp src/Graph/Graph.h src/UI/UI.cpp
         src/Utils/MapParser.h src/Graph/Path.cpp src/Graph/Path.h src/Utils/MenuUtils.cpp src/Utils/MenuUtils.h
         src/Utils/PerformanceTesting.cpp src/Utils/PerformanceTesting.h src/Context/Farm.cpp src/Context/Farm.h
         src/Context/Truck.cpp src/Context/Truck.h src/Context/Basket.cpp src/Context/Basket.h src/Context/Client.cpp
-        src/Context/Client.h src/Context/Garage.cpp src/Context/Garage.h)
+        src/Context/Client.h)

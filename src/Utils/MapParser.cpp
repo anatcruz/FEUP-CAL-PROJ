@@ -58,6 +58,8 @@ Graph<coordinates> parseMap(const string &nodes_file, const string &edges_file, 
 
 
 Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const string &clients_file) {
+    Farm farm = Farm(farm_file, clients_file);
+
     string line;
     ifstream tags;
 
@@ -65,16 +67,16 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
     tags.open(farm_file);
 
     getline(tags, line);
-    int farmNodeID = stoi(line);
-    auto vertex = graph.findVertex(farmNodeID);
+    int nodeID = stoi(line);
+    auto vertex = graph.findVertex(nodeID);
     vertex->tag = quinta;
-    Farm farm = Farm(farmNodeID);
+    farm.setFarmNodeID(nodeID);
 
     getline(tags, line);
-    int garageNodeID = stoi(line);
-    vertex = graph.findVertex(garageNodeID);
+    nodeID = stoi(line);
+    vertex = graph.findVertex(nodeID);
     vertex->tag = garagem;
-    Garage garage = Garage(garageNodeID);
+    farm.setGarageNodeID(nodeID);
 
     getline(tags, line);
     int num_trucks = stoi(line);
@@ -82,10 +84,8 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
         getline(tags, line);
         string plate = line;
         getline(tags, line);
-        int capacity = stoi(line);
-        garage.addTruck(Truck(capacity, plate));
+        farm.addTruck(Truck(stoi(line), plate));
     }
-    farm.setGarage(garage);
 
     tags.close();
 
@@ -93,9 +93,9 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
     while(getline(tags, line)){
         int nif = stoi(line);
         getline(tags, line);
-        int id = stoi(line);
-        farm.addClient(Client(id,nif));
-        vertex = graph.findVertex(id);
+        nodeID = stoi(line);
+        farm.addClient(Client(nodeID,nif));
+        vertex = graph.findVertex(nodeID);
         vertex->tag = cliente;
 
         getline(tags,line);
@@ -107,4 +107,37 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
     }
 
     return farm;
+}
+
+void saveFarmChanges(Farm &farm) {
+
+    if(farm.isFarmFileChanged()){
+        ofstream tags (farm.getFarmFile());
+        if(tags.is_open()){
+            tags << farm.getFarmNodeID() << endl;
+            tags << farm.getGarageNodeID() << endl;
+            tags << farm.getTrucks().size() << endl;
+            for(Truck t: farm.getTrucks()){
+                tags << t.getPlate() << endl;
+                tags << t.getCapacity() << endl;
+            }
+            tags.close();
+        }
+    }
+
+    if(farm.isClientsFileChanged()){
+        ofstream clients (farm.getClientsFile());
+        if(clients.is_open()){
+            for (const auto& cb_pair : farm.getClients()) {
+                clients << cb_pair.first << endl;
+                clients << cb_pair.second.getClientNodeID() << endl;
+                vector<Basket> baskets = farm.getBaskets()[cb_pair.first];
+                clients << baskets.size() << endl;
+                for (Basket b: baskets){
+                    clients << b.getWeight() << endl;
+                }
+            }
+            clients.close();
+        }
+    }
 }
