@@ -103,6 +103,19 @@ void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm) {
     solveTSPRoute(graph, ui, start_node, end_node, POIs);
 }
 
+void solveTSPnoContext(Graph<coordinates> &graph, UI &ui) {
+    vector<int> POIs;
+    int start_node, end_node;
+
+    getOption(start_node, "Source node ID: ");
+    getOption(end_node, "Destination node ID: ");
+    getOptionList(POIs, "Node to visit: ", [&](int a) { return graph.isValidID(a); });
+
+    cout << "Visiting " << POIs.size() << " nodes." << endl;
+
+    solveTSPRoute(graph, ui, start_node, end_node, POIs);
+}
+
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     auto start = high_resolution_clock::now();
     vector<vector<int>> scc_list = graph.tarjan(0);

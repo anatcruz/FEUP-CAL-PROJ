@@ -31,6 +31,8 @@ void showClientList(Graph<coordinates> &graph, UI &ui);
 
 void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
+void solveTSPnoContext(Graph<coordinates> &graph, UI &ui);
+
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui);
 
 #endif //PROJ_MENUUTILS_H

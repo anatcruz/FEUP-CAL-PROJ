@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <cmath>
+#include <functional>
 #include <vector>
 
 using namespace std;
@@ -17,7 +18,7 @@ void cinERR(const string &message);
 
 void getOption(int &dest, const string &message = "Option: ");
 
-void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ");
+void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ", function<bool(int)> cond = [](int a) { return true; });
 
 double euclidianDistance(pair<double, double> point1, pair<double, double> point2);
 

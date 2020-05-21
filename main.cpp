@@ -50,7 +50,7 @@ int main() {
     deliveryPathMenu.addOption("Go back", EXIT);
     deliveryPathMenu.addOption("List clients", [&](){ showClientList(graph, ui); });
     deliveryPathMenu.addOption("Make delivery route", [&](){ solveTSPwithContext(graph, ui, farm); });
-    deliveryPathMenu.addOption("General TSP", [&](){});
+    deliveryPathMenu.addOption("General TSP", [&](){ solveTSPnoContext(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});
     connectivityMenu.addOption("View largest SCC", [&](){ last_path = largestSCC(graph, ui); });

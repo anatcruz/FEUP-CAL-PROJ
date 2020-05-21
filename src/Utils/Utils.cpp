@@ -30,14 +30,19 @@ void getOption(int &dest, const string &message) {
     }
 }
 
-void getOptionList(vector<int> &dest, const string &message) {
+void getOptionList(vector<int> &dest, const string &message, function<bool(int)> cond) {
     string str;
 
     while (true) {
         try {
             cout << endl << message;
             getline(cin, str);
-            cout << endl;
+//            cout << endl;
+            if (!cond(stoi(str))) {
+                str = "";
+                cinERR("ERROR: Invalid entry, try again");
+                continue;
+            }
             dest.push_back(stoi(str));
         }
         catch (invalid_argument &e) {
