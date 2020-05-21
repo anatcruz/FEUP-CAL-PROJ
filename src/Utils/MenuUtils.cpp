@@ -75,7 +75,7 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
 
 void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm) {
     int total_baskets = 0;
-    int start_node = farm.getFarmNodeID(), end_node = farm.getGarage().getGarageNodeID();
+    int start_node = farm.getFarmNodeID(), end_node = farm.getGarageNodeID();
     vector<int> POIs;
 
     for (const auto& cb_pair : farm.getBaskets()) {
