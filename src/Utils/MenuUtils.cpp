@@ -14,8 +14,8 @@ void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, co
 
 void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, int)> &spAlgorithm) {
     int id_src, id_dest;
-    graph.getValidID(id_src, "Source node ID: ");
-    graph.getValidID(id_dest, "Destination node ID: ");
+    getOption(id_src, "Source node ID: ", [&](int a) { return graph.isValidID(a); });
+    getOption(id_dest, "Destination node ID: ", [&](int a) { return graph.isValidID(a); });
 
     auto start = high_resolution_clock::now();
     Path path = spAlgorithm(id_src, id_dest);
