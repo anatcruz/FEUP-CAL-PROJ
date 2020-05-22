@@ -7,6 +7,7 @@
 #include "Client.h"
 #include "Basket.h"
 #include "Truck.h"
+#include "../Graph/Graph.h"
 
 class Farm {
 private:
@@ -44,6 +45,19 @@ public:
     vector<Truck> getTrucks();
     vector<double> getCapacities();
     void addTruck(Truck truck);
+
+    bool searchClientByNIF(int nif);
+    void createClient(Graph<coordinates> &graph);
+    void editClient(Graph<coordinates> &graph);
+    void removeClient(Graph<coordinates> &graph);
+
+    void createBasket();
+
+    bool searchTruckByPlate(string plate);
+    void createTruck();
+    void editTruck();
+    void removeTruck();
+
 };
 
 

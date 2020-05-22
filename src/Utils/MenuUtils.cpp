@@ -47,21 +47,6 @@ void astarBiDir(Graph<coordinates> &graph, UI &ui) {
     shortestPath(graph, ui, [&](int s, int d) { return graph.astarBiDirShortestPath(s, d); });
 }
 
-void showClientList(Farm &farm) {
-    line(20);
-    cout << "Clients" << endl;
-    line(20);
-    for (const auto& cb_pair : farm.getClients()) {
-        vector<Basket> baskets = farm.getBaskets()[cb_pair.first];
-        double total = 0;
-        for (Basket b: baskets){
-            total += b.getWeight();
-        }
-        cout << "NIF: " << cb_pair.first << " | Node ID: " << cb_pair.second.getClientNodeID() << " | Baskets total weight: " << total << endl;
-    }
-    line(20);
-}
-
 void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, const int &end_node, vector<int> &POIs) {
     function<Path ()> tsp_algorithm;
     Path path;
@@ -164,4 +149,45 @@ vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     showMenu.start();
 
     return *largest;
+}
+
+void showClientList(Farm &farm) {
+    line(20);
+    cout << "Clients" << endl;
+    line(20);
+    for (const auto& cb_pair : farm.getClients()) {
+        vector<Basket> baskets = farm.getBaskets()[cb_pair.first];
+        double total = 0;
+        for (Basket b: baskets){
+            total += b.getWeight();
+        }
+        cout << "NIF: " << cb_pair.first << " | Node ID: " << cb_pair.second.getClientNodeID() << " | Baskets total weight: " << total << endl;
+    }
+    line(20);
+    enterWait();
+}
+
+void showBasketList(Farm &farm){
+    line(20);
+    cout << "Baskets" << endl;
+    line(20);
+    for (const auto& cb_pair : farm.getBaskets()) {
+        vector<Basket> baskets = cb_pair.second;
+        for (Basket b: baskets){
+            cout << "Client's NIF: " << cb_pair.first << " | Weight: " << b.getWeight() << endl;
+        }
+    }
+    line(20);
+    enterWait();
+}
+
+void showTruckList(Farm &farm){
+    line(20);
+    cout << "Baskets" << endl;
+    line(20);
+    for (Truck t: farm.getTrucks()) {
+        cout << "Truck's plate: " << t.getPlate() << " | Capacity: " << t.getCapacity() << endl;
+    }
+    line(20);
+    enterWait();
 }

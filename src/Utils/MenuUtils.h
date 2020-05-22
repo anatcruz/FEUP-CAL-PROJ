@@ -27,8 +27,6 @@ void astar(Graph<coordinates> &graph, UI &ui);
 
 void astarBiDir(Graph<coordinates> &graph, UI &ui);
 
-void showClientList(Farm &farm);
-
 void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
 void solveTSPnoContext(Graph<coordinates> &graph, UI &ui);
@@ -36,5 +34,10 @@ void solveTSPnoContext(Graph<coordinates> &graph, UI &ui);
 void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui);
+
+/**Management**/
+void showClientList(Farm &farm);
+void showBasketList(Farm &farm);
+void showTruckList(Farm &farm);
 
 #endif //PROJ_MENUUTILS_H
