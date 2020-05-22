@@ -10,6 +10,7 @@ private:
 public:
     Client();
     Client(int clientNodeID, int nif);
+    void setClientNodeID(int nodeID);
     int getClientNodeID() const;
     int getNif() const;
 };

@@ -10,6 +10,10 @@ Client::Client(int clientNodeID, int nif) {
     this->nif = nif;
 }
 
+void Client::setClientNodeID(int nodeID) {
+    this->clientNodeID = nodeID;
+}
+
 int Client::getClientNodeID() const {
     return clientNodeID;
 }
