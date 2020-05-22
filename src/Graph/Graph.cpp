@@ -522,17 +522,19 @@ Path Graph<T>::buildPath(const vector<int> &ord) {
 }
 
 template<class T>
-Path Graph<T>::twoOpt(const vector<int> &ord, const Path &path) {
+Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
     int improve = 0;
     Path best = path;
 
     while (improve < 20) {
         for (int i = 1; i < ord.size() - 2; i++) {
             for (int k = i + 1; k < ord.size() - 1; k++) {
-                Path new_path = buildPath(twoOptSwap(ord, i, k));
+                vector<int> new_ord = twoOptSwap(ord, i, k);
+                Path new_path = buildPath(new_ord);
                 if (new_path.getLength() < best.getLength()) {
                     improve = 0;
                     best = new_path;
+                    ord = new_ord;
                 }
             }
         }

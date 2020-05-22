@@ -137,7 +137,7 @@ public:
     Path nearestNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path);
     Path RNNeighborsSearch(const int &id_src, const int &id_dest, vector<int> &POIs, vector<int> &ord, Path &path, const int &n);
     Path buildPath(const vector<int> &ord);
-    Path twoOpt(const vector<int> &ord, const Path &path);
+    Path twoOpt(vector<int> &ord, const Path &path);
     vector<int> twoOptSwap(const vector<int> &ord, const int &i, const int &k);
 
     vector<vector<int>> tarjan(const int id_src);

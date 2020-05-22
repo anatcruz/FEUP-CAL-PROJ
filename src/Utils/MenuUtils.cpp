@@ -87,7 +87,7 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
 
     Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
-    showMenu.addOption("Yes", [&](){ ui.showPath(path.getPath()); });
+    showMenu.addOption("Yes", [&](){ ui.showDeliveryPath(path.getPath(), ord); });
     showMenu.start();
 }
 

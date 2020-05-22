@@ -23,6 +23,9 @@ public:
     void setGraph(Graph<coordinates> *graph);
     void showGraph();
     void showPath(vector<int> path);
+    void showDeliveryPath(vector<int> path, vector<int> POIs);
+
+    void setNodeProperties(Vertex<coordinates> *node, int id);
 };
 
 
