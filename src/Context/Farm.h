@@ -52,6 +52,8 @@ public:
     void removeClient(Graph<coordinates> &graph);
 
     void createBasket();
+    void editBasket();
+    void removeBasket();
 
     bool searchTruckByPlate(string plate);
     void createTruck();

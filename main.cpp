@@ -82,6 +82,8 @@ int main() {
     basketManagementMenu.addOption("Go back", [&](){});
     basketManagementMenu.addOption("List baskets", [&](){ showBasketList(farm); });
     basketManagementMenu.addOption("Create basket", [&](){ farm.createBasket(); });
+    basketManagementMenu.addOption("Edit basket", [&](){ farm.editBasket(); });
+    basketManagementMenu.addOption("Remove basket", [&](){ farm.removeBasket(); });
 
     truckManagementMenu.addOption("Go back", [&](){});
     truckManagementMenu.addOption("List trucks", [&](){ showTruckList(farm); });
