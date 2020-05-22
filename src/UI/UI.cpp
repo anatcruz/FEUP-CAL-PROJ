@@ -65,7 +65,7 @@ void UI::showDeliveryPath(vector<int> path, vector<int> POIs) {
     Vertex<coordinates> *a = graph->findVertex(path.at(0));
     gv->addNode(0, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
     if (current_POI != -1 && a->getId() == POIs.at(current_POI)) {
-        setNodeProperties(a, 0);
+        setPOIProperties(a, 0, current_POI);
         if (++current_POI >= POIs.size()) { current_POI = -1; }
     }
 
@@ -74,7 +74,7 @@ void UI::showDeliveryPath(vector<int> path, vector<int> POIs) {
 
         gv->addNode(i, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
         if (current_POI != -1 && a->getId() == POIs.at(current_POI)) {
-            setNodeProperties(a, i);
+            setPOIProperties(a, i, current_POI);
             if (++current_POI >= POIs.size()) { current_POI = -1; }
         }
         gv->addEdge(i, i-1, i, EdgeType::DIRECTED);
@@ -115,3 +115,15 @@ void UI::setNodeProperties(Vertex<coordinates> *node, int id) {
     }
 }
 
+void UI::setPOIProperties(Vertex<coordinates> *node, int id, int poi_n) {
+    switch (node->tag) {
+        case none:
+            gv->setVertexSize(id, 10);
+            gv->setVertexColor(id, "GREEN");
+            break;
+        default:
+            setNodeProperties(node, id);
+            break;
+    }
+    gv->setVertexLabel(id, to_string(poi_n));
+}

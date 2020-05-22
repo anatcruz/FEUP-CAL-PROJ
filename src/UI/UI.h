@@ -26,6 +26,7 @@ public:
     void showDeliveryPath(vector<int> path, vector<int> POIs);
 
     void setNodeProperties(Vertex<coordinates> *node, int id);
+    void setPOIProperties(Vertex<coordinates> *node, int id, int poi_n);
 };
 
 
