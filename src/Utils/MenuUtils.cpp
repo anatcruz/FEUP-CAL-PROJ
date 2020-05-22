@@ -121,8 +121,7 @@ void solveTSPnoContext(Graph<coordinates> &graph, UI &ui) {
 
 void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
     int total_baskets = 0;
-    int total_weight = 0;
-    int start_node = farm.getFarmNodeID(), end_node = farm.getGarageNodeID();
+    double total_weight = 0;
     vector<deliverypoint> POIs;
 
     for (const auto& cb_pair : farm.getBaskets()) {
@@ -137,7 +136,14 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
 
     cout << "Visiting " << farm.getBaskets().size() << " nodes to deliver " << total_baskets << " baskets with a total weight of " << total_weight << endl;
 
-    vector<Route> hhr = graph.sweep(farm.getFarmNodeID(), farm.getCapacities(), POIs);
+    vector<Route> routes = graph.sweep(farm.getFarmNodeID(), farm.getCapacities(), POIs);
+
+    cout << "Calculated " << routes.size() << " routes to fulfill deliveries." << endl;
+
+    for (auto &route : routes) {
+        vector<int> routePOIs = route.getRoutePOIs();
+        solveTSPRoute(graph, ui, farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs);
+    }
 }
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
