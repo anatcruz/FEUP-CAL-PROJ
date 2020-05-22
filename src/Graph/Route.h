@@ -15,6 +15,7 @@ public:
     double getWeight();
 
     vector<deliverypoint> getRoute() const;
+    vector<int> getRoutePOIs() const;
 
     void addDeliverypoint(const deliverypoint &dp);
 };

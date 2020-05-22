@@ -11,7 +11,7 @@ void cinERR(const string &message) {
     cin.clear();
 }
 
-void getOption(int &dest, const string &message) {
+void getOption(int &dest, const string &message, function<bool(int)> cond) {
     // Tries to get a valid int option from cin to use in a switch-case
     string str;
 
@@ -19,7 +19,12 @@ void getOption(int &dest, const string &message) {
         try {
             cout << endl << message;
             getline(cin, str);
-            cout << endl;
+//            cout << endl;
+            if (!cond(stoi(str))) {
+                str = "";
+                cinERR("ERROR: Invalid entry, try again");
+                continue;
+            }
             dest = stoi(str);
             break;
         }

@@ -11,24 +11,7 @@ void UI::showGraph() {
 
     for (Vertex<coordinates>* vertex : graph->getVertexSet()) {
         gv->addNode(vertex->getId(), x_fitted(vertex->getInfo().first), y_fitted(vertex->getInfo().second));
-        switch (vertex->tag) {
-            case quinta:
-                gv->setVertexSize(vertex->getId(), 10);
-                gv->setVertexColor(vertex->getId(), "BLUE");
-                break;
-            case garagem:
-                gv->setVertexSize(vertex->getId(), 10);
-                gv->setVertexColor(vertex->getId(), "ORANGE");
-                break;
-            case cliente:
-                gv->setVertexSize(vertex->getId(), 10);
-                gv->setVertexColor(vertex->getId(), "RED");
-                break;
-            case none:
-                gv->setVertexSize(vertex->getId(), 3);
-                gv->setVertexColor(vertex->getId(), "YELLOW");
-                break;
-        }
+        setNodeProperties(vertex, vertex->getId());
 
         if (graph->isGrid)
             gv->setVertexLabel(vertex->getId(), to_string(vertex->getId()));
@@ -53,52 +36,50 @@ void UI::showPath(vector<int> path) {
 
     Vertex<coordinates>* a = graph->findVertex(path.at(0));
     gv->addNode(0, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
-//    gv->setVertexLabel(0, to_string(a->getId()));
-    switch (a->tag) {
-        case quinta:
-            gv->setVertexSize(0, 10);
-            gv->setVertexColor(0, "BLUE");
-            break;
-        case garagem:
-            gv->setVertexSize(0, 10);
-            gv->setVertexColor(0, "ORANGE");
-            break;
-        case cliente:
-            gv->setVertexSize(0, 10);
-            gv->setVertexColor(0, "RED");
-            break;
-        case none:
-            gv->setVertexSize(0, 3);
-            gv->setVertexColor(0, "YELLOW");
-            break;
-    }
+    setNodeProperties(a, 0);
 
-    for (int i = 1; i < path.size() - 1; i++) {
-        a = graph->findVertex(path.at(i+1));
+    for (int i = 1; i < path.size(); i++) {
+        a = graph->findVertex(path.at(i));
 
         gv->addNode(i, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
         gv->addEdge(i, i-1, i, EdgeType::DIRECTED);
-//        gv->setVertexLabel(i, to_string(a->getId()));
-        switch (a->tag) {
-            case quinta:
-                gv->setVertexSize(i, 10);
-                gv->setVertexColor(i, "BLUE");
-                break;
-            case garagem:
-                gv->setVertexSize(i, 10);
-                gv->setVertexColor(i, "ORANGE");
-                break;
-            case cliente:
-                gv->setVertexSize(i, 10);
-                gv->setVertexColor(i, "RED");
-                break;
-            case none:
-                gv->setVertexSize(i, 3);
-                gv->setVertexColor(i, "YELLOW");
-                break;
-        }
-
+        setNodeProperties(a, i);
     }
+    gv->rearrange();
+
+    enterWait();
+    delete gv;
+}
+
+void UI::showDeliveryPath(vector<int> path, vector<int> POIs) {
+    this->gv = new GraphViewer(gv_width, gv_height, false);
+    gv->defineEdgeCurved(false);
+    gv->defineVertexSize(3);
+    gv->createWindow(gv_width, gv_height);
+    int current_POI = -1;
+
+    if (!POIs.empty()) {
+        current_POI = 0;
+    }
+
+    Vertex<coordinates> *a = graph->findVertex(path.at(0));
+    gv->addNode(0, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
+    if (current_POI != -1 && a->getId() == POIs.at(current_POI)) {
+        setNodeProperties(a, 0);
+        if (++current_POI >= POIs.size()) { current_POI = -1; }
+    }
+
+    for (int i = 1; i < path.size(); i++) {
+        a = graph->findVertex(path.at(i));
+
+        gv->addNode(i, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
+        if (current_POI != -1 && a->getId() == POIs.at(current_POI)) {
+            setNodeProperties(a, i);
+            if (++current_POI >= POIs.size()) { current_POI = -1; }
+        }
+        gv->addEdge(i, i-1, i, EdgeType::DIRECTED);
+    }
+
     gv->rearrange();
 
     enterWait();
@@ -111,5 +92,26 @@ int UI::x_fitted(double x) {
 
 int UI::y_fitted(double y) {
     return (y - graph->getMinCoords().second) * (gv_height - 50) / (graph->getMaxCoords().second - graph->getMinCoords().second) + 25;
+}
+
+void UI::setNodeProperties(Vertex<coordinates> *node, int id) {
+    switch (node->tag) {
+        case quinta:
+            gv->setVertexSize(id, 10);
+            gv->setVertexColor(id, "BLUE");
+            break;
+        case garagem:
+            gv->setVertexSize(id, 10);
+            gv->setVertexColor(id, "ORANGE");
+            break;
+        case cliente:
+            gv->setVertexSize(id, 10);
+            gv->setVertexColor(id, "RED");
+            break;
+        case none:
+            gv->setVertexSize(id, 3);
+            gv->setVertexColor(id, "YELLOW");
+            break;
+    }
 }
 

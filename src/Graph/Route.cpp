@@ -12,6 +12,14 @@ vector<deliverypoint> Route::getRoute() const {
     return route;
 }
 
+vector<int> Route::getRoutePOIs() const {
+    vector<int> POIs;
+    for (auto dp : route) {
+        POIs.push_back(dp.first);
+    }
+    return POIs;
+}
+
 void Route::addDeliverypoint(const deliverypoint &dp) {
     route.push_back(dp);
     weight += dp.second;
