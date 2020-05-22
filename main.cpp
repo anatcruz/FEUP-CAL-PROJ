@@ -24,6 +24,10 @@ int main() {
     Menu deliveryPathMenu("Delivery Path");
     Menu connectivityMenu("Graph connectivity");
     Menu performanceMenu("Performance");
+    Menu managementMenu("Farm Management");
+    Menu clientManagementMenu("Client Management");
+    Menu basketManagementMenu("Basket Management");
+    Menu truckManagementMenu("Truck Management");
 
     mainMenu.addOption("Exit", EXIT);
     mainMenu.addOption("Load graph", [&](){ graphLoadMenu.start(); });
@@ -32,6 +36,7 @@ int main() {
     mainMenu.addOption("Delivery path", [&](){ deliveryPathMenu.start(); });
     mainMenu.addOption("Connectivity", [&](){ connectivityMenu.start(); });
     mainMenu.addOption("Performance", [&](){ performanceMenu.start(); });
+    mainMenu.addOption("Farm Management", [&](){ managementMenu.start(); });
 
     graphLoadMenu.addOption("Go back", EXIT);
     graphLoadMenu.addOption("Porto Full", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); });
@@ -48,7 +53,6 @@ int main() {
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     deliveryPathMenu.addOption("Go back", EXIT);
-    deliveryPathMenu.addOption("List clients", [&](){ showClientList(farm); });
     deliveryPathMenu.addOption("Make delivery route", [&](){ solveTSPwithContext(graph, ui, farm); });
     deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ solveVRPsweep(graph, ui, farm); });
     deliveryPathMenu.addOption("General TSP", [&](){ solveTSPnoContext(graph, ui); });
@@ -63,6 +67,27 @@ int main() {
     performanceMenu.addOption("A-star performance", [&](){ astarPerfTest(graph); });
     performanceMenu.addOption("A-star Bi-Directional performance", [&](){ astarBiDirPerfTest(graph); });
     performanceMenu.addOption("Clear log", [&](){ clearLog(); });
+
+    managementMenu.addOption("Go back", [&](){});
+    managementMenu.addOption("Client Management", [&](){ clientManagementMenu.start(); });
+    managementMenu.addOption("Basket Management", [&](){ basketManagementMenu.start(); });
+    managementMenu.addOption("Truck Management", [&](){ truckManagementMenu.start(); });
+
+    clientManagementMenu.addOption("Go back", [&](){});
+    clientManagementMenu.addOption("List clients", [&](){ showClientList(farm); });
+    clientManagementMenu.addOption("Create client", [&](){ farm.createClient(graph); });
+    clientManagementMenu.addOption("Edit client", [&](){ farm.editClient(graph); });
+    clientManagementMenu.addOption("Remove client", [&](){ farm.removeClient(graph); });
+
+    basketManagementMenu.addOption("Go back", [&](){});
+    basketManagementMenu.addOption("List baskets", [&](){ showBasketList(farm); });
+    basketManagementMenu.addOption("Create basket", [&](){ farm.createBasket(); });
+
+    truckManagementMenu.addOption("Go back", [&](){});
+    truckManagementMenu.addOption("List trucks", [&](){ showTruckList(farm); });
+    truckManagementMenu.addOption("Create truck", [&](){ farm.createTruck(); });
+    truckManagementMenu.addOption("Edit truck", [&](){ farm.editTruck(); });
+    truckManagementMenu.addOption("Remove truck", [&](){ farm.removeTruck(); });
 
     mainMenu.start();
 

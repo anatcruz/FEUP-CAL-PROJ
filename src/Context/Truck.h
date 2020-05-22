@@ -10,6 +10,7 @@ private:
 public:
     Truck(string plate);
     Truck(double capacity, string plate);
+    void setCapacity(double capacity);
     double getCapacity() const;
     string getPlate() const;
 };

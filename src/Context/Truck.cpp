@@ -10,6 +10,10 @@ Truck::Truck(double capacity, string plate) {
     this->plate = plate;
 }
 
+void Truck::setCapacity(double capacity) {
+    this->capacity = capacity;
+}
+
 double Truck::getCapacity() const {
     return capacity;
 }

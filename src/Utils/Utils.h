@@ -21,6 +21,8 @@ void getOption(int &dest, const string &message = "Option: ", function<bool(int)
 
 void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ", function<bool(int)> cond = [](int a) { return true; });
 
+void getDouble(double &dest, const string &message= "Enter double: ");
+
 double euclidianDistance(pair<double, double> point1, pair<double, double> point2);
 
 double angle(pair<double, double> point1, pair<double, double> point2);

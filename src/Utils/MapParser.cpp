@@ -84,7 +84,7 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
         getline(tags, line);
         string plate = line;
         getline(tags, line);
-        farm.addTruck(Truck(stoi(line), plate));
+        farm.addTruck(Truck(stod(line), plate));
     }
 
     tags.close();
@@ -102,7 +102,7 @@ Farm loadContext(Graph<coordinates> &graph, const string &farm_file, const strin
         int num_baskets = stoi(line);
         for (int i=0; i<num_baskets; i++){
             getline(tags,line);
-            farm.addBasket(Basket(stoi(line), nif));
+            farm.addBasket(Basket(stod(line), nif));
         }
     }
 
