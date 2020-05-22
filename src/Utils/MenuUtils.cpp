@@ -110,8 +110,8 @@ void solveTSPnoContext(Graph<coordinates> &graph, UI &ui) {
     vector<int> POIs;
     int start_node, end_node;
 
-    getOption(start_node, "Source node ID: ");
-    getOption(end_node, "Destination node ID: ");
+    getOption(start_node, "Source node ID: ", [&](int a) { return graph.isValidID(a); });
+    getOption(end_node, "Destination node ID: ", [&](int a) { return graph.isValidID(a); });
     getOptionList(POIs, "Node to visit: ", [&](int a) { return graph.isValidID(a); });
 
     cout << "Visiting " << POIs.size() << " nodes." << endl;

@@ -17,7 +17,7 @@ void line(int size, char ch = '-');
 
 void cinERR(const string &message);
 
-void getOption(int &dest, const string &message = "Option: ");
+void getOption(int &dest, const string &message = "Option: ", function<bool(int)> cond = [](int a) { return true; });
 
 void getOptionList(vector<int> &dest, const string &message = "Option (* to end): ", function<bool(int)> cond = [](int a) { return true; });
 
