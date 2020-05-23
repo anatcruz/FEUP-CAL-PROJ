@@ -109,6 +109,7 @@ void Farm::createClient(Graph<coordinates> &graph) {
     addClient(Client(nodeID, nif));
     vertex->tag = cliente;
 
+    clientsFileChanged = true;
     cout << "Client successfully created!" << endl;
     enterWait();
 }
@@ -147,6 +148,7 @@ void Farm::editClient(Graph<coordinates> &graph) {
         vertex->tag = cliente;
     }
 
+    clientsFileChanged = true;
     cout << "Client successfully edited!" << endl;
     enterWait();
 }
@@ -166,6 +168,7 @@ void Farm::removeClient(Graph<coordinates> &graph) {
     clients.erase(nif);
     baskets.erase(nif);
 
+    clientsFileChanged = true;
     cout << "Client and corresponding baskets successfully removed!" << endl;
     enterWait();
 }
@@ -186,6 +189,7 @@ void Farm::createBasket() {
 
     addBasket(Basket(weight, nif));
 
+    clientsFileChanged = true;
     cout << "Basket successfully created!" << endl;
     enterWait();
 }
@@ -223,6 +227,7 @@ void Farm::editBasket() {
     getDouble(weight, "Enter basket's new weight: ");
     cb_pair->second.at(nif).setWeight(weight);
 
+    clientsFileChanged = true;
     cout << "Basket successfully edited!" << endl;
     enterWait();
 }
@@ -256,6 +261,7 @@ void Farm::removeBasket() {
     getOption(nif, "Enter ID of the basket to be removed: ", [&](int a){ return a > 0 && a < i; });
     cb_pair->second.erase(cb_pair->second.begin()+nif);
 
+    clientsFileChanged = true;
     cout << "Basket successfully removed!" << endl;
     enterWait();
 }
@@ -285,6 +291,7 @@ void Farm::createTruck() {
 
     addTruck(Truck(capacity, plate));
 
+    farmFileChanged = true;
     cout << "Truck successfully created!" << endl;
     enterWait();
 }
@@ -310,6 +317,7 @@ void Farm::editTruck() {
         }
     }
 
+    farmFileChanged = true;
     cout << "Truck successfully edited!" << endl;
     enterWait();
 }
@@ -333,6 +341,7 @@ void Farm::removeTruck() {
         }
     }
 
+    farmFileChanged = true;
     cout << "Truck successfully removed!" << endl;
     enterWait();
 }
