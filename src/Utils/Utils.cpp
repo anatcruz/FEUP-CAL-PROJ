@@ -85,8 +85,9 @@ double euclidianDistance(pair<double, double> point1, pair<double, double> point
 
 double angle(pair<double, double> point1, pair<double, double> point2) {
     double x = point2.first - point1.first;
-    double y = point2.second - point2.second;
-    return atan2(y, x);
+    double y = point2.second - point1.second;
+    double ang = atan2(y, x);
+    return (ang >= 0)? ang : ang + M_PI*2;
 }
 
 vector<int> removeIdFromVector(vector<int> v, int id){
