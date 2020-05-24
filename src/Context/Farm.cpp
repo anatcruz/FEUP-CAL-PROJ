@@ -273,7 +273,6 @@ void Farm::clearBaskets() {
     showMenu.start();
 }
 
-//TODO Maybe change return value to a pointer, for use in editTruck and removeTruck
 bool Farm::searchTruckByPlate(string plate) {
     for(Truck t: trucks){
         if(t.getPlate() == plate) return true;

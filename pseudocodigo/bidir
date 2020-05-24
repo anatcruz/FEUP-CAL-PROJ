@@ -1,0 +1,57 @@
+genericBiDirShortestPath(src, dest, h) {
+    // Set-up starting values for source/destination vertices
+    src->dist = h(src->getInfo(), dest->getInfo());
+    dest->dist_inv = h(dest->getInfo(), src->getInfo());
+
+    // Insert values into forward and reverse priority queue
+    fwdQ.insert(src);
+    revQ.insert(dest);
+
+    // Alternating search loop
+    while (!fwdQ.empty() && !revQ.empty()) {
+        // Forward search
+        fwdQ.extractMin();
+        fwdVisited.insert(fwdV);
+        if (revVisited.contains(fwdV)) {
+            mid = fwdV;
+            break;
+        }
+        // Explore edges in regular graph
+        relaxFwdEdges(fwdV);
+
+        // Reverse search
+        revV = revQ.extractMin();
+        revVisited.insert(revV);
+        if (fwdVisited.contains(revV)) {
+            mid = revV;
+            break;
+        }
+        // Explore edges in reverse graph -> doesn't need to be explicitly
+        // computed since nodes store incoming edges
+        relaxRevEdges(revV);
+    }
+
+    // Path join
+    // Best length so far
+    length = mid->dist - h(mid->getInfo(), dest->getInfo())
+             + mid->dist_inv - h(mid->getInfo(), src->getInfo());
+
+    // Verify if alternative paths (not through the mid vertex) are better
+    for (node_a in fwdVisited) {
+        for (edge : node_a->outgoing) {
+            node_b = edge->dest;
+            if (revVisited.contains(node_b)) {
+                new_length = node_a->dist - h(node_a->getInfo(), dest->getInfo())
+                             + node_b->dist_inv - h(node_b->getInfo(), src->getInfo())
+                             + edge->cost;
+                if (temp_length < length) {
+                    node_b->path = node_a;
+                    mid = node_b;
+                    length = temp_length;
+                }
+            }
+        }
+    }
+
+    buildPath();
+}

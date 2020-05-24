@@ -185,7 +185,6 @@ bool Graph<T>::isValidID(const int &id) {
     return findVertex(id) != nullptr;
 }
 
-//TODO tirar daqui
 template<class T>
 void Graph<T>::getValidID(int &id, const string &message) {
     getOption(id, message);
@@ -296,7 +295,6 @@ Path Graph<T>::genericBiDirShortestPath(const int id_src, const int id_dest, fun
     }
 
     // Maps to keep track of visited vertices
-    // TODO is the bool value useless, or useful for optimizing path builder?
     unordered_map<int, bool> fwdVisited;
     unordered_map<int, bool> revVisited;
 
@@ -526,8 +524,15 @@ Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
     int improve = 0;
     Path best = path;
     vector<int> best_ord;
+    int max_iter = 1;
 
-    while (improve < 20) {
+    if (ord.size() < 20) {
+        max_iter = 5;
+    } else if (ord.size() < 10) {
+        max_iter = 10;
+    }
+
+    while (improve < max_iter) {
         for (int i = 1; i < ord.size() - 2; i++) {
             for (int k = i + 1; k < ord.size() - 1; k++) {
                 vector<int> new_ord = twoOptSwap(ord, i, k);
@@ -535,14 +540,14 @@ Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
                 if (new_path.getLength() < best.getLength()) {
                     improve = 0;
                     best = new_path;
-                    best_ord = new_ord;
+                    ord = new_ord;
                 }
             }
         }
         improve++;
     }
 
-    ord = best_ord;
+//    ord = best_ord;
     return best;
 }
 
@@ -566,7 +571,6 @@ vector<int> Graph<T>::twoOptSwap(const vector<int> &ord, const int &i, const int
 }
 
 /******Tarjan******/
-// TODO mudar vector para hashtable
 template<class T>
 vector<vector<int>> Graph<T>::tarjan(const int id_src) {
     for (Vertex<T>* vertex : vertexSet) {
