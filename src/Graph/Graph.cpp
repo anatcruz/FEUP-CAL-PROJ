@@ -525,6 +525,7 @@ template<class T>
 Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
     int improve = 0;
     Path best = path;
+    vector<int> best_ord;
 
     while (improve < 20) {
         for (int i = 1; i < ord.size() - 2; i++) {
@@ -534,13 +535,14 @@ Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
                 if (new_path.getLength() < best.getLength()) {
                     improve = 0;
                     best = new_path;
-                    ord = new_ord;
+                    best_ord = new_ord;
                 }
             }
         }
         improve++;
     }
 
+    ord = best_ord;
     return best;
 }
 

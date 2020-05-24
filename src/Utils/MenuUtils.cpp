@@ -98,7 +98,8 @@ void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &ro
         vector<int> POIs = route.getRoutePOIs();
         vector<int> ord;
         Path path;
-        paths.push_back(tsp_algorithm(start_node, end_node, POIs, ord, path));
+        path = tsp_algorithm(start_node, end_node, POIs, ord, path);
+        paths.push_back(path);
         route_paths.push_back(path.getPath());
         route_pois.push_back(ord);
     }
