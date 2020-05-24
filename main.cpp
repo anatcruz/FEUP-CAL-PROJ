@@ -41,6 +41,7 @@ int main() {
     graphLoadMenu.addOption("Go back", EXIT);
     graphLoadMenu.addOption("Porto Full", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); });
     graphLoadMenu.addOption("Porto Strong", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", true);});
+    graphLoadMenu.addOption("Porto Strong with problem context", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", false,"../maps/PortoMap/data/farm.txt", "../maps/PortoMap/data/clients.txt"); });
     graphLoadMenu.addOption("4x4", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); });
     graphLoadMenu.addOption("8x8", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); });
     graphLoadMenu.addOption("8x8 with problem context", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true,"../maps/GridGraphs/custom/8x8/data/farm.txt", "../maps/GridGraphs/custom/8x8/data/clients.txt"); });

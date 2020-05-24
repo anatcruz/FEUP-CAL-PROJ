@@ -129,7 +129,6 @@ void UI::showRoutes(vector<vector<int>> routes, vector<vector<int>> POIs) {
             }
             gv->setEdgeLabel(node_id, to_string(current_route));
             node_id++;
-            gv->rearrange();
         }
     }
 
