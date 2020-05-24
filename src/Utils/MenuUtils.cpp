@@ -76,6 +76,49 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
     showMenu.start();
 }
 
+void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &routes, int start_node, int end_node) {
+    function<Path (int &start_node, int &end_node, vector<int> &POIs, vector<int> &ord, Path &path)> tsp_algorithm;
+    vector<vector<int>> route_paths;
+    vector<vector<int>> route_pois;
+    vector<Path> paths;
+
+    bool cancel = false;
+
+    Menu algorithmSelector("Select algorithm", false);
+    algorithmSelector.addOption("Cancel", [&](){ cancel = true; });
+    algorithmSelector.addOption("Nearest-neighbor", [&](){ tsp_algorithm = [&](int &start_node, int &end_node, vector<int> &POIs, vector<int> &ord, Path &path){ return graph.nearestNeighborsSearch(start_node, end_node, POIs, ord, path); }; });
+    algorithmSelector.addOption("Nearest-neighbor 2-opt", [&](){ tsp_algorithm = [&](int &start_node, int &end_node, vector<int> &POIs, vector<int> &ord, Path &path){ graph.nearestNeighborsSearch(start_node, end_node, POIs, ord, path); return graph.twoOpt(ord, path); }; });
+    algorithmSelector.addOption("Randomized NN", [&](){ tsp_algorithm = [&](int &start_node, int &end_node, vector<int> &POIs, vector<int> &ord, Path &path){ return graph.RNNeighborsSearch(start_node, end_node, POIs, ord, path, 3); }; });
+    algorithmSelector.addOption("Randomized NN 2-opt", [&](){ tsp_algorithm = [&](int &start_node, int &end_node, vector<int> &POIs, vector<int> &ord, Path &path){ graph.RNNeighborsSearch(start_node, end_node, POIs, ord, path, 3); return graph.twoOpt(ord, path); }; });
+    algorithmSelector.start();
+    if (cancel) { return; }
+
+    auto start = high_resolution_clock::now();
+    for (auto &route : routes) {
+        vector<int> POIs = route.getRoutePOIs();
+        vector<int> ord;
+        Path path;
+        paths.push_back(tsp_algorithm(start_node, end_node, POIs, ord, path));
+        route_paths.push_back(path.getPath());
+        route_pois.push_back(ord);
+    }
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    double total_size = 0;
+    for (int p = 0; p < paths.size(); p++) {
+        cout << "Route " << p+1 << "- Size: " << paths.at(p).getLength() << endl;
+        total_size += paths.at(p).getLength();
+    }
+    cout << "Total size: " << total_size << endl;
+    cout << "Time to pathfind: " << duration.count() << endl;
+
+    Menu showMenu("Show routes?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ ui.showRoutes(route_paths, route_pois); });
+    showMenu.start();
+}
+
 void solveTSPwithContext(Graph<coordinates> &graph, UI &ui, Farm &farm) {
     int total_baskets = 0;
     int start_node = farm.getFarmNodeID(), end_node = farm.getGarageNodeID();
@@ -125,24 +168,7 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
 
     cout << "Calculated " << routes.size() << " routes to fulfill deliveries." << endl;
 
-    vector<vector<int>> rts;
-    vector<vector<int>> poi;
-    Path path;
-
-    for (auto &route : routes) {
-        vector<int> routePOIs = route.getRoutePOIs();
-        vector<int> ord;
-        path = graph.nearestNeighborsSearch(farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs, ord, path);
-        rts.push_back(path.getPath());
-        poi.push_back(ord);
-        path = Path();
-//        solveTSPRoute(graph, ui, farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs);
-    }
-
-    Menu showMenu("Show path?", false);
-    showMenu.addOption("No", EXIT);
-    showMenu.addOption("Yes", [&](){ ui.showRoutes(rts, poi); });
-    showMenu.start();
+    solveTSPMultipleRoutes(graph, ui, routes, farm.getFarmNodeID(), farm.getGarageNodeID());
 }
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
