@@ -621,37 +621,78 @@ void Graph<T>::strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, 
 
 /******sweep******/
 template<class T>
-vector<Route> Graph<T>::sweep(const int &centre_id, const vector<double> &capacities, vector<deliverypoint> &POIs) {
+vector<Route> Graph<T>::sweep(const int &centre_id, vector<double> &capacities, vector<deliverypoint> &POIs) {
     sort(POIs.begin(), POIs.end(), [&](auto i, auto j){ return angleBetweenNodes(centre_id, i.first) < angleBetweenNodes(centre_id, j.first); });
-
+    bool solved = true;
+    bool tried_reverse_nodes = false;
+    bool tried_reverse_vehicles = false;
+    int offset = 1;
     vector<Route> routes;
-    int current_vehicle = 0;
-    int current_load = 0;
-    Route current_route;
-    for (auto poi : POIs) {
-        if (current_load + poi.second <= capacities.at(current_vehicle)) {
-            current_route.addDeliverypoint(poi);
-            current_load += poi.second;
-            continue;
-        } else {
-            routes.push_back(current_route);
-            current_vehicle++;
-            current_route = Route();
-            current_route.addDeliverypoint(poi);
-            current_load = poi.second;
-        }
-    }
 
-    routes.push_back(current_route);
+    do {
+        int current_vehicle = 0;
+        int current_load = 0;
+        Route current_route;
+        for (auto poi : POIs) {
+            if (current_load + poi.second <= capacities.at(current_vehicle)) {
+                current_route.addDeliverypoint(poi);
+                current_load += poi.second;
+                continue;
+            } else {
+                routes.push_back(current_route);
+                if (++current_vehicle >= capacities.size()) {
+                    // Impossible solution
+                    if (!tried_reverse_nodes) {
+                        // Try again with reverse sweep
+                        tried_reverse_nodes = true;
+                        reverse(POIs.begin(), POIs.end());
+                        solved = false;
+                        routes.clear();
+                        break;
+                    } else if (!tried_reverse_vehicles) {
+                        // Try again with reverse vehicle attribution
+                        tried_reverse_vehicles = true;
+                        tried_reverse_nodes = false; // Try again with reverse nodes and trucks
+                        reverse(capacities.begin(), capacities.end());
+                        solved = false;
+                        routes.clear();
+                        break;
+                    } else if (offset < POIs.size()) {
+                        // Tried reversing nodes, vehicles and both
+                        // Vehicles will be reversed so replace original order
+                        reverse(capacities.begin(), capacities.end());
+                        // Since they're faster, try these again
+                        tried_reverse_nodes = false;
+                        tried_reverse_vehicles = false;
+                        // Sort POIs again using an offset node
+                        sort(POIs.begin(), POIs.end(), [&](auto i, auto j){ return angleBetweenNodes(centre_id, i.first, offset) < angleBetweenNodes(centre_id, j.first, offset); });
+                        offset++;
+                        solved = false;
+                        routes.clear();
+                        break;
+                    } else {
+                        // It's too broken :/
+                        routes.clear();
+                        return routes;
+                    }
+                }
+                current_route = Route();
+                current_route.addDeliverypoint(poi);
+                current_load = poi.second;
+            }
+        }
+
+        routes.push_back(current_route);
+    } while (!solved);
 
     return routes;
 }
 
 template<class T>
-double Graph<T>::angleBetweenNodes(const int &a, const int &b) {
+double Graph<T>::angleBetweenNodes(const int &a, const int &b, const int &offset) {
     Vertex<T> *v_a = findVertex(a);
     Vertex<T> *v_b = findVertex(b);
-    return angle(v_a->getInfo(), v_b->getInfo());
+    return (offset == -1)? angle(v_a->getInfo(), v_b->getInfo()) : angle(v_a->getInfo(), v_b->getInfo()) + angle(v_a->getInfo(), findVertex(offset)->getInfo());
 }
 
 

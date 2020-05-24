@@ -165,7 +165,14 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
 
     cout << "Visiting " << farm.getBaskets().size() << " nodes to deliver " << total_baskets << " baskets with a total weight of " << total_weight << endl;
 
-    vector<Route> routes = graph.sweep(farm.getFarmNodeID(), farm.getCapacities(), POIs);
+    vector<double> truck_cap = farm.getCapacities();
+    vector<Route> routes = graph.sweep(farm.getFarmNodeID(), truck_cap, POIs);
+
+    if (routes.empty()) {
+        cout << "Sweep algorithm could not determine a solution!" << endl;
+        enterWait();
+        return;
+    }
 
     cout << "Calculated " << routes.size() << " routes to fulfill deliveries." << endl;
 

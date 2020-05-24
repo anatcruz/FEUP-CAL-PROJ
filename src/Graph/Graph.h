@@ -143,8 +143,8 @@ public:
     vector<vector<int>> tarjan(const int id_src);
     void strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, vector<vector<int>> &scc);
 
-    vector<Route> sweep(const int &centre_id, const vector<double> &capacities, vector<deliverypoint> &POIs);
-    double angleBetweenNodes(const int &a, const int &b);
+    vector<Route> sweep(const int &centre_id, vector<double> &capacities, vector<deliverypoint> &POIs);
+    double angleBetweenNodes(const int &a, const int &b, const int &offset = -1);
 };
 
 #endif //PROJ_GRAPH_H
