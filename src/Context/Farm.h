@@ -8,6 +8,7 @@
 #include "Basket.h"
 #include "Truck.h"
 #include "../Graph/Graph.h"
+#include "../UI/Menu.h"
 
 class Farm {
 private:
@@ -54,6 +55,7 @@ public:
     void createBasket();
     void editBasket();
     void removeBasket();
+    void clearBaskets();
 
     bool searchTruckByPlate(string plate);
     void createTruck();

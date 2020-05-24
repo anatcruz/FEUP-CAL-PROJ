@@ -41,10 +41,10 @@ int main() {
     graphLoadMenu.addOption("Go back", EXIT);
     graphLoadMenu.addOption("Porto Full", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); });
     graphLoadMenu.addOption("Porto Strong", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", true);});
-    graphLoadMenu.addOption("Porto Strong with problem context", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", false,"../maps/PortoMap/data/farm.txt", "../maps/PortoMap/data/clients.txt"); });
+    graphLoadMenu.addOption("Porto Strong with problem context", [&](){ saveFarmChanges(farm); loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_strong_nodes_xy.txt", "../maps/PortoMap/porto_strong_edges.txt", false,"../maps/PortoMap/data/farm.txt", "../maps/PortoMap/data/clients.txt"); });
     graphLoadMenu.addOption("4x4", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true); });
     graphLoadMenu.addOption("8x8", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true); });
-    graphLoadMenu.addOption("8x8 with problem context", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true,"../maps/GridGraphs/custom/8x8/data/farm.txt", "../maps/GridGraphs/custom/8x8/data/clients.txt"); });
+    graphLoadMenu.addOption("8x8 with problem context", [&](){ saveFarmChanges(farm); loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/8x8/nodes.txt", "../maps/GridGraphs/custom/8x8/edges.txt", true,"../maps/GridGraphs/custom/8x8/data/farm.txt", "../maps/GridGraphs/custom/8x8/data/clients.txt"); });
     graphLoadMenu.addOption("16x16", [&](){ loadGraph(graph, farm, last_path, "../maps/GridGraphs/16x16/nodes.txt", "../maps/GridGraphs/16x16/edges.txt", true); });
 
     shortestPathMenu.addOption("Go back", EXIT);
@@ -54,8 +54,8 @@ int main() {
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     deliveryPathMenu.addOption("Go back", EXIT);
-    deliveryPathMenu.addOption("Make delivery route", [&](){ if(isContextLoaded(farm)) solveTSPwithContext(graph, ui, farm); });
-    deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ if(isContextLoaded(farm)) solveVRPsweep(graph, ui, farm); });
+    deliveryPathMenu.addOption("Make delivery route", [&](){ if(isContextLoaded(farm)){ solveTSPwithContext(graph, ui, farm); farm.clearBaskets(); } });
+    deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ if(isContextLoaded(farm)){ solveVRPsweep(graph, ui, farm); farm.clearBaskets();} });
     deliveryPathMenu.addOption("General TSP", [&](){ solveTSPnoContext(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});
@@ -93,6 +93,7 @@ int main() {
     truckManagementMenu.addOption("Remove truck", [&](){ farm.removeTruck(); });
 
     mainMenu.start();
+    saveFarmChanges(farm);
 
     return 0;
 }
