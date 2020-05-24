@@ -266,6 +266,13 @@ void Farm::removeBasket() {
     enterWait();
 }
 
+void Farm::clearBaskets() {
+    Menu showMenu("Clear deliveries made from file?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ baskets.clear(); cout << "Baskets successfully removed!" << endl; clientsFileChanged = true; enterWait();});
+    showMenu.start();
+}
+
 //TODO Maybe change return value to a pointer, for use in editTruck and removeTruck
 bool Farm::searchTruckByPlate(string plate) {
     for(Truck t: trucks){
