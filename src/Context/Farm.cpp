@@ -87,7 +87,7 @@ void Farm::createClient(Graph<coordinates> &graph) {
 
     getOption(nif, "Enter new client's nif: ");
     if(searchClientByNIF(nif)){
-        cinERR("ERROR: It already exits a client with the given nif!");
+        cinERR("ERROR: It already exists a client with the given nif!");
         enterWait();
         return;
     }
@@ -109,6 +109,7 @@ void Farm::createClient(Graph<coordinates> &graph) {
     addClient(Client(nodeID, nif));
     vertex->tag = cliente;
 
+    clientsFileChanged = true;
     cout << "Client successfully created!" << endl;
     enterWait();
 }
@@ -118,7 +119,7 @@ void Farm::editClient(Graph<coordinates> &graph) {
 
     getOption(nif, "Enter new client's nif: ");
     if(!searchClientByNIF(nif)){
-        cinERR("ERROR: Doesn't exits a client with the given nif!");
+        cinERR("ERROR: Doesn't exists a client with the given nif!");
         enterWait();
         return;
     }
@@ -147,6 +148,7 @@ void Farm::editClient(Graph<coordinates> &graph) {
         vertex->tag = cliente;
     }
 
+    clientsFileChanged = true;
     cout << "Client successfully edited!" << endl;
     enterWait();
 }
@@ -155,7 +157,7 @@ void Farm::removeClient(Graph<coordinates> &graph) {
     int nif;
     getOption(nif, "Enter new client's nif: ");
     if(!searchClientByNIF(nif)){
-        cinERR("ERROR: Doesn't exits a client with the given nif!");
+        cinERR("ERROR: Doesn't exists a client with the given nif!");
         enterWait();
         return;
     }
@@ -166,6 +168,7 @@ void Farm::removeClient(Graph<coordinates> &graph) {
     clients.erase(nif);
     baskets.erase(nif);
 
+    clientsFileChanged = true;
     cout << "Client and corresponding baskets successfully removed!" << endl;
     enterWait();
 }
@@ -177,7 +180,7 @@ void Farm::createBasket() {
 
     getOption(nif, "Enter client's nif: ");
     if(!searchClientByNIF(nif)){
-        cinERR("ERROR: Doesn't exits a client with the given nif, please create a new one!");
+        cinERR("ERROR: Doesn't exists a client with the given nif, please create a new one!");
         enterWait();
         return;
     }
@@ -186,10 +189,82 @@ void Farm::createBasket() {
 
     addBasket(Basket(weight, nif));
 
+    clientsFileChanged = true;
     cout << "Basket successfully created!" << endl;
     enterWait();
 }
-//TODO add editBasket and removeBasket
+
+void Farm::editBasket() {
+    int nif;
+
+    getOption(nif, "Enter client's nif: ");
+    if(!searchClientByNIF(nif)){
+        cinERR("ERROR: Doesn't exists a client with the given nif, please create a new one!");
+        enterWait();
+        return;
+    }
+
+    const auto& cb_pair = baskets.find(nif);
+    if(cb_pair == baskets.end()){
+        cinERR("Client doesn't have any active baskets to delivery!");
+        enterWait();
+        return;
+    }
+
+    line(20);
+    cout << "Client's baskets:" << endl;
+    line(20);
+
+    int i=0;
+    for(Basket b: cb_pair->second){
+        i++;
+        cout << "ID: " << i << " | Weight: " << b.getWeight() << endl;
+    }
+
+    getOption(nif, "Enter ID of the basket to be edited: ", [&](int a){ return a > 0 && a < i; });
+
+    double weight;
+    getDouble(weight, "Enter basket's new weight: ");
+    cb_pair->second.at(nif).setWeight(weight);
+
+    clientsFileChanged = true;
+    cout << "Basket successfully edited!" << endl;
+    enterWait();
+}
+
+void Farm::removeBasket() {
+    int nif;
+
+    getOption(nif, "Enter client's nif: ");
+    if(!searchClientByNIF(nif)){
+        cinERR("ERROR: Doesn't exists a client with the given nif, please create a new one!");
+        enterWait();
+        return;
+    }
+
+    const auto& cb_pair = baskets.find(nif);
+    if(cb_pair == baskets.end()){
+        cinERR("Client doesn't have any active baskets to delivery!");
+        enterWait();
+        return;
+    }
+
+    line(20);
+    cout << "Client's baskets:" << endl;
+    line(20);
+    int i=0;
+    for(Basket b: cb_pair->second){
+        i++;
+        cout << "ID: " << i << " | Weight: " << b.getWeight() << endl;
+    }
+
+    getOption(nif, "Enter ID of the basket to be removed: ", [&](int a){ return a > 0 && a < i; });
+    cb_pair->second.erase(cb_pair->second.begin()+nif);
+
+    clientsFileChanged = true;
+    cout << "Basket successfully removed!" << endl;
+    enterWait();
+}
 
 //TODO Maybe change return value to a pointer, for use in editTruck and removeTruck
 bool Farm::searchTruckByPlate(string plate) {
@@ -207,7 +282,7 @@ void Farm::createTruck() {
     cout << "Enter new truck's plate: ";
     getline(cin, plate);
     if(searchTruckByPlate(plate)){
-        cinERR("ERROR: It already exits a truck with the given plate!");
+        cinERR("ERROR: It already exists a truck with the given plate!");
         enterWait();
         return;
     }
@@ -216,6 +291,7 @@ void Farm::createTruck() {
 
     addTruck(Truck(capacity, plate));
 
+    farmFileChanged = true;
     cout << "Truck successfully created!" << endl;
     enterWait();
 }
@@ -227,7 +303,7 @@ void Farm::editTruck() {
     cout << "Enter truck's plate: ";
     getline(cin, plate);
     if(!searchTruckByPlate(plate)){
-        cinERR("ERROR: It doesn't exit a truck with the given plate!");
+        cinERR("ERROR: It doesn't exist a truck with the given plate!");
         enterWait();
         return;
     }
@@ -241,6 +317,7 @@ void Farm::editTruck() {
         }
     }
 
+    farmFileChanged = true;
     cout << "Truck successfully edited!" << endl;
     enterWait();
 }
@@ -252,7 +329,7 @@ void Farm::removeTruck() {
     cout << "Enter truck's plate: ";
     getline(cin, plate);
     if(!searchTruckByPlate(plate)){
-        cinERR("ERROR: It doesn't exit a truck with the given plate!");
+        cinERR("ERROR: It doesn't exist a truck with the given plate!");
         enterWait();
         return;
     }
@@ -264,6 +341,7 @@ void Farm::removeTruck() {
         }
     }
 
+    farmFileChanged = true;
     cout << "Truck successfully removed!" << endl;
     enterWait();
 }

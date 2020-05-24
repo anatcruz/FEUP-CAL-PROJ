@@ -36,7 +36,7 @@ int main() {
     mainMenu.addOption("Delivery path", [&](){ deliveryPathMenu.start(); });
     mainMenu.addOption("Connectivity", [&](){ connectivityMenu.start(); });
     mainMenu.addOption("Performance", [&](){ performanceMenu.start(); });
-    mainMenu.addOption("Farm Management", [&](){ managementMenu.start(); });
+    mainMenu.addOption("Farm Management", [&](){ if(isContextLoaded(farm)) managementMenu.start(); });
 
     graphLoadMenu.addOption("Go back", EXIT);
     graphLoadMenu.addOption("Porto Full", [&](){ loadGraph(graph, farm, last_path, "../maps/PortoMap/porto_full_nodes_xy.txt", "../maps/PortoMap/porto_full_edges.txt", false); });
@@ -53,8 +53,8 @@ int main() {
     shortestPathMenu.addOption("A-star Bi-Directional", [&](){ astarBiDir(graph, ui); });
 
     deliveryPathMenu.addOption("Go back", EXIT);
-    deliveryPathMenu.addOption("Make delivery route", [&](){ solveTSPwithContext(graph, ui, farm); });
-    deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ solveVRPsweep(graph, ui, farm); });
+    deliveryPathMenu.addOption("Make delivery route", [&](){ if(isContextLoaded(farm)) solveTSPwithContext(graph, ui, farm); });
+    deliveryPathMenu.addOption("Make delivery route with different trucks", [&](){ if(isContextLoaded(farm)) solveVRPsweep(graph, ui, farm); });
     deliveryPathMenu.addOption("General TSP", [&](){ solveTSPnoContext(graph, ui); });
 
     connectivityMenu.addOption("Go back", [&](){});
@@ -82,6 +82,8 @@ int main() {
     basketManagementMenu.addOption("Go back", [&](){});
     basketManagementMenu.addOption("List baskets", [&](){ showBasketList(farm); });
     basketManagementMenu.addOption("Create basket", [&](){ farm.createBasket(); });
+    basketManagementMenu.addOption("Edit basket", [&](){ farm.editBasket(); });
+    basketManagementMenu.addOption("Remove basket", [&](){ farm.removeBasket(); });
 
     truckManagementMenu.addOption("Go back", [&](){});
     truckManagementMenu.addOption("List trucks", [&](){ showTruckList(farm); });

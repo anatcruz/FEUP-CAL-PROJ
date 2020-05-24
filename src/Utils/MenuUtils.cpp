@@ -151,6 +151,15 @@ vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     return *largest;
 }
 
+bool isContextLoaded(Farm &farm){
+    if(farm.getFarmNodeID() == -1){
+        cinERR("No context loaded! Please load a graph with problem context before accessing this functionality.");
+        enterWait();
+        return false;
+    }
+    return true;
+}
+
 void showClientList(Farm &farm) {
     line(20);
     cout << "Clients" << endl;
@@ -191,3 +200,4 @@ void showTruckList(Farm &farm){
     line(20);
     enterWait();
 }
+

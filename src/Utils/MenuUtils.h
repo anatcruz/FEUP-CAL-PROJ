@@ -35,6 +35,8 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm);
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui);
 
+bool isContextLoaded(Farm &farm);
+
 /**Management**/
 void showClientList(Farm &farm);
 void showBasketList(Farm &farm);
