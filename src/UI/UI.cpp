@@ -86,6 +86,58 @@ void UI::showDeliveryPath(vector<int> path, vector<int> POIs) {
     delete gv;
 }
 
+void UI::showRoutes(vector<vector<int>> routes, vector<vector<int>> POIs) {
+    if (routes.empty()) { return; }
+
+    this->gv = new GraphViewer(gv_width, gv_height, false);
+    gv->defineEdgeCurved(false);
+    gv->defineVertexSize(3);
+    gv->createWindow(gv_width, gv_height);
+    int current_POI = -1;
+    int current_route = 0;
+    int node_id = 0;
+
+    if (!POIs.at(current_route).empty()) {
+        current_POI = 0;
+    }
+
+    Vertex<coordinates> *a = graph->findVertex(routes.at(0).at(0)); // Gets first node, same for all routes
+    gv->addNode(node_id, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
+    if (current_POI != -1 && a->getId() == POIs.at(current_route).at(current_POI)) {
+        setPOIProperties(a, node_id, current_POI);
+        if (++current_POI >= POIs.at(current_route).size()) { current_POI = -1; }
+    }
+    node_id++;
+
+    for (current_route; current_route < routes.size(); current_route++) {
+        if (current_route > 0) {
+            if (POIs.at(current_route).size() >= 2) { current_POI = 1; }
+            else { current_POI = -1; }
+        }
+        for (int i = 1; i < routes.at(current_route).size(); i++) {
+            a = graph->findVertex(routes.at(current_route).at(i));
+
+            gv->addNode(node_id, x_fitted(a->getInfo().first), y_fitted(a->getInfo().second));
+            if (current_POI != -1 && a->getId() == POIs.at(current_route).at(current_POI)) {
+                setPOIProperties(a, node_id, current_POI);
+                if (++current_POI >= POIs.at(current_route).size()) { current_POI = -1; }
+            }
+            if (i == 1) {
+                gv->addEdge(node_id, 0, node_id, EdgeType::DIRECTED);
+            } else {
+                gv->addEdge(node_id, node_id - 1, node_id, EdgeType::DIRECTED);
+            }
+            gv->setEdgeLabel(node_id, to_string(current_route));
+            node_id++;
+        }
+    }
+
+    gv->rearrange();
+
+    enterWait();
+    delete gv;
+}
+
 int UI::x_fitted(double x) {
     return (x - graph->getMinCoords().first) * (gv_width - 50) / (graph->getMaxCoords().first - graph->getMinCoords().first) + 25;
 }

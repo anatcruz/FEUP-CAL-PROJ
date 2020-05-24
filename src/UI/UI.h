@@ -24,6 +24,7 @@ public:
     void showGraph();
     void showPath(vector<int> path);
     void showDeliveryPath(vector<int> path, vector<int> POIs);
+    void showRoutes(vector<vector<int>> routes, vector<vector<int>> POIs);
 
     void setNodeProperties(Vertex<coordinates> *node, int id);
     void setPOIProperties(Vertex<coordinates> *node, int id, int poi_n);

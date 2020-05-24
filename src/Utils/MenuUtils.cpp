@@ -125,10 +125,24 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
 
     cout << "Calculated " << routes.size() << " routes to fulfill deliveries." << endl;
 
+    vector<vector<int>> rts;
+    vector<vector<int>> poi;
+    Path path;
+
     for (auto &route : routes) {
         vector<int> routePOIs = route.getRoutePOIs();
-        solveTSPRoute(graph, ui, farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs);
+        vector<int> ord;
+        path = graph.nearestNeighborsSearch(farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs, ord, path);
+        rts.push_back(path.getPath());
+        poi.push_back(ord);
+        path = Path();
+//        solveTSPRoute(graph, ui, farm.getFarmNodeID(), farm.getGarageNodeID(), routePOIs);
     }
+
+    Menu showMenu("Show path?", false);
+    showMenu.addOption("No", EXIT);
+    showMenu.addOption("Yes", [&](){ ui.showRoutes(rts, poi); });
+    showMenu.start();
 }
 
 vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
