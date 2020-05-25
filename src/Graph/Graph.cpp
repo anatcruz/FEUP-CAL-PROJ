@@ -547,7 +547,6 @@ Path Graph<T>::twoOpt(vector<int> &ord, const Path &path) {
         improve++;
     }
 
-//    ord = best_ord;
     return best;
 }
 

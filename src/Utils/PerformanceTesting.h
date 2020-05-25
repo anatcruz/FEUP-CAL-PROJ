@@ -15,6 +15,11 @@
 using namespace std;
 using namespace std::chrono;
 
+/**
+ * Functions that run an algorithm several times and calculate statistics
+ * about it's time performance.
+ * */
+
 void dijkstraPerfTest(Graph<coordinates> &graph);
 
 void dijkstraBiDirPerfTest(Graph<coordinates> &graph);

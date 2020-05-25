@@ -2,8 +2,6 @@
 
 UI::UI(Graph<coordinates> *graph, int width, int height) : graph(graph), gv_width(width), gv_height(height) {}
 
-void UI::setGraph(Graph<coordinates> *graph) { this->graph = graph; }
-
 void UI::showGraph() {
     this->gv = new GraphViewer(gv_width, gv_height, false);
     gv->defineEdgeCurved(false);

@@ -20,7 +20,6 @@ private:
 public:
     UI(Graph<coordinates> *graph, int width, int height);
 
-    void setGraph(Graph<coordinates> *graph);
     void showGraph();
     void showPath(vector<int> path);
     void showDeliveryPath(vector<int> path, vector<int> POIs);

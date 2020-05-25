@@ -9,15 +9,20 @@
 #include "Utils/PerformanceTesting.h"
 
 int main() {
+    // Ignore SIGINT to prevent crashes when closing GraphViewer
     signal(SIGINT, SIG_IGN);
+    // Generate random seed
     srand(time(NULL));
 
     Graph<coordinates> graph;
     UI ui = UI(&graph, 1900, 1000);
     vector<int> last_path;
     Farm farm;
+
+    // Loads 4x4 grid map by default
     loadGraph(graph, farm, last_path, "../maps/GridGraphs/custom/4x4/nodes.txt", "../maps/GridGraphs/custom/4x4/edges.txt", true);
 
+    // Generate and configure menus
     Menu mainMenu("FarmFresh2U");
     Menu graphLoadMenu("Load graph", false);
     Menu shortestPathMenu("Shortest Path");
