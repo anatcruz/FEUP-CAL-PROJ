@@ -42,7 +42,7 @@ void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, i
     auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Size: " << path.getLength() << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
+    cout << "Time to pathfind (micro): " << duration.count() << endl;
 
     Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
@@ -88,7 +88,7 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
     auto duration = duration_cast<microseconds>(stop - start);
 
     cout << "Size: " << path.getLength() << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
+    cout << "Time to pathfind (micro): " << duration.count() << endl;
 
     Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
@@ -133,7 +133,7 @@ void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &ro
         total_size += paths.at(p).getLength();
     }
     cout << "Total size: " << total_size << endl;
-    cout << "Time to pathfind: " << duration.count() << endl;
+    cout << "Time to pathfind (micro): " << duration.count() << endl;
 
     Menu showMenu("Show routes?", false);
     showMenu.addOption("No", EXIT);
@@ -206,12 +206,23 @@ vector<int> largestSCC(Graph<coordinates> &graph, UI &ui) {
     vector<vector<int>> scc_list = graph.tarjan(0);
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time: " << duration.count() << endl;
+    cout << "Time (micro): " << duration.count() << endl;
+    line(20);
+    cout << "Connectivity analysis" << endl;
+    line(20);
     cout << "Total number of strongly connected components: " << scc_list.size() << endl;
 
     auto largest = max_element(scc_list.begin(), scc_list.end(), [&](vector<int> &scc1, vector<int> &scc2) { return scc1.size() < scc2.size(); });
+    double average_scc = 0;
 
-    cout << "Largest SCC size: " << largest->size();
+    for (auto scc : scc_list) {
+        average_scc += scc.size();
+    }
+
+    average_scc /= scc_list.size();
+
+    cout << "Largest SCC size: " << largest->size() << endl;
+    cout << "Average SCC size: " << average_scc << endl;
 
     Menu showMenu("Show largest SCC?", false);
     showMenu.addOption("No", EXIT);
