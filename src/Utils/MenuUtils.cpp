@@ -129,7 +129,7 @@ void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &ro
 
     double total_size = 0;
     for (int p = 0; p < paths.size(); p++) {
-        cout << "Route " << p+1 << " - Size: " << paths.at(p).getLength() << endl;
+        cout << "Route " << p+1 << " (" << routes.at(p).getTruck() << ")" << " - Size: " << paths.at(p).getLength() << endl;
         total_size += paths.at(p).getLength();
     }
     cout << "Total size: " << total_size << endl;
@@ -187,8 +187,8 @@ void solveVRPsweep(Graph<coordinates> &graph, UI &ui, Farm &farm) {
 
     cout << "Visiting " << farm.getBaskets().size() << " nodes to deliver " << total_baskets << " baskets with a total weight of " << total_weight << endl;
 
-    vector<double> truck_cap = farm.getCapacities();
-    vector<Route> routes = graph.sweep(farm.getFarmNodeID(), truck_cap, POIs);
+    vector<Truck> trucks = farm.getTrucks();
+    vector<Route> routes = graph.sweep(farm.getFarmNodeID(), trucks, POIs);
 
     if (routes.empty()) {
         cout << "Sweep algorithm could not determine a solution!" << endl;

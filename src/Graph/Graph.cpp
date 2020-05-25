@@ -624,8 +624,9 @@ void Graph<T>::strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, 
 
 /******sweep******/
 template<class T>
-vector<Route> Graph<T>::sweep(const int &centre_id, vector<double> &capacities, vector<deliverypoint> &POIs) {
+vector<Route> Graph<T>::sweep(const int &centre_id, vector<Truck> &capacities, vector<deliverypoint> &POIs) {
     sort(POIs.begin(), POIs.end(), [&](auto i, auto j){ return angleBetweenNodes(centre_id, i.first) < angleBetweenNodes(centre_id, j.first); });
+    sort(capacities.begin(), capacities.end(), [&](auto i, auto j){ return i.getCapacity() > j.getCapacity(); });
     bool solved = true;
     bool tried_reverse_nodes = false;
     bool tried_reverse_vehicles = false;
@@ -636,8 +637,9 @@ vector<Route> Graph<T>::sweep(const int &centre_id, vector<double> &capacities, 
         int current_vehicle = 0;
         int current_load = 0;
         Route current_route;
+        current_route.setTruck(capacities.at(current_vehicle).getPlate());
         for (auto poi : POIs) {
-            if (current_load + poi.second <= capacities.at(current_vehicle)) {
+            if (current_load + poi.second <= capacities.at(current_vehicle).getCapacity()) {
                 current_route.addDeliverypoint(poi);
                 current_load += poi.second;
                 continue;
@@ -680,6 +682,7 @@ vector<Route> Graph<T>::sweep(const int &centre_id, vector<double> &capacities, 
                     }
                 }
                 current_route = Route();
+                current_route.setTruck(capacities.at(current_vehicle).getPlate());
                 current_route.addDeliverypoint(poi);
                 current_load = poi.second;
             }

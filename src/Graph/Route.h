@@ -2,12 +2,14 @@
 #define PROJ_ROUTE_H
 
 #include <vector>
+#include <string>
 #include "../Utils/Utils.h"
 
 
 class Route {
     double weight;
     vector<deliverypoint> route;
+    string truck;
 public:
     Route();
     Route(double weight, const vector<deliverypoint> &route);
@@ -18,6 +20,10 @@ public:
     vector<int> getRoutePOIs() const;
 
     void addDeliverypoint(const deliverypoint &dp);
+
+    const string &getTruck() const;
+
+    void setTruck(const string &truck);
 };
 
 

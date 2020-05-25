@@ -24,3 +24,11 @@ void Route::addDeliverypoint(const deliverypoint &dp) {
     route.push_back(dp);
     weight += dp.second;
 }
+
+const string &Route::getTruck() const {
+    return truck;
+}
+
+void Route::setTruck(const string &truck) {
+    Route::truck = truck;
+}

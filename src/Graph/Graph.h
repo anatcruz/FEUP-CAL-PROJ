@@ -14,6 +14,7 @@
 #include "Path.h"
 #include "Route.h"
 #include "Utils/Utils.h"
+#include "Context/Truck.h"
 
 using namespace std;
 
@@ -146,7 +147,7 @@ public:
     vector<vector<int>> tarjan(const int id_src);
     void strongconnect(Vertex<T>* src, int &index, stack<Vertex<T>*> &st, vector<vector<int>> &scc);
 
-    vector<Route> sweep(const int &centre_id, vector<double> &capacities, vector<deliverypoint> &POIs);
+    vector<Route> sweep(const int &centre_id, vector<Truck> &capacities, vector<deliverypoint> &POIs);
     double angleBetweenNodes(const int &a, const int &b, const int &offset = -1);
 };
 

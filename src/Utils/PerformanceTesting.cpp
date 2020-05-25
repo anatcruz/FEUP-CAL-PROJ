@@ -153,7 +153,7 @@ void sweepPerfTest(Graph<coordinates> &graph) {
         POIs_og.emplace_back(iter->first, cap);
     }
 
-    vector<double> capacities_og;
+    vector<Truck> capacities_og;
     for (int i = 0; i < num_trucks; i++) {
         if (i == num_trucks-1) {
             double tw = 0, tc = 0;
@@ -161,20 +161,20 @@ void sweepPerfTest(Graph<coordinates> &graph) {
                 tw += dp.second;
             }
             for (auto truck : capacities_og) {
-                tc += truck;
+                tc += truck.getCapacity();
             }
             if (tw > tc) {
-                capacities_og.push_back(tw-tc+rand() % 200);
+                capacities_og.emplace_back(tw-tc+rand() % 200, "");
                 continue;
             }
         }
         double cap = rand() % 1000 + 100;
-        capacities_og.push_back(cap);
+        capacities_og.emplace_back(cap, "");
     }
 
     for (int i = 0; i < num_iter; i++) {
         vector<deliverypoint> POIs = POIs_og;
-        vector<double> cap = capacities_og;
+        vector<Truck> cap = capacities_og;
         auto start = high_resolution_clock::now();
         graph.sweep(id_src, cap, POIs);
         auto stop = high_resolution_clock::now();
