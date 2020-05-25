@@ -12,6 +12,25 @@ void loadGraph(Graph<coordinates> &graph, Farm &farm, vector<int> &last_path, co
     last_path.clear();
 }
 
+void printPath(const vector<int> &path) {
+    for (int i = 0; i < path.size(); i++) {
+        if (i == 0) {
+            cout << path.at(i);
+        } else {
+            cout << " -> " << path.at(i);
+        }
+    }
+    cout << endl;
+}
+
+void printRoutes(const vector<vector<int>> &routes) {
+    for (int i = 0; i < routes.size(); i++) {
+        line(20);
+        cout << "Route " << i+1 << endl;
+        printPath(routes.at(i));
+    }
+}
+
 void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, int)> &spAlgorithm) {
     int id_src, id_dest;
     getOption(id_src, "Source node ID: ", [&](int a) { return graph.isValidID(a); });
@@ -27,7 +46,8 @@ void shortestPath(Graph<coordinates> &graph, UI &ui, const function<Path (int, i
 
     Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
-    showMenu.addOption("Yes", [&](){ ui.showPath(path.getPath()); });
+    showMenu.addOption("Yes, in GraphViewer", [&](){ ui.showPath(path.getPath()); });
+    showMenu.addOption("Yes, in console", [&](){ printPath(path.getPath()); enterWait(); });
     showMenu.start();
 }
 
@@ -72,7 +92,8 @@ void solveTSPRoute(Graph<coordinates> &graph, UI &ui, const int &start_node, con
 
     Menu showMenu("Show path?", false);
     showMenu.addOption("No", EXIT);
-    showMenu.addOption("Yes", [&](){ ui.showDeliveryPath(path.getPath(), ord); });
+    showMenu.addOption("Yes, in GraphViewer", [&](){ ui.showDeliveryPath(path.getPath(), ord); });
+    showMenu.addOption("Yes, in console", [&](){ printPath(ord); enterWait(); });
     showMenu.start();
 }
 
@@ -108,7 +129,7 @@ void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &ro
 
     double total_size = 0;
     for (int p = 0; p < paths.size(); p++) {
-        cout << "Route " << p+1 << "- Size: " << paths.at(p).getLength() << endl;
+        cout << "Route " << p+1 << " - Size: " << paths.at(p).getLength() << endl;
         total_size += paths.at(p).getLength();
     }
     cout << "Total size: " << total_size << endl;
@@ -116,7 +137,8 @@ void solveTSPMultipleRoutes(Graph<coordinates> &graph, UI &ui, vector<Route> &ro
 
     Menu showMenu("Show routes?", false);
     showMenu.addOption("No", EXIT);
-    showMenu.addOption("Yes", [&](){ ui.showRoutes(route_paths, route_pois); });
+    showMenu.addOption("Yes, in GraphViewer", [&](){ ui.showRoutes(route_paths, route_pois); });
+    showMenu.addOption("Yes, in console", [&](){ printRoutes(route_pois); enterWait(); });
     showMenu.start();
 }
 
