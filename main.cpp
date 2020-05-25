@@ -77,6 +77,9 @@ int main() {
     performanceMenu.addOption("A-star performance", [&](){ astarPerfTest(graph); });
     performanceMenu.addOption("A-star Bi-Directional performance", [&](){ astarBiDirPerfTest(graph); });
     performanceMenu.addOption("Tarjan performance", [&](){ tarjanPerfTest(graph); });
+    performanceMenu.addOption("NNS performance", [&](){ nnsPerfTest(graph); });
+    performanceMenu.addOption("RNNS performance", [&](){ rnnsPerfTest(graph); });
+    performanceMenu.addOption("2opt performance", [&](){ twoptPerfTest(graph); });
 
     managementMenu.addOption("Go back", [&](){});
     managementMenu.addOption("Client Management", [&](){ clientManagementMenu.start(); });

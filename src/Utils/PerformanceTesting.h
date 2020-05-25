@@ -28,4 +28,10 @@ void astarBiDirPerfTest(Graph<coordinates> &graph);
 
 void tarjanPerfTest(Graph<coordinates> &graph);
 
+void nnsPerfTest(Graph<coordinates> &graph);
+
+void rnnsPerfTest(Graph<coordinates> &graph);
+
+void twoptPerfTest(Graph<coordinates> &graph);
+
 #endif //PROJ_PERFORMANCETESTING_H
