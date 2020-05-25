@@ -28,6 +28,8 @@ void astarPerfTest(Graph<coordinates> &graph);
 
 void astarBiDirPerfTest(Graph<coordinates> &graph);
 
+void tarjanPerfTest(Graph<coordinates> &graph);
+
 void clearLog();
 
 #endif //PROJ_PERFORMANCETESTING_H

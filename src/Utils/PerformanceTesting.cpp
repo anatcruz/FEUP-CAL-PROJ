@@ -52,6 +52,32 @@ void astarBiDirPerfTest(Graph<coordinates> &graph) {
     shortestPathPerfTest([&](int s, int d) { return graph.astarBiDirShortestPath(s, d); }, 'B');
 }
 
+void tarjanPerfTest(Graph<coordinates> &graph) {
+    int num_iter;
+    getOption(num_iter, "Number of iterations: ");
+
+    long total = 0, min_d = LONG_MAX, max_d = 0;
+
+    for (int i = 0; i < num_iter; i++) {
+        auto start = high_resolution_clock::now();
+        graph.tarjan(0);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        total += duration.count();
+        min_d = min(min_d, (long) duration.count());
+        max_d = max(max_d, (long) duration.count());
+    }
+
+    double average = (double) total / (double) num_iter;
+
+    cout << "Minimum run time: " << min_d << endl;
+    cout << "Maximum run time: " << max_d << endl;
+    cout << "Average run time: " << average << endl;
+    cout << "Total run time: " << total << endl;
+
+    enterWait();
+}
+
 void clearLog() {
     ofstream log;
     log.open(LOG_FILE, ofstream::trunc);
