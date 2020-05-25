@@ -69,7 +69,7 @@ int main() {
 
     connectivityMenu.addOption("Go back", [&](){});
     connectivityMenu.addOption("View largest SCC", [&](){ last_path = largestSCC(graph, ui); });
-    connectivityMenu.addOption("Make graph largest SCC", [&](){ if (last_path.empty()) {last_path = graph.tarjan(0);} graph.makePathGraph(last_path); });
+    connectivityMenu.addOption("Make graph largest SCC", [&](){ if (last_path.empty()) {last_path = largestSCC(graph, ui);} graph.makePathGraph(last_path); });
 
     performanceMenu.addOption("Go back", [&](){});
     performanceMenu.addOption("Dijkstra performance", [&](){ dijkstraPerfTest(graph); });
