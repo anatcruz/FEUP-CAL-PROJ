@@ -10,8 +10,6 @@
 #include "../Graph/Graph.h"
 #include "Utils.h"
 
-#define LOG_FILE "../log.csv"
-
 using namespace std;
 using namespace std::chrono;
 
@@ -29,7 +27,5 @@ void astarPerfTest(Graph<coordinates> &graph);
 void astarBiDirPerfTest(Graph<coordinates> &graph);
 
 void tarjanPerfTest(Graph<coordinates> &graph);
-
-void clearLog();
 
 #endif //PROJ_PERFORMANCETESTING_H

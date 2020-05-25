@@ -30,14 +30,6 @@ void shortestPathPerfTest(Graph<coordinates> &graph, const function<Path (int, i
     cout << "Average run time: " << average << endl;
     cout << "Total run time: " << total << endl;
 
-    /*ofstream log;
-    log.open(LOG_FILE, ofstream::app);
-
-    log << test << "," << id_src << "," << id_dest << "," << min_d << "," << max_d << "," << average << "," << total
-        << "," << num_iter << "," << endl;
-
-    log.close();*/
-
     enterWait();
 }
 
@@ -81,10 +73,4 @@ void tarjanPerfTest(Graph<coordinates> &graph) {
     cout << "Total run time: " << total << endl;
 
     enterWait();
-}
-
-void clearLog() {
-    ofstream log;
-    log.open(LOG_FILE, ofstream::trunc);
-    log.close();
 }
