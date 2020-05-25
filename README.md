@@ -1,6 +1,6 @@
-#Dependências
+# Dependências
 - API GraphViewer, fornecida nas aulas, para visualização de grafos.
-#Input files
+# Input files
 Os ficheiros com informações relativas ao contexto do problema encontram-se na pasta 'data' dos respetivos mapas (maps/GridGraphs/custom/8x8/data e maps/PortoMap/data).
 #Instruções de compilação
 Para compilar o projeto é necessária uma instalação CLion ou cmake.
