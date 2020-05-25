@@ -698,6 +698,11 @@ double Graph<T>::angleBetweenNodes(const int &a, const int &b, const int &offset
     return (offset == -1)? angle(v_a->getInfo(), v_b->getInfo()) : angle(v_a->getInfo(), v_b->getInfo()) + angle(v_a->getInfo(), findVertex(offset)->getInfo());
 }
 
+template<class T>
+unordered_map<int, int> Graph<T>::getVertexMap() const {
+    return vertexMap;
+}
+
 
 template class Vertex<coordinates>;
 template class Edge<coordinates>;

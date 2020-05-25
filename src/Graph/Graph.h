@@ -112,6 +112,9 @@ public:
     coordinates getMaxCoords() const;
 
     vector<Vertex<T> *> getVertexSet() const;
+
+    unordered_map<int, int> getVertexMap() const;
+
     Vertex<T> *addVertex(int id, const T &in);
     Edge<T> *addEdge(const int id_src, const int id_dest, double cost);
 

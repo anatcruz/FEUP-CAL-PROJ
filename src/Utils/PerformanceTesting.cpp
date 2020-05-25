@@ -1,14 +1,19 @@
 #include "PerformanceTesting.h"
 
-void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char test) {
+void shortestPathPerfTest(Graph<coordinates> &graph, const function<Path (int, int)> &spAlgorithm, char test) {
     int id_src, id_dest, num_iter;
-    getOption(id_src, "Source node ID: ");
-    getOption(id_dest, "Destination node ID: ");
     getOption(num_iter, "Number of iterations: ");
 
     long total = 0, min_d = LONG_MAX, max_d = 0;
 
     for (int i = 0; i < num_iter; i++) {
+        auto map = graph.getVertexMap();
+        auto iter = map.begin();
+        advance(iter, rand() % map.size());
+        id_src = iter->first;
+        iter = map.begin();
+        advance(iter, rand() % map.size());
+        id_dest = iter->first;
         auto start = high_resolution_clock::now();
         spAlgorithm(id_src, id_dest);
         auto stop = high_resolution_clock::now();
@@ -25,31 +30,31 @@ void shortestPathPerfTest(const function<Path (int, int)> &spAlgorithm, char tes
     cout << "Average run time: " << average << endl;
     cout << "Total run time: " << total << endl;
 
-    ofstream log;
+    /*ofstream log;
     log.open(LOG_FILE, ofstream::app);
 
     log << test << "," << id_src << "," << id_dest << "," << min_d << "," << max_d << "," << average << "," << total
         << "," << num_iter << "," << endl;
 
-    log.close();
+    log.close();*/
 
     enterWait();
 }
 
 void dijkstraPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.dijkstraShortestPath(s, d); }, 'D');
+    shortestPathPerfTest(graph, [&](int s, int d) { return graph.dijkstraShortestPath(s, d); }, 'D');
 }
 
 void dijkstraBiDirPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.dijkstraBiDirShortestPath(s, d); }, 'E');
+    shortestPathPerfTest(graph, [&](int s, int d) { return graph.dijkstraBiDirShortestPath(s, d); }, 'E');
 }
 
 void astarPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.astarShortestPath(s, d); }, 'A');
+    shortestPathPerfTest(graph, [&](int s, int d) { return graph.astarShortestPath(s, d); }, 'A');
 }
 
 void astarBiDirPerfTest(Graph<coordinates> &graph) {
-    shortestPathPerfTest([&](int s, int d) { return graph.astarBiDirShortestPath(s, d); }, 'B');
+    shortestPathPerfTest(graph, [&](int s, int d) { return graph.astarBiDirShortestPath(s, d); }, 'B');
 }
 
 void tarjanPerfTest(Graph<coordinates> &graph) {
