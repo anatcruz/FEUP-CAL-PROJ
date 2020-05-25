@@ -131,3 +131,65 @@ void rnnsPerfTest(Graph<coordinates> &graph) {
 void twoptPerfTest(Graph<coordinates> &graph) {
     tspPerfTest(graph, [&](int id_src, int id_dest, vector<int> &POIs, vector<int> &ord, Path &path){ graph.nearestNeighborsSearch(id_src, id_dest, POIs, ord, path); return graph.twoOpt(ord, path); });
 }
+
+void sweepPerfTest(Graph<coordinates> &graph) {
+    int id_src, num_iter, num_pois, num_trucks;
+    getOption(num_iter, "Number of iterations: ", [&](int a){ return a > 0; });
+    getOption(num_pois, "Number of POIs: ", [&](int a){ return a > 0 && a < graph.getVertexSet().size(); });
+    getOption(num_trucks, "Number of Trucks: ", [&](int a){ return a > 0; });
+
+    long total = 0, min_d = LONG_MAX, max_d = 0;
+
+    auto map = graph.getVertexMap();
+    auto iter = map.begin();
+    advance(iter, rand() % map.size());
+    id_src = iter->first;
+
+    vector<deliverypoint> POIs_og;
+    for (int i = 0; i < num_pois; i++) {
+        auto iter = map.begin();
+        advance(iter, rand() % map.size());
+        double cap = rand() % 30 + 5;
+        POIs_og.emplace_back(iter->first, cap);
+    }
+
+    vector<double> capacities_og;
+    for (int i = 0; i < num_trucks; i++) {
+        if (i == num_trucks-1) {
+            double tw = 0, tc = 0;
+            for (auto dp : POIs_og) {
+                tw += dp.second;
+            }
+            for (auto truck : capacities_og) {
+                tc += truck;
+            }
+            if (tw > tc) {
+                capacities_og.push_back(tw-tc+rand() % 200);
+                continue;
+            }
+        }
+        double cap = rand() % 1000 + 100;
+        capacities_og.push_back(cap);
+    }
+
+    for (int i = 0; i < num_iter; i++) {
+        vector<deliverypoint> POIs = POIs_og;
+        vector<double> cap = capacities_og;
+        auto start = high_resolution_clock::now();
+        graph.sweep(id_src, cap, POIs);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        total += duration.count();
+        min_d = min(min_d, (long) duration.count());
+        max_d = max(max_d, (long) duration.count());
+    }
+
+    double average = (double) total / (double) num_iter;
+
+    cout << "Minimum run time: " << min_d << endl;
+    cout << "Maximum run time: " << max_d << endl;
+    cout << "Average run time: " << average << endl;
+    cout << "Total run time: " << total << endl;
+
+    enterWait();
+}

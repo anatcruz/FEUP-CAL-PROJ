@@ -80,6 +80,7 @@ int main() {
     performanceMenu.addOption("NNS performance", [&](){ nnsPerfTest(graph); });
     performanceMenu.addOption("RNNS performance", [&](){ rnnsPerfTest(graph); });
     performanceMenu.addOption("2opt performance", [&](){ twoptPerfTest(graph); });
+    performanceMenu.addOption("Sweep performance", [&](){ sweepPerfTest(graph); });
 
     managementMenu.addOption("Go back", [&](){});
     managementMenu.addOption("Client Management", [&](){ clientManagementMenu.start(); });

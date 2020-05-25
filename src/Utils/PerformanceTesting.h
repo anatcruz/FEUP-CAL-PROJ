@@ -34,4 +34,6 @@ void rnnsPerfTest(Graph<coordinates> &graph);
 
 void twoptPerfTest(Graph<coordinates> &graph);
 
+void sweepPerfTest(Graph<coordinates> &graph);
+
 #endif //PROJ_PERFORMANCETESTING_H
